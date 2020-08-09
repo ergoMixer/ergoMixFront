@@ -1,0 +1,149 @@
+.App {
+    text-align: center;
+}
+
+.App-logo {
+    height: 40vmin;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
+}
+
+.App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.App-link {
+    color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/*.notification-container {*/
+/*  box-sizing: border-box;*/
+/*  position: fixed;*/
+/*  top: 0;*/
+/*  right: 0;*/
+/*  z-index: 999999;*/
+/*  width: 320px;*/
+/*  padding: 0px 15px;*/
+/*  max-height: calc(100% - 30px);*/
+/*  overflow-x: hidden;*/
+/*  overflow-y: auto;*/
+/*}*/
+
+/*.notification {*/
+/*  box-sizing: border-box;*/
+/*  padding: 15px 15px 15px 58px;*/
+/*  border-radius: 2px;*/
+/*  color: #fff;*/
+/*  background-color: #ccc;*/
+/*  box-shadow: 0 0 12px #999;*/
+/*  cursor: pointer;*/
+/*  font-size: 1em;*/
+/*  line-height: 1.2em;*/
+/*  position: relative;*/
+/*  opacity: 0.9;*/
+/*  margin-top: 15px;*/
+/*}*/
+
+/*.notification .title {*/
+/*  font-size: 1em;*/
+/*  line-height: 1.2em;*/
+/*  font-weight: bold;*/
+/*  margin: 0 0 5px 0;*/
+/*}*/
+
+/*.notification:hover, .notification:focus {*/
+/*  opacity: 1;*/
+/*}*/
+
+/*.notification-enter {*/
+/*  visibility: hidden;*/
+/*  transform: translate3d(100%, 0, 0);*/
+/*}*/
+
+/*.notification-enter.notification-enter-active {*/
+/*  visibility: visible;*/
+/*  transform: translate3d(0, 0, 0);*/
+/*  transition: all 0.4s;*/
+/*}*/
+
+/*.notification-leave {*/
+/*  visibility: visible;*/
+/*  transform: translate3d(0, 0, 0);*/
+/*}*/
+
+/*.notification-leave.notification-leave-active {*/
+/*  visibility: hidden;*/
+/*  transform: translate3d(100%, 0, 0);*/
+/*  transition: all 0.4s;*/
+/*}*/
+
+/*.notification:before {*/
+/*  position: absolute;*/
+/*  top: 50%;*/
+/*  left: 15px;*/
+/*  margin-top: -14px;*/
+/*  display: block;*/
+/*  font-family: 'Notification';*/
+/*  width: 28px;*/
+/*  height: 28px;*/
+/*  font-size: 28px;*/
+/*  text-align: center;*/
+/*  line-height: 28px;*/
+/*}*/
+
+.notification {
+    border-radius: 5px;
+    color: #fff !important;
+}
+
+.notification-info {
+    background-color: #ccf2f6;
+    border-color: #b8ecf3;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(0, 188, 212, .4);
+}
+
+.notification-success {
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(76, 175, 80, .4);
+    background-color: #55b559;
+}
+
+.notification-warning {
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(255, 152, 0, .4);
+    background-color: #ff9e0f;
+}
+
+.notification-error {
+    /*background-color: #bd362f;*/
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(233, 30, 99, .4);
+    background-color: #ea2c6d;
+}
+
+.MuiLinearProgress-colorSecondary {
+    background-color: rgba(156, 39, 176, .2) !important;
+}
+
+.MuiLinearProgress-barColorSecondary {
+    background-color: #9c27b0 !important;
+}
