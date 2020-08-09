@@ -1,6 +1,6 @@
 import React from 'react';
-import {NotificationManager} from "react-notifications";
-import {ApiNetwork} from "../../../network/api";
+import { NotificationManager } from "react-notifications";
+import { ApiNetwork } from "../../../network/api";
 import * as formatter from '../../../formatter/formatters';
 
 class Withdraw extends React.Component {
@@ -42,8 +42,6 @@ class Withdraw extends React.Component {
     }
 
     render() {
-        console.log(this.state);
-        console.log(this.props);
         let addressInputClass = "form-group bmd-form-group";
         if (this.state.focused === "withdraw") addressInputClass += " is-focused";
         if (this.state.withdraw) addressInputClass += " is-filled";

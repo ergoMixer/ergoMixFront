@@ -1,45 +1,45 @@
 import React from 'react';
 import { connect } from "react-redux";
-import * as formatter from '../../formatter/formatters';
 import MainLayout from "../../layout/main-layout/MainLayout";
 import withLayout from '../../hoc/with_layout/withLayout';
+import MixRing from "../../components/mix-ring/MixRing";
+import Panel from "../../components/panel/Panel";
 
 class Step2 extends React.Component {
     state = {
-        boxes: []
+        boxes: [],
+        selected: '',
     };
 
     render() {
-        let totalBox = 0;
-        this.state.boxes.map(item=>{
-            totalBox += item.count;
-        });
+        const tokens = this.props.tokens.filter(item => item.type !== 'custom')
         return (
             <React.Fragment>
-                <div className="row non-selectable">
-                    {this.props.rings.map((item, index) => {
-                        if(item.amount > this.props.total) return null;
-                        let count = 0;
-                        const boxIndex= this.state.boxes.findIndex(boxItem => item.amount === boxItem.amount);
-                        if(boxIndex >= 0){
-                            count += this.state.boxes[boxIndex].count;
-                        }
-                        return (
-                            <div className="col-lg-4 col-md-4 col-sm-6" key={item.amount}>
-                                <div className="card card-stats" key={item.amount}>
-                                    <div className="card-header card-header-warning card-header-icon">
-                                        <div className="card-icon">
-                                            <i className="">{formatter.erg(item.amount)}</i>
-                                        </div>
-                                    </div>
-                                    <div className="card-body text-center">
-                                        <p className="card-category">available Half Boxes: {item.unspentHalf}</p>
-                                        <p className="card-category">Mix in last 24 hours: {item.spentHalf} Rounds</p>
-                                    </div>
+                <div className="non-selectable">
+                    {tokens.map((token, index) => (
+                        <React.Fragment key={token.id + index}>
+                            <div className="row">
+                                <div className="col-12">
+                                    <Panel cardClass="pointer" onClick={() => this.setState({selected: token.id})}>
+                                        {token.name}
+                                        {this.state.selected === token.id ? (
+                                            <i className="fa fa-angle-left float-right arrow"/>
+                                        ) : (
+                                            <i className="fa fa-angle-down float-right arrow"/>
+                                        )}
+                                    </Panel>
                                 </div>
                             </div>
-                        )
-                    })}
+                            {this.state.selected === token.id ? (
+                                <div className="row non-selectable">
+                                    {token.rings.map((item, index) => (
+                                        <MixRing tokenId={token.id} amount={item} key={index}>
+                                        </MixRing>
+                                    ))}
+                                </div>
+                            ) : null}
+                        </React.Fragment>
+                    ))}
                 </div>
             </React.Fragment>
         )
@@ -48,6 +48,7 @@ class Step2 extends React.Component {
 
 const mapStateToProps = state => ({
     rings: state.rings,
+    tokens: state.tokens,
 });
 
 

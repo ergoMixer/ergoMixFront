@@ -1,7 +1,9 @@
 import React from 'react';
-import {NotificationManager} from "react-notifications";
-import {ApiNetwork} from "../../../network/api";
+import { NotificationManager } from "react-notifications";
+import { ApiNetwork } from "../../../network/api";
 import * as formatter from '../../../formatter/formatters';
+import { TOKEN_ERGO_AMOUNT } from "../../../const";
+import Panel from "../../../components/panel/Panel";
 
 class Step3 extends React.Component {
     state = {
@@ -17,20 +19,34 @@ class Step3 extends React.Component {
     componentDidMount = () => {
         let addresses = this.props.addresses ? [...this.props.addresses] : [];
         let new_addresses = [];
-        this.props.boxes.map(box => {
+        this.props.boxes.forEach(box => {
             const tmp_addresses = addresses.filter(item => item.amount === box.amount);
             for (let index = 0; index < box.count; index++) {
                 if (index < tmp_addresses.length) {
                     new_addresses.push({...tmp_addresses[index]});
                 } else {
-                    new_addresses.push({"amount": box.amount, withdraw: ""});
+                    let tmp_address = {
+                        amount: 0,
+                        withdraw: "",
+                        token: 0,
+                        mixingTokenId: "",
+                        mixingTokenAmount: 0
+                    }
+                    if (this.props.token.id) {
+                        tmp_address.mixingTokenId = this.props.token.id;
+                        tmp_address.mixingTokenAmount = box.amount;
+                        tmp_address.amount = TOKEN_ERGO_AMOUNT;
+                    } else {
+                        tmp_address.amount = box.amount;
+                    }
+                    new_addresses.push(tmp_address);
                 }
             }
         });
         const filling = this.props.filling === undefined ? this.state.fillingType : this.props.filling;
         this.setState({addresses: new_addresses, fillingType: filling});
         if (this.props.saveValue) {
-            this.props.saveValue("addresses", new_addresses);
+            this.props.saveValue({addresses: new_addresses});
         }
         this.setFillingType(filling);
     };
@@ -39,7 +55,7 @@ class Step3 extends React.Component {
         this.setValidate(this.state.addresses, fillingType);
         this.setState({fillingType: fillingType});
         const filling = fillingType === "manual" ? "manual" : "manual";
-        this.props.saveValue("filling", filling);
+        this.props.saveValue({filling: filling});
     };
 
     setValidate = (addresses, fillingType) => {
@@ -58,9 +74,10 @@ class Step3 extends React.Component {
         this.storeAddresses(addresses);
         this.setState({addresses: addresses})
     };
+
     storeAddresses = addresses => {
         if (this.props.saveValue) {
-            this.props.saveValue("addresses", addresses);
+            this.props.saveValue({addresses: addresses});
         }
         this.setValidate(addresses);
     };
@@ -94,17 +111,15 @@ class Step3 extends React.Component {
 
     render() {
         return (
-            <div className={"row"}>
+            <div className="row">
                 <div className="col-12 text-center">
-                    <div className="card">
-                        <div className="card-body">
-                            <h4>
-                                Use different withdraw address for each box;
-                                merging outputs undoes privacy gains provided by mixing.<br/>
-                                Withdraw addresses can be modified later before mixing is finished.
-                            </h4>
-                        </div>
-                    </div>
+                    <Panel>
+                        <h4>
+                            Use different withdraw address for each box;
+                            merging outputs undoes privacy gains provided by mixing.<br/>
+                            Withdraw addresses can be modified later before mixing is finished.
+                        </h4>
+                    </Panel>
                 </div>
                 <div className="col-12">
                     <div className="card">
@@ -155,7 +170,8 @@ class Step3 extends React.Component {
                                 <div className={"form-group bmd-form-group " +
                                 (this.state.focus === "inputJson" ? "is-focused" : "") +
                                 ((this.state.inputJson && this.state.focus !== "inputJson") ? "is-filled" : "")}>
-                                    <label htmlFor="inputJson" className="bmd-label-floating">Enter a list of addresses to be used. ["addr1", "addr2",
+                                    <label htmlFor="inputJson" className="bmd-label-floating">Enter a list of addresses
+                                        to be used. ["addr1", "addr2",
                                         ...]</label>
                                     <textarea
                                         className="form-control "
@@ -228,29 +244,29 @@ class Step3 extends React.Component {
                                     You can set addresses later.
                                 </div>
                             ) : (
-                            <div className="table-responsive">
-                                <table className="table">
-                                    <thead className=" text-primary">
-                                    <tr>
-                                        <th>Amount</th>
-                                        <th>Withdraw Address</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {this.state.addresses.map((address, index) => (
-                                        <tr key={index}>
-                                            <td>{formatter.erg(address.amount)}</td>
-                                            <td>
-                                                <input className={"form-control"}
-                                                       autoFocus={index === 0}
-                                                       value={address.withdraw}
-                                                       onChange={(event) => this.saveAddress(index, event.target.value)}/>
-                                            </td>
+                                <div className="table-responsive">
+                                    <table className="table">
+                                        <thead className=" text-primary">
+                                        <tr>
+                                            <th>Amount</th>
+                                            <th>Withdraw Address</th>
                                         </tr>
-                                    ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                                        </thead>
+                                        <tbody>
+                                        {this.state.addresses.map((address, index) => (
+                                            <tr key={index}>
+                                                <td>{formatter.token(address.mixingTokenId ? address.mixingTokenAmount : address.amount, address.mixingTokenId)}</td>
+                                                <td>
+                                                    <input className={"form-control"}
+                                                           autoFocus={index === 0}
+                                                           value={address.withdraw}
+                                                           onChange={(event) => this.saveAddress(index, event.target.value)}/>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                        </tbody>
+                                    </table>
+                                </div>
                             )}
                         </div>
                     </div>

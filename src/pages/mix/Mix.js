@@ -7,6 +7,9 @@ import Step1 from "./step1/Step1";
 import Step2 from "./step2/Step2";
 import Step3 from "./step3/Step3";
 import Step4 from "./step4/Step4";
+import { connect } from "react-redux";
+import Panel from "../../components/panel/Panel";
+
 
 class Mix extends React.Component {
     state = {
@@ -30,23 +33,34 @@ class Mix extends React.Component {
         });
     };
 
-    saveValue = (key, value) => {
+    saveValue = (values) => {
         this.setState(state => {
-            return {...state, values: {...state.values, [key]: value}}
+            return {...state, values: {...state.values, ...values}}
         });
     };
 
-    render() {
-        const steps = [
+    getSteps = () => {
+        return [
             {
-                title: "Number of Ergs to mix",
+                title: "Number of Erg/Tokens to mix",
                 component: Step1,
-                props: {saveValue: this.saveValue, mix: this.state.values.mix, amount: this.state.values.amount}
+                useCard: false,
+                props: {
+                    saveValue: this.saveValue,
+                    mix: this.state.values.mix,
+                    amount: this.state.values.amount,
+                    token: this.state.values.token
+                }
             },
             {
                 title: "Select rings",
                 component: Step2,
-                props: {total: this.state.values.amount, boxes: this.state.values.boxes, saveValue: this.saveValue},
+                props: {
+                    total: this.state.values.amount,
+                    boxes: this.state.values.boxes,
+                    token: this.state.values.token,
+                    saveValue: this.saveValue
+                },
                 useCard: false
             },
             {
@@ -56,7 +70,8 @@ class Mix extends React.Component {
                     boxes: this.state.values.boxes,
                     filling: this.state.values.filling,
                     addresses: this.state.values.addresses,
-                    saveValue: this.saveValue
+                    saveValue: this.saveValue,
+                    token: this.state.values.token,
                 },
                 useCard: false
             },
@@ -66,21 +81,48 @@ class Mix extends React.Component {
                 props: {
                     addresses: this.state.values.addresses,
                     selectedLevel: this.state.values.selectedLevel,
-                    saveValue: this.saveValue
+                    token: this.state.values.token,
+                    saveValue: this.saveValue,
                 },
                 useCard: false
             }
         ];
+    }
+
+    render() {
+        let loaded = true;
+        Object.keys(this.props.loadedData).forEach(key => {
+            if (!this.props.loadedData[key])
+                loaded = false;
+        })
+        if (loaded) {
+            return (
+                <div>
+                    <MultiStep
+                        steps={this.getSteps()}
+                        submit={this.submit}
+                        submitTitle="Start Mixing"
+                        values={this.state.values}/>
+                    <div className="clearfix"/>
+                </div>
+            )
+        }
         return (
-            <div>
-                <MultiStep
-                    steps={steps}
-                    submit={this.submit}
-                    submitTitle="Start Mixing"
-                    values={this.state.values}/>
-            </div>
+            <Panel>
+                <h3 className="text-danger text-center">
+                    Loading data from ERGO blockchain
+                </h3>
+                <h3 className="text-center text-danger">
+                    Please wait <i className="fa fa-circle-o-notch fa-spin"/>
+                </h3>
+            </Panel>
         )
     };
 }
 
-export default withLayout(MainLayout)(Mix);
+const mapStateToProps = state => ({
+    loadedData: state.loadedData,
+    tokens: state.tokens
+});
+
+export default withLayout(MainLayout)(connect(mapStateToProps)(Mix));

@@ -36,7 +36,6 @@ class MainLayout extends React.Component {
                         />
                         <div className="content">
                             <div className="container-fluid">
-                                {/*<Cards/>*/}
                                 {this.props.children}
                             </div>
                         </div>

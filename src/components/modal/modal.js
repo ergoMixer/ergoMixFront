@@ -1,5 +1,5 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 
 function getModalStyle() {
@@ -30,13 +30,10 @@ const ProjectModal = (props) => {
     const classes = useStyles();
     // getModalStyle is not a pure function, we roll the style only on the first render
     const [modalStyle] = React.useState(getModalStyle);
-    const open = () => {
-
-    }
 
     return props.show ? (
         <Modal
-            open={open}
+            open={true}
             onClose={props.close}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description">

@@ -147,3 +147,9 @@
 .MuiLinearProgress-barColorSecondary {
     background-color: #9c27b0 !important;
 }
+.MuiInputBase-root, .MuiFormControl-root{
+    width: 100%!important;
+}
+.MuiFormControl-root{
+    margin-left: 0 !important;
+}

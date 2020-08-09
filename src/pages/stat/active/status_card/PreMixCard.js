@@ -1,26 +1,14 @@
 import React from 'react';
-import CopyToClipboard from "@vigosan/react-copy-to-clipboard";
-import {NavLink} from "react-router-dom";
-import QRCode from "react-qr-code";
-import LinearProgress from '@material-ui/core/LinearProgress';
-import * as formatter from '../../../../formatter/formatters'
 import ProjectModal from "../../../../components/modal/modal";
 import MoreDetail from "./MoreDetail";
-
+import CardHeaderTitle from "./details/CardHeaderTitle";
+import CardFooter from "./details/CardFooter";
 
 class PreMixCard extends React.Component {
     state = {
         depositCopied: false,
         showDetail: false,
     };
-
-    copyDeposit = copyFunction => {
-        copyFunction(this.props.deposit);
-        this.setState({depositCopied: true});
-        setTimeout(() => {
-            this.setState({depositCopied: false})
-        }, 5000);
-    }
 
     showDetails = () => {
         this.setState({showDetail: true})
@@ -33,7 +21,7 @@ class PreMixCard extends React.Component {
     render() {
         const progressValue = 100 * this.props.doneDeposit / this.props.amount;
         return (
-            <div className="col-4 col-sm-6 col-xs-12">
+            <div className="col-12 col-md-6">
                 <ProjectModal close={this.hideDetails} show={this.state.showDetail}>
                     <MoreDetail {...this.props}/>
                 </ProjectModal>
@@ -43,20 +31,11 @@ class PreMixCard extends React.Component {
                         <div className="card-icon">
                             <i className="material-icons">compare_arrows</i>
                         </div>
-                        <h3 className="card-title">Mixing {formatter.erg(this.props.mixingAmount)}</h3>
+                        <CardHeaderTitle {...this.props}/>
                     </div>
-                    <div className="card-body text-left">
+                    <div className="card-body statistic-card text-left">
                         <div>Creating Mix Boxes...</div>
-                        <br/>
-                        <br/>
-                        <br/>
-                        <hr/>
-                        <div className="text-center">
-                            <button className="btn btn-outline-secondary" onClick={this.showDetails}>Show More</button>
-                            &nbsp;
-                            <NavLink className="btn btn-outline-primary"
-                                     to={"/stat/active/" + this.props.id}>Details</NavLink>
-                        </div>
+                        <CardFooter {...this.props} showDetails={this.showDetails}/>
                     </div>
                 </div>
             </div>

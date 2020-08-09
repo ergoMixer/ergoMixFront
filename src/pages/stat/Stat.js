@@ -5,15 +5,18 @@ import { ApiNetwork } from "../../network/api";
 import * as formatter from '../../formatter/formatters'
 import CopyToClipboard from "@vigosan/react-copy-to-clipboard";
 import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
+import Panel from "../../components/panel/Panel";
 
 class Stat extends React.Component {
     state = {
-        mixGroup: []
+        mixGroup: [],
+        loaded: false
     };
 
     componentWillMount() {
         ApiNetwork.mixRequestGroupCompleteList().then((response => {
-            this.setState({mixGroup: response.data})
+            this.setState({mixGroup: response.data, loaded: true})
         })).catch(error => {
 
         })
@@ -22,17 +25,16 @@ class Stat extends React.Component {
     render() {
         return (
             <div className={"row"}>
-                <div className="col-12"> Stat</div>
                 <div className="col-12">
-                    <div className="card">
-                        <div className="card-body">
+                    <Panel>
+                        {(this.state.loaded && this.state.mixGroup.length) ? (
                             <div className="table-responsive">
                                 <table className="table">
                                     <thead className=" text-primary">
                                     <tr>
                                         <th>ID</th>
                                         <th>Amount</th>
-                                        <th>Creation date</th>
+                                        <th>Creation Date</th>
                                         <th>Deposit Address</th>
                                         <th>Status</th>
                                         <th/>
@@ -50,7 +52,9 @@ class Stat extends React.Component {
                                                     )}
                                                 />
                                             </td>
-                                            <td>{formatter.erg(group.amount)}</td>
+                                            <td>
+                                                {formatter.token(group.mixingTokenId ? group.mixingTokenAmount : group.amount, group.mixingTokenId)}
+                                            </td>
                                             <td>{group.createdDate}</td>
                                             <td>
                                                 <CopyToClipboard
@@ -71,13 +75,35 @@ class Stat extends React.Component {
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                    </div>
+                        ) : (
+                            <div>
+                                {this.state.loaded ? (
+                                    <h3 className="text-center">
+                                        No Mix Available
+                                    </h3>
+                                ) : (
+                                    <React.Fragment>
+                                        <h3 className="text-danger text-center">
+                                            Loading data
+                                        </h3>
+                                        <h3 className="text-center text-danger">
+                                            Please wait <i className="fa fa-circle-o-notch fa-spin"/>
+                                        </h3>
+                                    </React.Fragment>
+                                )}
+                            </div>
+                        )}
+                    </Panel>
                 </div>
             </div>
         )
     };
 }
 
-export default withLayout(MainLayout)(Stat);
+const mapStateToProps = state => ({
+    info: state.tokens,
+});
+
+
+export default withLayout(MainLayout)(connect(mapStateToProps)(Stat));
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 // Valid Data COLOR is data-color="purple | azure | green | orange | danger"
 // data-background-color: red-white-black
@@ -16,13 +16,19 @@ const navigation = (props) => {
             </div>
             <div className="sidebar-wrapper">
                 <ul className="nav">
+                    {/*<li className="nav-item">*/}
+                    {/*    <NavLink className="nav-link" to="/covert" exact={true}>*/}
+                    {/*        <i className="material-icons">compare_arrows</i>*/}
+                    {/*        <p>Covert Address</p>*/}
+                    {/*    </NavLink>*/}
+                    {/*</li>*/}
                     <li className="nav-item">
                         <NavLink className="nav-link" to="/mix" exact={true}>
                             <i className="material-icons">compare_arrows</i>
                             <p>Start Mixing</p>
                         </NavLink>
                     </li>
-                    <li className="nav-item ">
+                    <li className="nav-item">
                         <NavLink className="nav-link" to="/stat/active">
                             <i className="material-icons">autorenew</i>
                             <p>Active Mixes</p>
@@ -34,13 +40,13 @@ const navigation = (props) => {
                             <p>Mixing History</p>
                         </NavLink>
                     </li>
-                    <li className="nav-item ">
+                    <li className="nav-item">
                         <NavLink className="nav-link" to="/ring">
                             <i className="material-icons">show_chart</i>
                             <p>Ring Statistics</p>
                         </NavLink>
                     </li>
-                    <li className="nav-item ">
+                    <li className="nav-item">
                         <NavLink className="nav-link" to="/settings">
                             <i className="material-icons">settings</i>
                             <p>Configuration</p>

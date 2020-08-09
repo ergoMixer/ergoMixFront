@@ -1,12 +1,15 @@
 import React from 'react';
 import CopyToClipboard from "@vigosan/react-copy-to-clipboard";
-import {NavLink} from "react-router-dom";
 import QRCode from "react-qr-code";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import * as formatter from '../../../../formatter/formatters'
 import ProjectModal from "../../../../components/modal/modal";
 import MoreDetail from "./MoreDetail";
 import { ReactComponent as QrcodeSVG } from '../../../../assets/img/qrcode.svg';
+import CardHeaderTitle from './details/CardHeaderTitle';
+import CardFooter from './details/CardFooter.js';
+import { loadInfoAsync, loadMixLevelAsync, loadRingsAsync, loadSupportedTokensAsync } from "../../../../store/action";
+import { connect } from "react-redux";
 
 class PendingDepositCard extends React.Component {
     state = {
@@ -41,8 +44,9 @@ class PendingDepositCard extends React.Component {
 
     render() {
         const progressValue = Math.max(0, Math.min(100, 100 * this.props.doneDeposit / this.props.amount));
+        const tokenProgressValue = this.props.tokenAmount > 0 ? Math.max(0, Math.min(100, 100 * this.props.doneTokenDeposit / this.props.tokenAmount)) : 0;
         return (
-            <div className="col-4 col-sm-6 col-xs-12">
+            <div className="col-12 col-md-6">
                 <ProjectModal close={this.hideQrCode} show={this.state.showQrCode}>
                     <div className="text-center">
                         <CopyToClipboard
@@ -69,17 +73,24 @@ class PendingDepositCard extends React.Component {
                         <div className="card-icon">
                             <i className="material-icons">schedule</i>
                         </div>
-                        <h3 className="card-title">Mixing {formatter.erg(this.props.mixingAmount)}</h3>
+                        <CardHeaderTitle {...this.props}/>
                     </div>
-                    <div className="card-body text-left">
+                    <div className="card-body statistic-card text-left">
                         <div>
                             Pending Deposit: {formatter.erg(this.props.amount - this.props.doneDeposit)} /
                             Deposited: {formatter.erg(this.props.doneDeposit)}</div>
                         <LinearProgress variant='determinate' color="secondary" value={progressValue}/>
-
-                        <br/>
-                        <div>
-                            Deposit Address <QrcodeSVG className="pull-right" onClick={this.showQrCode}>gradient</QrcodeSVG>
+                        {this.props.mixingTokenId ? (
+                            <div className="mt-2">
+                                <div>
+                                    Pending Deposit: {formatter.token(this.props.tokenAmount - this.props.doneTokenDeposit, this.props.mixingTokenId)} /
+                                    Deposited: {this.props.doneTokenDeposit}</div>
+                                <LinearProgress variant='determinate' color="secondary" value={tokenProgressValue}/>
+                            </div>
+                        ) : null}
+                        <div className="mt-2">
+                            Deposit Address <QrcodeSVG className="pull-right"
+                                                       onClick={this.showQrCode}>gradient</QrcodeSVG>
                         </div>
                         <div>
                             <CopyToClipboard
@@ -94,13 +105,7 @@ class PendingDepositCard extends React.Component {
                                 )}
                             />
                         </div>
-                        <hr/>
-                        <div className="text-center">
-                            <button className="btn btn-outline-secondary" onClick={this.showDetails}>Show More</button>
-                            &nbsp;
-                            <NavLink className="btn btn-outline-primary"
-                                     to={"/stat/active/" + this.props.id}>Details</NavLink>
-                        </div>
+                        <CardFooter {...this.props} showDetails={this.showDetails}/>
                     </div>
                 </div>
             </div>
@@ -108,5 +113,10 @@ class PendingDepositCard extends React.Component {
     };
 }
 
-export default PendingDepositCard;
+const mapStateToProps = () => ({
+//     token:
+});
+
+
+export default connect(mapStateToProps)(PendingDepositCard);
 

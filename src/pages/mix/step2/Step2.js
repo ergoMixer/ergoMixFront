@@ -1,27 +1,49 @@
 import React from 'react';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import * as formatter from '../../../formatter/formatters';
+import MixRing from "../../../components/mix-ring/MixRing";
+import RingCounter from "./ring-counter/RingCounter";
+import Panel from "../../../components/panel/Panel";
+
 
 class Step2 extends React.Component {
     state = {
-        boxes: []
+        boxes: [],
     };
 
     componentDidMount = () => {
-        let mixed = 0;
-        this.props.boxes.map(item => {
-            mixed += item.amount * item.count
+        let boxes = this.initBoxes();
+        let computed = 0
+        this.props.boxes.forEach(boxOld => {
+            boxes.forEach(box => {
+                if (boxOld.amount === box.amount) {
+                    let count = Math.max(0, Math.min(Math.floor((this.props.total - computed) / box.amount), boxOld.count));
+                    box.count = count;
+                    computed += count * box.amount;
+                }
+            })
         });
-        if (mixed < this.props.total) {
-            this.saveBoxes([]);
-        } else {
-            this.setState({boxes: [...this.props.boxes]});
-        }
+        this.saveBoxes(boxes);
     };
+
+    initBoxes = () => {
+        let boxes = []
+        this.props.token.rings.forEach(amount => {
+            if (amount <= this.props.total) {
+                boxes.push({amount: amount, count: 0})
+            }
+        });
+        return this.sortBoxes(boxes)
+    }
+
+    sortBoxes = boxes => {
+        boxes.sort((a, b) => a.amount - b.amount);
+        return boxes
+    }
 
     saveBoxes = (boxes) => {
         this.setState({boxes: boxes});
-        this.props.saveValue('boxes', boxes);
+        this.props.saveValue({boxes: boxes});
         const mixed = this.mixed(boxes);
         const remain = this.props.total - mixed;
         this.props.setValid(remain === 0);
@@ -30,104 +52,99 @@ class Step2 extends React.Component {
     mixed = (boxes) => {
         boxes = boxes === undefined ? this.state.boxes : boxes;
         let mixed = 0;
-        boxes.map(item => {
-            mixed += item.amount * item.count
+        boxes.forEach(item => {
+            if(item.count !== '') {
+                mixed += item.amount * item.count
+            }
         });
         return mixed;
     };
 
-    subtractFromBox = amount => {
-        if (this.props.rings.findIndex(item => item.amount === amount) === -1) return;
+    setCount = (count, amount) => {
+        const remain = this.props.total - this.mixed();
         let boxes = [...this.state.boxes];
         const boxIndex = boxes.findIndex(item => item.amount === amount);
-        if (boxIndex >= 0 && boxes[boxIndex].count > 0) {
-            boxes[boxIndex] = {...boxes[boxIndex]};
-            boxes[boxIndex].count--;
+        const currentCount = boxes[boxIndex].count;
+        if(count !== '') {
+            count = Math.max(0, Math.min(Math.floor(remain / amount) + currentCount, count));
+        }
+        if (boxIndex !== -1) {
+            boxes[boxIndex] = {...boxes[boxIndex], count: count};
         }
         this.saveBoxes(boxes);
-
-    };
-
-    addToBox = (amount) => {
-        if (this.props.total - this.mixed() < amount) return;
-        if (this.props.rings.findIndex(item => item.amount === amount) === -1) return;
-        let boxes = [...this.state.boxes];
-        const boxIndex = boxes.findIndex(item => item.amount === amount);
-        if (boxIndex === -1) {
-            boxes.push({amount: amount, count: 1})
-        } else {
-            boxes[boxIndex] = {...boxes[boxIndex]};
-            boxes[boxIndex].count++;
-        }
-        this.saveBoxes(boxes);
-    };
+    }
 
     distribute = (amount, old_boxes) => {
-        let pools = [...this.props.rings];
-        pools.sort((a, b) => b.amount - a.amount);
-        let boxes = [];
-        pools.map(item => {
+        debugger
+        let boxes = [...old_boxes];
+        boxes.reverse().forEach(item => {
             if (item.amount <= amount) {
-                const tmpBox = {amount: item.amount, count: parseInt(amount / item.amount)};
-                amount -= tmpBox.count * tmpBox.amount;
-                boxes.push(tmpBox)
+                const item_count = parseInt(amount / item.amount);
+                item.count += item_count;
+                amount -= item_count * item.amount;
             }
         });
-        [...old_boxes].map(old_box => {
-            const boxIndex = boxes.findIndex(item => item.amount === old_box.amount);
-            if (boxIndex === -1) {
-                boxes.push({...old_box});
-            } else {
-                boxes[boxIndex].count += old_box.count;
-            }
-        });
-        this.saveBoxes(boxes);
+        this.saveBoxes(this.sortBoxes(boxes));
     };
 
     render() {
         const mixed = this.mixed();
         const remain = this.props.total - mixed;
         let totalBox = 0;
-        this.state.boxes.map(item => {
+        this.state.boxes.forEach(item => {
             totalBox += item.count;
         });
         return (
             <React.Fragment>
                 <div className="row text-center non-selectable">
                     <div className="col-12 text-center">
-                        <div className="card">
-                            <div className="card-body">
-                                <h4>Distribute Ergs in different rings automatically or manually using + and - signs.</h4>
-                            </div>
-                        </div>
+                        <Panel>
+                            <h4>Distribute {this.props.token.name} in different rings
+                                automatically or manually using + and -
+                                signs.</h4>
+                            {this.props.token.id !== "" ? (
+                                <React.Fragment>
+                                    <h4>You are mixing:&nbsp;
+                                        <b>
+                                            {this.props.token.name}
+                                        </b>
+                                    </h4>
+                                    <h4>
+                                        Token ID: <b>{this.props.token.id}</b>
+                                    </h4>
+                                </React.Fragment>
+                            ) : null}
+                        </Panel>
                     </div>
-                    <div className={"col-12 col-sm-4"}>
+                    <div className="col-12 col-sm-4">
                         <div className="card card-pricing card-raised">
                             <div className="card-body">
-                                <h4 className="card-category">Total number of Ergs</h4>
-                                <h3 className="card-title">{formatter.ergWithoutSuffix(this.props.total)}</h3>
+                                <h4 className="card-category">Total Amount</h4>
+                                <h3 className="card-title">{formatter.token(this.props.total, this.props.token.id)}</h3>
                                 <button className="btn btn-rose btn-round btn-fill"
-                                        onClick={() => this.distribute(this.props.total, [])}>Distribute all
+                                        onClick={() => this.distribute(this.props.total, this.initBoxes())}>Distribute All
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <div className={"col-12 col-sm-4"}>
+                    <div className="col-12 col-sm-4">
                         <div className="card card-pricing card-raised">
                             <div className="card-body">
-                                <h4 className="card-category">Ergs distributed into boxes</h4>
-                                <h3 className="card-title">{formatter.erg(mixed)} in {totalBox} boxes</h3>
+                                <h4 className="card-category">{this.props.token.name} Distributed
+                                    into Boxes</h4>
+                                <h3 className="card-title">{formatter.token(mixed, this.props.token.id, true)} in {totalBox} Boxes</h3>
                                 <button className="btn btn-rose btn-round btn-fill"
-                                        onClick={() => this.saveBoxes([])}>Reset
+                                        onClick={() => this.saveBoxes(this.initBoxes())}>Reset
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <div className={"col-12 col-sm-4"}>
+                    <div className="col-12 col-sm-4">
                         <div className="card card-pricing card-raised">
                             <div className="card-body">
-                                <h4 className="card-category">Remaining Ergs to distribute</h4>
-                                <h3 className="card-title">{formatter.ergWithoutSuffix(remain)}</h3>
+                                <h4 className="card-category">Remaining {this.props.token.name} to
+                                    Distribute</h4>
+                                <h3 className="card-title">{formatter.token(remain, this.props.token.id)}</h3>
                                 <button className="btn btn-rose btn-round btn-fill"
                                         onClick={() => this.distribute(remain, this.state.boxes)}>Distribute
                                 </button>
@@ -136,44 +153,20 @@ class Step2 extends React.Component {
                     </div>
                 </div>
                 <div className="row non-selectable">
-                    {this.props.rings.map((item, index) => {
-                        if (item.amount > this.props.total) return null;
-                        let count = 0;
-                        const boxIndex = this.state.boxes.findIndex(boxItem => item.amount === boxItem.amount);
-                        if (boxIndex >= 0) {
-                            count += this.state.boxes[boxIndex].count;
-                        }
-                        return (
-                            <div className="col-lg-4 col-md-6 col-sm-12" key={item.amount}>
-                                <div className="card card-stats" key={item.amount}>
-                                    <div className="card-header card-header-warning card-header-icon">
-                                        <div className="card-icon">
-                                            <i className="">{formatter.erg(item.amount)}</i>
-                                        </div>
-                                    </div>
-                                    <div className="card-body text-center">
-                                        <p className="card-category">Available Half Boxes: {item.unspentHalf}</p>
-                                        <p className="card-category">Ring Activity (Mixes in Last 24h): {item.spentHalf}</p>
-                                        <div className="stats">
-                                            <i style={count > 0 ? {cursor: "pointer"} : {}}
-                                               className={count > 0 ? "material-icons text-success" : "material-icons"}
-                                               onClick={() => this.subtractFromBox(item.amount)}>remove</i>
-
-                                            <span className="badge badge-warning"
-                                                  style={{
-                                                      "fontSize": "30px",
-                                                      background: "linear-gradient(60deg, #ffa726, #fb8c00)",
-                                                      color: "white"
-                                                  }}>{count}</span>
-                                            <i style={remain >= item.amount ? {cursor: "pointer"} : null}
-                                               className={remain >= item.amount ? "material-icons text-success" : "material-icons"}
-                                               onClick={() => this.addToBox(item.amount)}>add</i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    })}
+                    {this.state.boxes.map((box, index) => (
+                        <MixRing
+                            key={index}
+                            amount={box.amount}
+                            tokenId={this.props.token.id}
+                        >
+                            <RingCounter
+                                amount={box.amount}
+                                remain={remain}
+                                count={box.count}
+                                setCount={this.setCount}
+                            />
+                        </MixRing>
+                    ))}
                 </div>
             </React.Fragment>
         )
@@ -183,6 +176,5 @@ class Step2 extends React.Component {
 const mapStateToProps = state => ({
     rings: state.rings,
 });
-
 
 export default connect(mapStateToProps)(Step2);

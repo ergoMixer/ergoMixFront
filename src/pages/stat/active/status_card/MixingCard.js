@@ -1,12 +1,12 @@
 import React from 'react';
 import CopyToClipboard from "@vigosan/react-copy-to-clipboard";
-import {NavLink} from "react-router-dom";
 import QRCode from "react-qr-code";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import * as formatter from '../../../../formatter/formatters'
 import ProjectModal from "../../../../components/modal/modal";
 import MoreDetail from "./MoreDetail";
-
+import CardHeaderTitle from './details/CardHeaderTitle';
+import CardFooter from "./details/CardFooter";
 
 class MixingCard extends React.Component {
     state = {
@@ -44,7 +44,7 @@ class MixingCard extends React.Component {
         const totalProgress = this.props.groupStat.numComplete / this.props.groupStat.numBoxes * 100
         const boxProgress = this.props.groupStat.doneMixRound / this.props.groupStat.totalMixRound * 100
         return (
-            <div className="col-4 col-sm-6 col-xs-12">
+            <div className="col-12 col-md-6">
                 <ProjectModal close={this.hideQrCode} show={this.state.showQrCode}>
                     <div className="text-center">
                         <b>
@@ -73,9 +73,9 @@ class MixingCard extends React.Component {
                         <div className="card-icon">
                             <i className="material-icons">autorenew</i>
                         </div>
-                        <h3 className="card-title">Mixing {formatter.erg(this.props.mixingAmount)}</h3>
+                        <CardHeaderTitle {...this.props}/>
                     </div>
-                    <div className="card-body text-left">
+                    <div className="card-body statistic-card text-left">
                         <div>
                             Total Boxes: {this.props.groupStat.numBoxes} /
                             Completed Boxes: {this.props.groupStat.numComplete} /
@@ -86,17 +86,11 @@ class MixingCard extends React.Component {
                         <br/>
                         <div>
                             Mixing Progress
-                        {/*    Total Mix Round for Uncompleted boxes: {this.props.groupStat.totalMixRound} /*/}
-                        {/*    Deposited: {this.props.groupStat.doneMixRound}*/}
+                            {/*    Total Mix Round for Uncompleted boxes: {this.props.groupStat.totalMixRound} /*/}
+                            {/*    Deposited: {this.props.groupStat.doneMixRound}*/}
                         </div>
                         <LinearProgress variant='determinate' color="secondary" value={boxProgress}/>
-                        <hr/>
-                        <div className="text-center">
-                            <button className="btn btn-outline-secondary" onClick={this.showDetails}>Show More</button>
-                            &nbsp;
-                            <NavLink className="btn btn-outline-primary"
-                                     to={"/stat/active/" + this.props.id}>Details</NavLink>
-                        </div>
+                        <CardFooter {...this.props} showDetails={this.showDetails}/>
                     </div>
                 </div>
             </div>

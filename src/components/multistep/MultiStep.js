@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Step from './step/Step'
 import { NotificationManager } from 'react-notifications';
 import * as formatter from '../../formatter/formatters';
+import Panel from "../panel/Panel";
 
 class MultiStep extends React.Component {
     state = {
@@ -30,15 +31,22 @@ class MultiStep extends React.Component {
         }
     };
 
+    setValid = isValid => {
+        const validated = isValid ? this.state.step : this.state.step - 1;
+        if(validated !== this.state.validated){
+            this.setState({validated: validated})
+        }
+    }
+
     getStepContent = (step) => {
         const Component = step.component;
-        return <Component {...step.props} setValid={(isValid) => this.setState({validated: isValid ? this.state.step : this.state.step - 1})}/>
+        return <Component {...step.props} setValid={this.setValid}/>
     };
 
     submit = () => {
-        if(!this.state.loading){
+        if (!this.state.loading) {
             this.setState({loading: true});
-            this.props.submit().then(()=>{
+            this.props.submit().then(() => {
                 this.setState({loading: false});
             }).catch(exp => {
                 NotificationManager.error(formatter.errorMessage(exp), 'Submission Exception!', 5000);
@@ -63,11 +71,9 @@ class MultiStep extends React.Component {
                     ))}
                 </ul>
                 {step.useCard === false ? stepContent : (
-                    <div className="card">
-                        <div className="card-body">
-                            {stepContent}
-                        </div>
-                    </div>
+                    <Panel>
+                        {stepContent}
+                    </Panel>
                 )}
                 <div className="action-bar">
                     {this.state.step === 0 ? null : <button className="btn btn-info" onClick={this.prev}>Prev.</button>}
@@ -81,9 +87,9 @@ class MultiStep extends React.Component {
                             (
                                 <button className={"btn pull-right " + (this.state.validated >= this.state.step ? "btn-success": "btn-default")}
                                     onClick={() => this.submit()}>
-                                    {this.state.loading ? <i className="fa fa-circle-o-notch fa-spin"/> : null}
-                                    &nbsp;&nbsp;
                                     {this.props.submitTitle}
+                                    &nbsp;&nbsp;
+                                    {this.state.loading ? <i className="fa fa-circle-o-notch fa-spin"/> : null}
                                 </button>
                             ) :
                             null
