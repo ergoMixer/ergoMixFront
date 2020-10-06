@@ -37,7 +37,14 @@
     right: 0;
     text-align: center;
     margin-bottom: 15px;
+    hr{
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
   }
+}
+.progress-card{
+  height: 140px;
 }
 .help-content-wrapper {
   margin: auto;
@@ -59,4 +66,21 @@
     font-size: 30px;
     color: #cdcdcd;
   }
+}
+.tooltip-text{
+  font-size: 16px;
+  padding: 10px;
+}
+.header-slider{
+  position: absolute;
+  right: 10px;
+  label{
+    color: white;
+  }
+}
+
+.code{
+  background: #CDCDCD;
+  border-radius: 5px;
+  padding: 4px;
 }

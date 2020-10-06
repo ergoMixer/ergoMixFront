@@ -1,6 +1,5 @@
 import * as actionTypes from './actionType';
 import { ApiNetwork } from '../network/api';
-import { RINGS } from "../const";
 
 export const loadRingsAsync = () => {
     return dispatch => {
@@ -86,3 +85,18 @@ export const loadSupportedTokensAsync = () => {
         getData();
     }
 }
+
+export const saveCovertMap = (covertMap) => ({
+    type: actionTypes.COVERT_ADDRESS_MAP,
+    payload: covertMap
+});
+
+export const saveActiveMixMap = (activeMixMap) => ({
+    type: actionTypes.ACTIVE_MIX_MAP,
+    payload: activeMixMap
+});
+
+export const saveMixHistoryMap = (activeMixMap) => ({
+    type: actionTypes.MIX_HISTORY_MAP,
+    payload: activeMixMap
+});

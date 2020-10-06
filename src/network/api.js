@@ -1,6 +1,10 @@
 import axios from 'axios';
-// const BASE_URL = "http://10.10.10.4:9000/";
-const BASE_URL = "/";
+import { saveActiveMixMap, saveCovertMap, saveMixHistoryMap } from "../store/action";
+import { store } from "../store";
+
+const DEFAULT_BASE_URL = "/";
+export const BASE_URL = (window.backend === undefined ?  DEFAULT_BASE_URL : window.backend);
+// export const BASE_URL = "/";
 const instance = axios.create({baseURL: BASE_URL});
 
 export class ApiNetwork {
@@ -62,16 +66,54 @@ export class ApiNetwork {
         });
     };
 
+    static covertRequest = covert => {
+        return this.createPromise(ApiNetwork.postJson("covert", covert));
+    };
+
+    static covertList = () => {
+        return this.createPromise(instance.get("covert/list"), response => {
+            let covertMap = {}
+            response.data.forEach(item => {
+                covertMap[item.id] = item.deposit;
+            });
+            store.dispatch(saveCovertMap(covertMap));
+            return response;
+        });
+    }
+
+    static covertAsset = covertId => {
+        return this.createPromise(instance.get('covert/' + covertId + "/asset"));
+    }
+
+    static covertAssetSet = (covertId, tokenId, ring) => {
+        return this.createPromise(ApiNetwork.postJson('covert/' + covertId + '/asset', {tokenId: tokenId, ring: ring}));
+    }
+
     static mixRequestGroupCompleteList = () => {
-        return this.createPromise(instance.get("mix/request/completeList"));
+        return this.createPromise(instance.get("mix/request/completeList"), response => {
+            let mixMap = {}
+            response.data.forEach(item => {
+                mixMap[item.id] = item.deposit;
+            });
+            store.dispatch(saveMixHistoryMap(mixMap));
+            return response;
+        });
     };
 
     static mixRequestGroupActiveList = () => {
-        return this.createPromise(instance.get("mix/request/activeList"));
+        return this.createPromise(instance.get("mix/request/activeList"), response => {
+            let mixMap = {}
+            response.data.forEach(item => {
+                mixMap[item.id] = item.deposit;
+            });
+            store.dispatch(saveActiveMixMap(mixMap));
+            return response;
+        });
     };
 
-    static mixRequestList = groupId => {
-        return this.createPromise(instance.get("mix/request/" + groupId + "/list"));
+    static mixRequestList = (groupId, status) => {
+        const queryString = status !== undefined ? "?status=" + status : '';
+        return this.createPromise(instance.get("mix/request/" + groupId + "/list" + queryString));
     };
 
     static mixLevel = () => {
@@ -90,12 +132,28 @@ export class ApiNetwork {
         return this.createPromise(instance.get("info"));
     };
 
+    static shutdown = () => {
+        return this.createPromise(ApiNetwork.postJson("exit", {}));
+    };
+
     static withdraw = (mixId, withdrawAddress, withdrawNow) => {
         return this.createPromise(ApiNetwork.postJson("mix/withdraw", {
             "nonStayAtMix": withdrawNow,
             "withdrawAddress": withdrawAddress,
             "mixId": mixId
         }));
+    }
+
+    static getCovertAddress = covertId => {
+        return this.createPromise(instance.get("covert/" + covertId + "/address"))
+    }
+
+    static setCovertAddress = (covertId, addresses) => {
+        return this.createPromise(this.postJson("covert/" + covertId + "/address", {addresses: addresses}))
+    }
+
+    static restore = formData => {
+        return ApiNetwork.createPromise(instance.post('restore', formData));
     }
 }
 

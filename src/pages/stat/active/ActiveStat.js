@@ -2,9 +2,16 @@ import React from 'react';
 import withLayout from "../../../hoc/with_layout/withLayout";
 import MainLayout from "../../../layout/main-layout/MainLayout";
 import { ApiNetwork } from "../../../network/api";
-import StatusCard from "./status_card/StatusCard";
+import StatusCard from "../../../components/status-card/StatusCard";
 import Panel from "../../../components/panel/Panel";
+import Loading from "../../../components/loading/Loading";
+import { NavLink } from "react-router-dom";
 
+const create = (
+    <NavLink className="btn btn-outline-primary" style={{marginRight: "15px"}} to='/mix/active/new'>
+        Start New Mix
+    </NavLink>
+);
 
 class ActiveStat extends React.Component {
     state = {
@@ -25,54 +32,36 @@ class ActiveStat extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <div className="row">
-                    <div className="col-12">
-                        <Panel>
-                            <div className="help-content-wrapper">
-                                <i className="material-icons box-display warning">schedule</i>
-                                <span className="helper-text"> Pending deposit </span>
-                                <i className="material-icons box-display info">compare_arrows</i>
-                                <span className="helper-text">Pre-mixing</span>
-                                <i className="material-icons box-display success">autorenew</i>
-                                <span className="helper-text">Mixing</span>
-                            </div>
-                            <div className="text-center mt-3">excess deposit will be considered as donation</div>
-                        </Panel>
+                <Loading
+                    empty={this.state.mixGroup.length === 0}
+                    emptyMessage={["There are no mixes available.", "You can create a new one."]}
+                    loaded={this.state.loaded}>
+                    <div className="row">
+                        <div className="col-12">
+                            <Panel>
+                                <div className="help-content-wrapper">
+                                    <i className="material-icons box-display warning">schedule</i>
+                                    <span className="helper-text"> Pending deposit </span>
+                                    <i className="material-icons box-display info">compare_arrows</i>
+                                    <span className="helper-text">Pre-mixing</span>
+                                    <i className="material-icons box-display success">autorenew</i>
+                                    <span className="helper-text">Mixing</span>
+                                </div>
+                                <div className="text-center mt-3">excess deposit will be considered as donation</div>
+                            </Panel>
+                        </div>
                     </div>
-                </div>
-                {(this.state.loaded && this.state.mixGroup.length) ? (
                     <div className="row">
                         {this.state.mixGroup.map((group, index) => (
                             <StatusCard key={group.id} {...group}/>
                         ))}
                     </div>
-                ) : (
-                    <div className="row">
-                        <div className="col-12">
-                            <Panel>
-                                {this.state.loaded ? (
-                                    <h3 className="text-center">
-                                        No Mix Available
-                                    </h3>
-                                ) : (
-                                    <React.Fragment>
-                                        <h3 className="text-danger text-center">
-                                            Loading data
-                                        </h3>
-                                        <h3 className="text-center text-danger">
-                                            Please wait <i className="fa fa-circle-o-notch fa-spin"/>
-                                        </h3>
-                                    </React.Fragment>
-                                )}
-                            </Panel>
-                        </div>
-                    </div>
-                )}
+                </Loading>
             </React.Fragment>
 
         )
     };
 }
 
-export default withLayout(MainLayout)(ActiveStat);
+export default withLayout(MainLayout, {create:create})(ActiveStat);
 

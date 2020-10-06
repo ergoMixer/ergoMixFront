@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from "react-redux";
 
 const RingStatistic = props => {
-    let statistics = {};
+    let statistics = {unspentHalf: 0, spentHalf: 0};
     const tokenRings = (props.tokenId ? props.rings[props.tokenId] : props.rings.erg);
-    if(tokenRings !== undefined){
+    if(tokenRings !== undefined) {
         statistics = tokenRings["" + props.amount];
-        if(statistics === undefined){
+        if (statistics === undefined) {
             statistics = {unspentHalf: 0, spentHalf: 0};
         }
     }

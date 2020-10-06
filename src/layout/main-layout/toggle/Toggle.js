@@ -16,9 +16,10 @@ const toggle = (props) => {
                         </button>
                     </div>
                 </div>
+                {props.create ? props.create : null}
                 <button className={props.navigationOpen ? "navbar-toggler toggled": "navbar-toggler"} type="button" data-toggle="collapse"
                         onClick={props.toggleNavigation}
-                        aria-controls="navigation-index" aria-expanded="false"
+                        aria-controls="navigation-home" aria-expanded="false"
                         aria-label="Toggle navigation">
                     <span className="sr-only">Toggle navigation</span>
                     <span className="navbar-toggler-icon icon-bar"/>

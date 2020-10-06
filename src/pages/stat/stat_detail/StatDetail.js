@@ -1,65 +1,116 @@
 import React from 'react';
-import withLayout from '../../../hoc/with_layout/withLayout';
-import MainLayout from '../../../layout/main-layout/MainLayout';
 import { ApiNetwork } from "../../../network/api";
-import * as formatter from '../../../formatter/formatters'
-
-import { NavLink } from "react-router-dom";
 import ProjectModal from "../../../components/modal/modal";
-import Withdraw from "../withdraw/Withdraw";
 import { connect } from "react-redux";
 import CopyToClipboard from "@vigosan/react-copy-to-clipboard";
-import Panel from "../../../components/panel/Panel";
 
-class ActiveStatDetail extends React.Component {
+import CopyClipboard from "../../../components/copy-clipboard/CopyClipboard";
+import Breadcrumb from "../../../components/broadcom/Breadcrumb";
+import withLayout from '../../../hoc/with_layout/withLayout';
+import MainLayout from '../../../layout/main-layout/MainLayout';
+import * as formatter from '../../../formatter/formatters'
+import CheckboxesTags from "../../../components/select/CheckboxesTags";
+import Checkbox from '@material-ui/core/Checkbox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import WithdrawList from "../withdraw/WithdrawList";
+import SetAddress from "./SetAddress";
+import Tooltip from "../../../components/tooltip/Tooltip";
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Loading from "../../../components/loading/Loading";
+
+
+class StatDetail extends React.Component {
     state = {
         mix: [],
         group: null,
-        withdrawShow: false,
         transactionShow: false,
+        setAddressShow: false,
+        withdrawListShow: false,
         withdrawAddress: '',
-        miIid: '',
+        mixId: '',
+        status: 'active',
+        loadedStatus: ''
     };
+
+    checkBoxFilterLists = [
+        {title: 'All'},
+        {title: 'Completed'},
+        {title: 'Empty Addresses'}
+    ];
+
+    neededStatus = () => this.props.path === 'covert' ? this.state.status : undefined;
 
     loadData = () => {
-        const group = this.props.match.params.groupId;
-        ApiNetwork.mixRequestList(group).then((response => {
-            this.setState({mix: response.data, group: group});
-        })).catch(error => {
+        const group = (this.props.path === 'covert' ? this.props.match.params.covertId : this.props.match.params.groupId);
+        const neededStatus = this.neededStatus()
+        if (this.state.group !== group || neededStatus !== this.state.loadedStatus) {
+            ApiNetwork.mixRequestList(group, neededStatus).then((response => {
+                const res = response.data.map(item => {
+                    return {...item, checked: false}
+                });
+                this.setState({mix: res, group: group, loadedStatus: neededStatus});
+            })).catch(error => {
 
-        });
+            });
+        }
     };
 
-    componentWillUpdate(nextProps, nextState, nextContext) {
-        const group = this.props.match.params.groupId;
-        if (this.state.group !== group) {
-            this.loadData();
-        }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        this.loadData();
     }
 
     componentDidMount() {
         this.loadData();
-    }
+    };
 
     closeModal = () => {
-        this.setState({withdrawShow: false, transactionShow: false});
-        this.loadData();
-    }
-
-    withdraw = (mixItem) => {
         this.setState({
-            withdrawShow: true,
-            withdrawAddress: mixItem.withdraw,
-            mixId: mixItem.id,
-        })
-    }
+            transactionShow: false,
+            withdrawListShow: false,
+            setAddressShow: false,
+            group: '',
+        });
+    };
 
     showTransaction = mixItem => {
         this.setState({
             transactionId: mixItem.withdrawTxId,
             transactionShow: true,
         })
-    }
+    };
+
+    breadcrumbPath = () => {
+        if (this.props.path === 'history' && !this.props.historyLoaded) {
+            ApiNetwork.mixRequestGroupCompleteList();
+        }
+        if (this.props.path === 'active' && !this.props.activeLoaded) {
+            ApiNetwork.mixRequestGroupActiveList();
+        }
+        if (this.props.path === 'covert' && !this.props.covertLoaded) {
+            ApiNetwork.covertList();
+        }
+        switch (this.props.path) {
+            case 'history':
+                return [
+                    {'url': '/mix/history', 'title': "History"},
+                    {title: this.props.historyMap[this.props.match.params.groupId]}
+                ]
+            case 'active':
+                return [
+                    {url: '/mix/active', title: 'Mixes'},
+                    {title: this.props.activeMap[this.props.match.params.groupId]}
+                ]
+            case 'covert':
+                return [
+                    {url: '/covert', title: "Covert Address"},
+                    {title: this.props.covertMap[this.props.match.params.covertId]},
+                ]
+            default:
+                return []
+        }
+    };
 
     copyDeposit = copyFunction => {
         copyFunction(this.state.transactionId);
@@ -67,33 +118,87 @@ class ActiveStatDetail extends React.Component {
         setTimeout(() => {
             this.setState({transactionCopied: false})
         }, 5000);
-    }
+    };
 
-    isHistory = () => {
-        return this.props.location.pathname.indexOf("history") !== -1;
+    handleSingleCheckboxChange = index => {
+        let mixCopy = [...this.state.mix];
+        let boxCopy = {...mixCopy[index]};
+        boxCopy.checked = !boxCopy.checked;
+        mixCopy[index] = boxCopy;
+        this.setState({
+            mix: mixCopy,
+        });
+    };
+
+    handleChange = indexOption => {
+        let mixCopy = [];
+        // If selected All in dropDown
+        if (indexOption === 0)
+            mixCopy = this.state.mix.map(item => {
+                return {...item, checked: item.withdrawStatus === "nothing"}
+            });
+        // If selected Completed in dropDown
+        else if (indexOption === 1)
+            mixCopy = this.state.mix.map(item => {
+                return {...item, checked: (item.status === 'complete' && item.withdrawStatus === "nothing")};
+            });
+        // If selected Empty Addresses in dropDown
+        else if (indexOption === 2)
+            mixCopy = this.state.mix.map(item => {
+                return {...item, checked: (item.withdraw === '' && item.withdrawStatus === "nothing")};
+            });
+        // If selected checkbox
+        else {
+            let stat = this.statusSelected();
+            let status = (stat === 'All' || stat === 'Indeterminate');
+            mixCopy = this.state.mix.map(item => {
+                return item.withdrawStatus === "nothing" ? {...item, checked: !status} : {...item}
+            });
+        }
+        this.setState({
+            mix: mixCopy,
+        });
+    };
+
+    statusSelected = () => {
+        const countChecked = this.state.mix.filter(item => item.checked).length;
+        const countAll = this.state.mix.filter(item => item.withdrawStatus === "nothing").length;
+        if (countChecked === countAll && countAll !== 0)
+            return 'All';
+        else if (0 << countChecked || countChecked << countAll)
+            return 'Indeterminate';
+        else
+            return 'None';
+    };
+
+    showWithdrawDetail = () => {
+        this.setState({withdrawListShow: true})
+    };
+
+    showSetAddress = () => {
+        this.setState({setAddressShow: true})
+    };
+
+    changeStatus = () => {
+        this.setState(state => {
+            return {...state, status: (state.status === 'all' ? 'active' : 'all')}
+        })
     }
 
     render() {
-        console.log(this.isHistory());
+        console.log(this.state);
+        const statusSelected = this.statusSelected();
         return (
-            <div className={"row"}>
-                <ProjectModal close={this.closeModal} show={this.state.withdrawShow}>
-                    <Withdraw mix={this.state.mixId} withdraw={this.state.withdrawAddress} close={this.closeModal}/>
+            <div className="row">
+                <ProjectModal close={this.closeModal} show={this.state.setAddressShow} padding={true}>
+                    <SetAddress mix={this.state.mix} close={this.closeModal}/>
+                </ProjectModal>
+                <ProjectModal close={this.closeModal} show={this.state.withdrawListShow} padding={true}>
+                    <WithdrawList mix={this.state.mix} close={this.closeModal}/>
                 </ProjectModal>
                 <ProjectModal close={this.closeModal} show={this.state.transactionShow}>
                     <div>Transaction ID:</div>
-                    <CopyToClipboard
-                        render={({copy}) => (
-                            <div onClick={() => this.copyDeposit(copy)}>
-                                {this.state.transactionId}
-                                {this.state.transactionCopied ? (
-                                    <span className="text-success">&nbsp;&nbsp;
-                                        <i className="fa fa-check"/>Copied
-                                </span>
-                                ) : null}
-                            </div>
-                        )}
-                    />
+                    <CopyClipboard value={this.state.transactionId}/>
                     <div className="text-center">
                         <CopyToClipboard
                             render={({copy}) => (
@@ -110,57 +215,115 @@ class ActiveStatDetail extends React.Component {
 
                     </div>
                 </ProjectModal>
-                {this.isHistory() ? (
-                    <div className="col-12"><NavLink to={"/stat/history"}>
-                        History</NavLink> / {this.props.match.params.groupId}
-                    </div>
-                ): (
-                    <div className="col-12"><NavLink to={"/stat/active"}>
-                        Mixes</NavLink> / {this.props.match.params.groupId}
-                    </div>
-                )}
+                <Breadcrumb path={this.breadcrumbPath()}/>
+
                 <div className="col-12">
-                    <Panel>
-                        <div className="table-responsive">
-                            <table className="table">
-                                <thead className=" text-primary">
-                                <tr style={{textAlign: "center"}}>
-                                    <th>ID</th>
-                                    <th>Amount</th>
-                                    <th>Box Type</th>
-                                    <th>Latest Activity</th>
-                                    <th>Round</th>
-                                    <th>Withdraw Address</th>
-                                    <th>Status</th>
-                                    <th/>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {this.state.mix.map((mixItem, index) => (
-                                    <tr key={index} style={{textAlign: "center"}}>
-                                        <td title={mixItem.id}>{formatter.id(mixItem.id)}</td>
-                                        <td>{formatter.token(mixItem.mixingTokenId ? mixItem.mixingTokenAmount : mixItem.amount, mixItem.mixingTokenId)}</td>
-                                        <td>{mixItem.boxType}</td>
-                                        <td>{mixItem.lastMixTime}</td>
-                                        <td>{mixItem.rounds}</td>
-                                        <td>{mixItem.withdraw === "" ? "(MANUAL)" : mixItem.withdraw}</td>
-                                        <td>{mixItem.status}</td>
-                                        <td>
-                                            {mixItem.withdrawStatus === "nothing" ? (
-                                                <button className="btn btn-outline-primary"
-                                                        onClick={() => this.withdraw(mixItem)}>Withdraw</button>
-                                            ) : mixItem.withdrawTxId === "" ? "Transaction is being generated" : (
-                                                <button className="btn btn-outline-primary"
-                                                        onClick={() => this.showTransaction(mixItem)}
-                                                >View Transaction</button>
-                                            )}
-                                        </td>
-                                    </tr>
-                                ))}
-                                </tbody>
-                            </table>
+                    <div className="card">
+                        <div className="card-header card-header-tabs card-header-primary">
+                            <ul className="nav nav-tabs" data-tabs="tabs">
+                                <li className="nav-item">
+                                    <a style={statusSelected !== "None" ? {cursor: "pointer"} : {cursor: "not-allowed"}}
+                                       className={"nav-link active"}
+                                       onClick={statusSelected !== "None" ? () => this.showSetAddress() : null}>
+                                        <i className="material-icons">edit</i> Set Address
+                                        <div className="ripple-container"/>
+                                    </a>
+                                </li>
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                <li className="nav-item">
+                                    <a style={statusSelected !== "None" ? {cursor: "pointer"} : {cursor: "not-allowed"}}
+                                       className={"nav-link active"}
+                                       onClick={statusSelected !== "None" ? () => this.showWithdrawDetail() : null}>
+                                        <i className="material-icons">edit</i> Withdraw Now
+                                        <div className="ripple-container"/>
+                                    </a>
+                                </li>
+                                {this.props.path === 'covert' ? (
+                                    <li className="nav-item">
+                                        <div className="header-slider">
+                                            <FormControlLabel
+                                                control={<Switch checked={this.state.status === 'active'}
+                                                                 onChange={this.changeStatus}/>}
+                                                label="Hide Withdrawn Boxes"
+                                            />
+                                        </div>
+                                    </li>
+                                ) : null}
+                            </ul>
                         </div>
-                    </Panel>
+                        <div className="table-responsive">
+                            <Loading loaded={this.state.loadedStatus === this.neededStatus()}
+                                     empty={this.state.mix.length === 0}
+                                     emptyMessage={["There are no boxes for this covert address"]}
+                            >
+                                <table className="table">
+                                    <thead className=" text-primary">
+                                    <tr style={{textAlign: "center"}}>
+                                        <th>
+                                            <CheckboxesTags
+                                                indeterminate={statusSelected === 'Indeterminate'}
+                                                options={this.checkBoxFilterLists}
+                                                getOptionSelected={(option, value) => option.title === value.title}
+                                                checked={statusSelected === 'All'}
+                                                onChange={(e) => this.handleChange(e.target.checked)}
+                                                onClick={(index) => this.handleChange(index)}
+                                            />
+                                        </th>
+                                        <th>ID</th>
+                                        <th>Amount</th>
+                                        <th>Box Type</th>
+                                        <th>Latest Activity</th>
+                                        <th>Round</th>
+                                        <th>Withdraw Address</th>
+                                        <th>Status</th>
+                                        <th/>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {this.state.mix.map((mixItem, index) => (
+                                        <tr key={index} style={{textAlign: "center"}}>
+                                            <td>
+                                                <Checkbox
+                                                    icon={<CheckBoxOutlineBlankIcon fontSize="small"/>}
+                                                    checkedIcon={<CheckBoxIcon fontSize="small"/>}
+                                                    disabled={mixItem.withdrawStatus !== "nothing"}
+                                                    checked={!!this.state.mix[index].checked}
+                                                    onChange={() => this.handleSingleCheckboxChange(index)}
+                                                />
+                                            </td>
+                                            <td>
+                                                <Tooltip title={<span className="tooltip-text">{mixItem.id}</span>}
+                                                         arrow>
+                                                    <div>{formatter.id(mixItem.id)}</div>
+                                                </Tooltip>
+                                            </td>
+                                            <td>{formatter.token(mixItem.mixingTokenId ? mixItem.mixingTokenAmount : mixItem.amount, mixItem.mixingTokenId)}</td>
+                                            <td>{mixItem.boxType}</td>
+                                            <td>{mixItem.lastMixTime}</td>
+                                            <td>{mixItem.rounds}</td>
+                                            <td>
+                                                <Tooltip title={<span
+                                                        className="tooltip-text">{mixItem.withdraw === "" ? "(MANUAL)" : mixItem.withdraw}</span>} arrow>
+                                                    <div>{mixItem.withdraw === "" ? "(MANUAL)" : formatter.address(mixItem.withdraw)}</div>
+                                                </Tooltip>
+                                            </td>
+                                            <td>{mixItem.status}</td>
+                                            <td>
+                                                {mixItem.withdrawStatus === "nothing" ? (
+                                                    null
+                                                ) : mixItem.withdrawTxId === "" ? "Transaction is being generated" : (
+                                                    <button className="btn btn-outline-primary"
+                                                            onClick={() => this.showTransaction(mixItem)}
+                                                    >View Transaction</button>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            </Loading>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
@@ -170,7 +333,12 @@ class ActiveStatDetail extends React.Component {
 const mapStateToProps = state => ({
     info: state.info,
     tokens: state.tokens,
+    activeMap: state.activeMap,
+    activeLoaded: state.activeLoaded,
+    covertMap: state.covertMap,
+    historyMap: state.historyMap,
+    historyLoaded: state.historyLoaded,
+    covertLoaded: state.covertLoaded,
 });
 
-export default withLayout(MainLayout)(connect(mapStateToProps)(ActiveStatDetail));
-
+export default withLayout(MainLayout)(connect(mapStateToProps)(StatDetail));

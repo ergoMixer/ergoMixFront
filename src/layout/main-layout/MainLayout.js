@@ -33,6 +33,7 @@ class MainLayout extends React.Component {
                             toggleNavigation={this.toggleNavigation}
                             toggleSidebar={this.toggleSidebar}
                             navigationOpen={this.state.navigationOpen}
+                            create={this.props.create}
                         />
                         <div className="content">
                             <div className="container-fluid">

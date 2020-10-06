@@ -75,7 +75,6 @@ class Step2 extends React.Component {
     }
 
     distribute = (amount, old_boxes) => {
-        debugger
         let boxes = [...old_boxes];
         boxes.reverse().forEach(item => {
             if (item.amount <= amount) {

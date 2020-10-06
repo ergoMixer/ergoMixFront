@@ -182,7 +182,7 @@ class Step3 extends React.Component {
                                         }}
                                         onFocus={() => this.setState({focus: "inputJson"})}
                                         onBlur={() => this.setState({focus: ""})}
-                                        rows={10}/>
+                                        rows={5}/>
                                 </div>
                                 <div className="row">
                                     <div className="col-12 text-center">

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import Slider from '@material-ui/core/Slider';
 import * as formatter from '../../../formatter/formatters';
 import Panel from "../../../components/panel/Panel";
+import LevelSelect from "../../../components/level-select/LevelSelect";
 
 class Step4 extends React.Component {
     state = {
@@ -126,52 +127,10 @@ class Step4 extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-6 col-12">
-                        <div className="card card-stats">
-                            <div className="card-header card-header-success card-header-icon">
-                                <div className="card-icon">
-                                    <i className="material-icons">call_merge</i>
-                                </div>
-                                <h4 className="card-title ">Mixing Level</h4>
-                            </div>
-                            <div className="card-body">
-                                <div className="row">
-                                    <div className="col-12">
-                                        <div className="tab-content">
-                                            <div className="tab-pane active text-left">
-                                                <div style={{margin: "30px 30px 0 30px"}}>
-                                                    <Slider
-                                                        max={marks.length - 1}
-                                                        mix={0}
-                                                        defaultValue={this.state.selectedLevel}
-                                                        color={"secondary"}
-                                                        steps={null}
-                                                        onChangeCommitted={this.setMixLevel}
-                                                        valueLabelDisplay="off"
-                                                        valueLabelFormat={this.valueLabelFormat}
-                                                        marks={marks}
-                                                    />
-                                                </div>
-                                                {level !== undefined ? (
-                                                    <React.Fragment>
-                                                        <div>
-                                                            <label className="font-weight-bold">Cost per
-                                                                Box:&nbsp;</label>
-                                                            {formatter.erg(level.price)}</div>
-                                                        <div>
-                                                            <label className="font-weight-bold">Approximate
-                                                                Mixes:&nbsp;</label>
-                                                            {level.token} rounds
-                                                        </div>
-                                                    </React.Fragment>
-                                                ) : null}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <LevelSelect
+                        selectedLevel={this.state.selectedLevel}
+                        select={this.setMixLevel}
+                        />
                 </div>
                 <div className="row">
                     <div className="col-md-12">

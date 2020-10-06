@@ -10,7 +10,7 @@ export const apiInitialState = {
     boxInTransaction: 1,
     info: {
         versionMixer: '',
-        ergoNode: '',
+        ergoNode: [],
         ergoExplorer: ''
     },
     tokens: [],
@@ -20,6 +20,12 @@ export const apiInitialState = {
         level: false,
         rings: false
     },
+    covertMap: {},
+    activeMap: {},
+    historyMap: {},
+    covertLoaded: false,
+    activeLoaded: false,
+    historyLoaded: false,
 };
 
 export const reducer = (state = apiInitialState, action) => {
@@ -51,6 +57,24 @@ export const reducer = (state = apiInitialState, action) => {
                 ...state,
                 tokens: [...action.payload, CUSTOM_TOKEN],
                 loadedData: {...state.loadedData, supported: true}
+            }
+        case actionTypes.COVERT_ADDRESS_MAP:
+            return {
+                ...state,
+                covertMap: {...action.payload},
+                covertLoaded: true,
+            }
+        case actionTypes.ACTIVE_MIX_MAP:
+            return {
+                ...state,
+                activeMap: {...action.payload},
+                activeLoaded: true,
+            }
+        case actionTypes.MIX_HISTORY_MAP:
+            return {
+                ...state,
+                historyMap: {...action.payload},
+                historyLoaded: true,
             }
         default:
     }

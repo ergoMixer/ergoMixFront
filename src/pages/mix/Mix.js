@@ -9,6 +9,7 @@ import Step3 from "./step3/Step3";
 import Step4 from "./step4/Step4";
 import { connect } from "react-redux";
 import Panel from "../../components/panel/Panel";
+import Loading from "../../components/loading/Loading";
 
 
 class Mix extends React.Component {
@@ -26,7 +27,7 @@ class Mix extends React.Component {
         return new Promise((resolve, reject) => {
             ApiNetwork.mixRequest(this.state.values.addresses).then(response => {
                 resolve();
-                this.props.history.push("/stat/active")
+                this.props.history.push("/mix/active")
             }).catch(exp => {
                 reject(exp);
             })
@@ -95,27 +96,15 @@ class Mix extends React.Component {
             if (!this.props.loadedData[key])
                 loaded = false;
         })
-        if (loaded) {
-            return (
-                <div>
-                    <MultiStep
-                        steps={this.getSteps()}
-                        submit={this.submit}
-                        submitTitle="Start Mixing"
-                        values={this.state.values}/>
-                    <div className="clearfix"/>
-                </div>
-            )
-        }
         return (
-            <Panel>
-                <h3 className="text-danger text-center">
-                    Loading data from ERGO blockchain
-                </h3>
-                <h3 className="text-center text-danger">
-                    Please wait <i className="fa fa-circle-o-notch fa-spin"/>
-                </h3>
-            </Panel>
+            <Loading empty={false} loaded={loaded} emptyMessage={[]}>
+                <MultiStep
+                    steps={this.getSteps()}
+                    submit={this.submit}
+                    submitTitle="Start Mixing"
+                    values={this.state.values}/>
+                <div className="clearfix"/>
+            </Loading>
         )
     };
 }
