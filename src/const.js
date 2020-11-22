@@ -24,3 +24,5 @@ export const getToken = tokenId => {
     // });
     return res;
 }
+
+export const COVERT_NAME_SIZE = 30;

@@ -57,13 +57,25 @@ const HOME_BOXES = [
                 income will automatically enter mixing with your predefined
                 settings and will be withdrawn to your desired addresses.
                 <br/>
-                When you create a covert address, it only supports mixing ERG in 1 ERG ring.
+                When you create a covert address, it only supports mixing ERG in 250 ERG ring.
                 In the asset page of the covert address, you can modify the ring in which you want
                 your assets to enter mixing. Also, you can see all different tokens deposited to your covert address
                 and add support for mixing them.
                 <br/>
                 So, create a covert address, configure it just once, and keep the mixer running.
                 All your funds will go through the mixer automatically and will be withdrawn to your desired addresses.
+            </div>
+        )
+    },
+    {
+        title: 'Import an existing address from other wallets',
+        content: (
+            <div>
+                Optionally, to import an existing address from other
+                wallets and convert it to a covert address,
+                input its private key at the &nbsp;
+                <b>NAME / IMPORT KEYS</b> &nbsp;
+                step when creating a new covert address.
             </div>
         )
     },

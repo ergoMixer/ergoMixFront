@@ -2,11 +2,11 @@ import React from 'react';
 import withLayout from "../../../hoc/with_layout/withLayout";
 import MainLayout from "../../../layout/main-layout/MainLayout";
 import { connect } from "react-redux";
-import Panel from "../../../components/panel/Panel";
 import { ApiNetwork } from "../../../network/api";
 import MultiStep from "../../../components/multistep/MultiStep";
 import CovertStep1 from "./covert-step-1/CovertStep1";
 import CovertStep2 from "./covert-step-2/CovertStep2";
+import CovertStep3 from "./covert-step-3/CovertStep3";
 import Loading from "../../../components/loading/Loading";
 
 class NewCovert extends React.Component {
@@ -27,7 +27,7 @@ class NewCovert extends React.Component {
     getSteps = () => {
         return [
             {
-                title: "Number of mixing round",
+                title: "Name / Import Keys",
                 component: CovertStep1,
                 useCard: false,
                 props: {
@@ -36,8 +36,17 @@ class NewCovert extends React.Component {
                 }
             },
             {
-                title: "Enter withdrawal addresses",
+                title: "Number of mixing round",
                 component: CovertStep2,
+                useCard: false,
+                props: {
+                    saveValue: this.saveValue,
+                    level: this.state.values.level,
+                }
+            },
+            {
+                title: "Withdrawal addresses",
+                component: CovertStep3,
                 props: {
                     addresses: this.state.values.addresses,
                     saveValue: this.saveValue,
@@ -54,6 +63,7 @@ class NewCovert extends React.Component {
             const request = {
                 addresses: values.addresses ? values.addresses : [],
                 numRounds: this.props.levels[values.level].token,
+                privateKey: values.pk, nameCovert: values.name
             }
             ApiNetwork.covertRequest(request).then(response => {
                 resolve();

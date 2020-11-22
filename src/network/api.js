@@ -85,6 +85,12 @@ export class ApiNetwork {
         return this.createPromise(instance.get('covert/' + covertId + "/asset"));
     }
 
+    static covertName = (covertId, name) => {
+        return this.createPromise(instance.post('covert/' + covertId + "/name", {
+            "nameCovert": name
+        }));
+    }
+
     static covertAssetSet = (covertId, tokenId, ring) => {
         return this.createPromise(ApiNetwork.postJson('covert/' + covertId + '/asset', {tokenId: tokenId, ring: ring}));
     }

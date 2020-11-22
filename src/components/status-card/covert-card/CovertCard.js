@@ -45,7 +45,10 @@ class CovertCard extends React.Component {
                         <div className="card-icon">
                             <i className="material-icons">call_split</i>
                         </div>
-                        {/*<CardHeaderTitle {...this.props}/>*/}
+                        <h3 onClick={()=>this.props.edit(this.props.id, this.props.nameCovert)} className="card-title">
+                            {this.props.nameCovert ? this.props.nameCovert : "No Name"}
+                            <i className={"fa fa-edit small-icon"}/>
+                        </h3>;
                     </div>
                     <div className="card-body statistic-card text-left">
                         {assets.map((item, index) => {
