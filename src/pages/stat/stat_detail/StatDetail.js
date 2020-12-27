@@ -1,7 +1,7 @@
 import React from 'react';
-import { ApiNetwork } from "../../../network/api";
+import {ApiNetwork} from "../../../network/api";
 import ProjectModal from "../../../components/modal/modal";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import CopyToClipboard from "@vigosan/react-copy-to-clipboard";
 
 import CopyClipboard from "../../../components/copy-clipboard/CopyClipboard";
@@ -19,7 +19,7 @@ import Tooltip from "../../../components/tooltip/Tooltip";
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Loading from "../../../components/loading/Loading";
-
+import OrderTd from '../../../components/order-td/OrderTd';
 
 class StatDetail extends React.Component {
     state = {
@@ -31,7 +31,9 @@ class StatDetail extends React.Component {
         withdrawAddress: '',
         mixId: '',
         status: 'active',
-        loadedStatus: ''
+        loadedStatus: '',
+        order: "id",
+        orderDir: "asc"
     };
 
     checkBoxFilterLists = [
@@ -42,6 +44,21 @@ class StatDetail extends React.Component {
 
     neededStatus = () => this.props.path === 'covert' ? this.state.status : undefined;
 
+    sortMix = (mixes, order, orderDir) => {
+        if (order) {
+            return mixes.sort(function (a, b) {
+                const keyA = a[order],
+                    keyB = b[order];
+                debugger
+                // Compare the 2 dates
+                if (keyA < keyB) return orderDir === "asc" ? -1 : 1;
+                if (keyA > keyB) return orderDir === "asc" ? 1 : -1;
+                return 0;
+            });
+        }
+        return mixes
+    }
+
     loadData = () => {
         const group = (this.props.path === 'covert' ? this.props.match.params.covertId : this.props.match.params.groupId);
         const neededStatus = this.neededStatus()
@@ -50,7 +67,7 @@ class StatDetail extends React.Component {
                 const res = response.data.map(item => {
                     return {...item, checked: false}
                 });
-                this.setState({mix: res, group: group, loadedStatus: neededStatus});
+                this.setState({mix: this.sortMix(res, this.state.order, this.state.orderDir), group: group, loadedStatus: neededStatus});
             })).catch(error => {
 
             });
@@ -185,6 +202,14 @@ class StatDetail extends React.Component {
         })
     }
 
+    setOrder = (order) => {
+        this.setState(state => {
+            const orderDir = (state.order === order && state.orderDir === "asc") ? "desc" : "asc";
+            const mixes = this.sortMix(state.mix, order, orderDir);
+            return {...state, orderDir: orderDir, order: order, mix: mixes}
+        })
+    }
+
     render() {
         console.log(this.state);
         const statusSelected = this.statusSelected();
@@ -259,6 +284,7 @@ class StatDetail extends React.Component {
                                 <table className="table">
                                     <thead className=" text-primary">
                                     <tr style={{textAlign: "center"}}>
+                                        <th>&nbsp;</th>
                                         <th>
                                             <CheckboxesTags
                                                 indeterminate={statusSelected === 'Indeterminate'}
@@ -269,19 +295,49 @@ class StatDetail extends React.Component {
                                                 onClick={(index) => this.handleChange(index)}
                                             />
                                         </th>
-                                        <th>ID</th>
-                                        <th>Amount</th>
-                                        <th>Box Type</th>
-                                        <th>Latest Activity</th>
-                                        <th>Round</th>
-                                        <th>Withdraw Address</th>
-                                        <th>Status</th>
+                                        <OrderTd itemLabel="ID"
+                                                 itemKey={"id"}
+                                                 setOrder={this.setOrder}
+                                                 order={this.state.order}
+                                                 orderDir={this.state.orderDir}/>
+                                        <OrderTd itemLabel="Amount"
+                                                 itemKey={(this.state.mix.length > 0 && this.state.mix[0].mixingTokenId)
+                                                     ? "mixingTokenAmount" : "amount"}
+                                                 setOrder={this.setOrder}
+                                                 order={this.state.order}
+                                                 orderDir={this.state.orderDir}/>
+                                        <OrderTd itemLabel="Box Type"
+                                                 itemKey={"boxType"}
+                                                 setOrder={this.setOrder}
+                                                 order={this.state.order}
+                                                 orderDir={this.state.orderDir}/>
+                                        <OrderTd itemLabel="Latest Activity"
+                                                 itemKey={"lastMixTime"}
+                                                 setOrder={this.setOrder}
+                                                 order={this.state.order}
+                                                 orderDir={this.state.orderDir}/>
+                                        <OrderTd itemLabel="Round"
+                                                 itemKey={"rounds"}
+                                                 setOrder={this.setOrder}
+                                                 order={this.state.order}
+                                                 orderDir={this.state.orderDir}/>
+                                        <OrderTd itemLabel="Withdraw Address"
+                                                 itemKey={"withdraw"}
+                                                 setOrder={this.setOrder}
+                                                 order={this.state.order}
+                                                 orderDir={this.state.orderDir}/>
+                                        <OrderTd itemLabel="Status"
+                                                 itemKey={"status"}
+                                                 setOrder={this.setOrder}
+                                                 order={this.state.order}
+                                                 orderDir={this.state.orderDir}/>
                                         <th/>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {this.state.mix.map((mixItem, index) => (
                                         <tr key={index} style={{textAlign: "center"}}>
+                                            <td>{index + 1}</td>
                                             <td>
                                                 <Checkbox
                                                     icon={<CheckBoxOutlineBlankIcon fontSize="small"/>}
@@ -303,7 +359,8 @@ class StatDetail extends React.Component {
                                             <td>{mixItem.rounds}</td>
                                             <td>
                                                 <Tooltip title={<span
-                                                        className="tooltip-text">{mixItem.withdraw === "" ? "(MANUAL)" : mixItem.withdraw}</span>} arrow>
+                                                    className="tooltip-text">{mixItem.withdraw === "" ? "(MANUAL)" : mixItem.withdraw}</span>}
+                                                         arrow>
                                                     <div>{mixItem.withdraw === "" ? "(MANUAL)" : formatter.address(mixItem.withdraw)}</div>
                                                 </Tooltip>
                                             </td>

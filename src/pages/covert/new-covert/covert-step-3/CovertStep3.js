@@ -18,11 +18,12 @@ const CovertStep3 = props => {
     }
 
     const saveAddress = (index, address) => {
+        debugger
         let tmpAddresses = [...props.addresses];
         if(index < props.addresses.length && index !== -1){
-            tmpAddresses.push(address);
-        }else{
             tmpAddresses[index] = address
+        }else{
+            tmpAddresses.push(address);
         }
         props.saveValue({addresses: tmpAddresses})
         setValid(props.fillingType, tmpAddresses);
@@ -85,7 +86,7 @@ const CovertStep3 = props => {
                         <div className="row" style={props.fillingType === 'node' ? {} : {"display": 'none'}}>
                             <LoadFromNode
                                 manualCount={true}
-                                saveAddresses={addresses => props.saveValue({addresses: [...addresses]})} />
+                                setAddress={addresses => props.saveValue({addresses: [...addresses]})} />
                         </div>
                         {props.fillingType === "later" ? (
                             <div className="col-12">

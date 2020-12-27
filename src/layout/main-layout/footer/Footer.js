@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {ReactComponent as SwaggerIcon} from './swagger.svg';
 
 const Footer = (props) => {
     return (
@@ -8,31 +8,20 @@ const Footer = (props) => {
                 {/*<nav className="float-left">*/}
                 {/*    <ul>*/}
                 {/*        <li>*/}
-                {/*            <a href="https://www.creative-tim.com">*/}
-                {/*                Creative Tim*/}
-                {/*            </a>*/}
-                {/*        </li>*/}
-                {/*        <li>*/}
-                {/*            <a href="https://creative-tim.com/presentation">*/}
-                {/*                About Us*/}
-                {/*            </a>*/}
-                {/*        </li>*/}
-                {/*        <li>*/}
-                {/*            <a href="http://blog.creative-tim.com">*/}
-                {/*                Blog*/}
-                {/*            </a>*/}
-                {/*        </li>*/}
-                {/*        <li>*/}
-                {/*            <a href="https://www.creative-tim.com/license">*/}
-                {/*                Licenses*/}
+                {/*            <a href="/swagger">*/}
+                {/*                <SwaggerIcon/>&nbsp;*/}
+                {/*                <span  style={{display: "inline-block", lineHeight: "30px"}}>Swagger</span>*/}
                 {/*            </a>*/}
                 {/*        </li>*/}
                 {/*    </ul>*/}
                 {/*</nav>*/}
                 <div className="copyright float-right">
                     No Rights Reserved - Use at Your Own Risk &nbsp;&nbsp;
-                    <a href="https://github.com/ergoMixer" target="_blank">
+                    <a href="https://github.com/ergoMixer" target="_blank" style={{display: "inline-block"}}>
                         <i className="fa fa-github"/>
+                    </a>&nbsp;&nbsp;
+                    <a href="/swagger" style={{lineHeight: "0px", verticalAlign: "bottom", display: "inline-block"}}>
+                        <SwaggerIcon/>
                     </a>
                     {/*made with <i className="material-icons">favorite</i> for better using Ergo.*/}
                 </div>

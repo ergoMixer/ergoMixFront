@@ -1,19 +1,18 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { connect } from "react-redux";
-import { ApiNetwork } from "../../../network/api";
-
+import {NavLink} from 'react-router-dom';
+import {connect} from "react-redux";
 // Valid Data COLOR is data-color="purple | azure | green | orange | danger"
 // data-background-color: red-white-black
 const MENU_ITEMS = [
-    {url: '/mix/active', exact: false, title: 'Active Mixes', icon: 'compare_arrows', iconClass:'material-icons'},
-    {url: '/mix/history', exact: false, title: 'Mixing History', icon: 'history', iconClass:'material-icons'},
+    {url: '/mix/active', exact: false, title: 'Active Mixes', icon: 'compare_arrows', iconClass: 'material-icons'},
+    {url: '/mix/history', exact: false, title: 'Mixing History', icon: 'history', iconClass: 'material-icons'},
     // {url: '/covert/new', exact: true, title: 'Create Covert Address', icon: 'call_split', iconClass:'material-icons'},
-    {url: '/covert/', exact: false, title: 'Covert Address', icon: 'call_split', iconClass:'material-icons'},
-    {url: '/ring', exact: true, title: 'Ring Statistics', icon: 'show_chart', iconClass:'material-icons'},
-    {url: '/settings', exact: true, title: 'Configuration', icon: 'settings', iconClass:'material-icons'},
-    {url: '/', exact: true, title: 'About', icon: 'info_outline', iconClass:'material-icons'},
-    {url: '/shutdown', exact: true, title: 'Shutdown', icon: 'power_settings_new', iconClass:'material-icons'},
+    {url: '/covert/', exact: false, title: 'Covert Address', icon: 'call_split', iconClass: 'material-icons'},
+    {url: '/ring', exact: true, title: 'Ring Statistics', icon: 'show_chart', iconClass: 'material-icons'},
+    {url: '/settings', exact: true, title: 'Configuration', icon: 'settings', iconClass: 'material-icons'},
+    {url: '/', exact: true, title: 'About', icon: 'info_outline', iconClass: 'material-icons'},
+    // {url: '/swagger', external: true, title: 'Swagger', icon: 'local_library', iconClass:'material-icons'},
+    {url: '/shutdown', exact: true, title: 'Shutdown', icon: 'power_settings_new', iconClass: 'material-icons'},
 ]
 const navigation = (props) => {
     return (
