@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from "react-redux";
-import Slider from '@material-ui/core/Slider';
 import * as formatter from '../../../formatter/formatters';
 import Panel from "../../../components/panel/Panel";
 import LevelSelect from "../../../components/level-select/LevelSelect";
@@ -82,10 +81,6 @@ class Step4 extends React.Component {
             total_price += address.amount;
             total_token += address.mixingTokenAmount;
         });
-        const marks = this.props.mixLevel.map((item, index) => {
-            return {value: index, label: "Level " + (index + 1)}
-        });
-        const level = this.props.mixLevel[this.state.selectedLevel];
         return (
             <React.Fragment>
                 <div className="row">

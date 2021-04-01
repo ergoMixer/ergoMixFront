@@ -2,7 +2,6 @@ import React from 'react';
 import ProjectModal from "../../components/modal/modal";
 import withLayout from "../../hoc/with_layout/withLayout";
 import MainLayout from "../../layout/main-layout/MainLayout";
-import Panel from "../../components/panel/Panel";
 import { ApiNetwork } from "../../network/api";
 
 class Shutdown extends React.Component {

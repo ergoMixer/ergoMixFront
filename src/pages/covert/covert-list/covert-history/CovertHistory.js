@@ -92,6 +92,7 @@ class CovertHistory extends React.Component {
                         /> &nbsp;
                         <a href={this.props.info.ergoExplorerFront + "/en/transactions/" + this.state.transactionId}
                            target="_blank"
+                           rel="noopener noreferrer"
                            className="btn btn-outline-primary">
                             View In Explorer
                         </a>

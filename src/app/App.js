@@ -15,7 +15,6 @@ import CovertList from "../pages/covert/covert-list/CovertList";
 import NewCovert from "../pages/covert/new-covert/NewCovert";
 import Home from "../pages/home/Home";
 import CovertAsset from "../pages/covert/covert-list/covert-assets/CovertAsset";
-import CovertHistory from "../pages/covert/covert-list/covert-history/CovertHistory";
 import CovertSetRing from "../pages/covert/covert-list/covert-assets/set-ring/CovertSetRing";
 import CovertAddress from "../pages/covert/covert-list/covert-address/CovertAddress";
 import Shutdown from "../pages/shutdown/Shutdown";

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { saveActiveMixMap, saveCovertMap, saveMixHistoryMap } from "../store/action";
 import { store } from "../store";
 
+// const DEFAULT_BASE_URL = "http://10.10.10.4:9000";
 const DEFAULT_BASE_URL = "/";
 export const BASE_URL = (window.backend === undefined ?  DEFAULT_BASE_URL : window.backend);
 // export const BASE_URL = "/";
@@ -160,6 +161,14 @@ export class ApiNetwork {
 
     static restore = formData => {
         return ApiNetwork.createPromise(instance.post('restore', formData));
+    }
+
+    static mint = (boxId, oldTransaction, request) => {
+        return ApiNetwork.createPromise(instance.post('ageusd/mint', {'boxId': boxId, 'oldTransaction': oldTransaction, 'request': request}));
+    }
+
+    static fee = () => {
+        return ApiNetwork.createPromise(instance.get('ageusd/fee'));
     }
 }
 

@@ -1,8 +1,6 @@
 import React from 'react';
-import CopyToClipboard from "@vigosan/react-copy-to-clipboard";
 import QRCode from "react-qr-code";
 import LinearProgress from '@material-ui/core/LinearProgress';
-import * as formatter from '../../formatter/formatters'
 import ProjectModal from "../modal/modal";
 import MoreDetail from "./MoreDetail";
 import CardHeaderTitle from './details/CardHeaderTitle';

@@ -100,3 +100,5 @@ export const saveMixHistoryMap = (activeMixMap) => ({
     type: actionTypes.MIX_HISTORY_MAP,
     payload: activeMixMap
 });
+
+export const changeSidebar = () => ({type: actionTypes.CHANGE_SIDEBAR})

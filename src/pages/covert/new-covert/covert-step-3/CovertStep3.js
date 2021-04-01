@@ -18,7 +18,6 @@ const CovertStep3 = props => {
     }
 
     const saveAddress = (index, address) => {
-        debugger
         let tmpAddresses = [...props.addresses];
         if(index < props.addresses.length && index !== -1){
             tmpAddresses[index] = address

@@ -18,7 +18,6 @@ class PreMixCard extends React.Component {
     }
 
     render() {
-        const progressValue = 100 * this.props.doneDeposit / this.props.amount;
         return (
             <div className="col-12 col-md-6">
                 <ProjectModal close={this.hideDetails} show={this.state.showDetail}>

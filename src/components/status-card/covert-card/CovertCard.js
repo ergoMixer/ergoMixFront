@@ -1,11 +1,11 @@
 import React from 'react';
 import QRCode from "react-qr-code";
 import ProjectModal from "../../modal/modal";
-import { ReactComponent as QrcodeSVG } from '../../../assets/img/qrcode.svg';
-import { connect } from "react-redux";
-import CovertCardFooter from './CovertCardFooter';
+import {ReactComponent as QrcodeSVG} from '../../../assets/img/qrcode.svg';
+import {connect} from "react-redux";
 import CopyClipboard from "../../copy-clipboard/CopyClipboard";
 import CovertTokenProgress from "./CovertTokenProgress";
+import CovertCardAction from './CovertCardActions';
 
 class CovertCard extends React.Component {
     state = {
@@ -28,6 +28,17 @@ class CovertCard extends React.Component {
     hideDetails = () => {
         this.setState({showDetail: false})
     }
+    cardHeaderClass = assets => {
+        const running = assets.map(item => item.runningMixingAmount).reduce((accumulator, currentValue) => accumulator + currentValue);
+        const current = assets.map(item => item.currentMixingAmount).reduce((accumulator, currentValue) => accumulator + currentValue);
+        const card_class = "card-header card-header-icon"
+        if(running > 0){
+            return card_class + " card-header-success"
+        }else if(current - running > 0){
+            return card_class + " card-header-info"
+        }
+        return card_class + " card-header-warning"
+    }
 
     render() {
         const assets = [...this.props.assets].slice(0, 3)
@@ -41,30 +52,32 @@ class CovertCard extends React.Component {
                     </div>
                 </ProjectModal>
                 <div className="card card-stats">
-                    <div className="card-header card-header-success card-header-icon">
+                    <div className={this.cardHeaderClass(assets)}>
                         <div className="card-icon">
                             <i className="material-icons">call_split</i>
                         </div>
-                        <h3 onClick={()=>this.props.edit(this.props.id, this.props.nameCovert)} className="card-title">
-                            {this.props.nameCovert ? this.props.nameCovert : "No Name"}
-                            <i className={"fa fa-edit small-icon"}/>
-                        </h3>;
+                        <h3 className="card-title">
+                            <CovertCardAction
+                                {...this.props}
+                                handleEdit={() => this.props.edit(this.props.id, this.props.nameCovert)}/>
+                            <div style={{padding: "6px 12px 6px 0", textAlign: "left"}}>{this.props.nameCovert ? this.props.nameCovert : "No Name"}</div>
+                        </h3>
                     </div>
-                    <div className="card-body statistic-card text-left">
+                    <div className="card-body statistic-card card-little text-left">
                         {assets.map((item, index) => {
-                            if(item.need > 0) {
+                            if (item.need > 0) {
                                 return <CovertTokenProgress {...item} key={index}/>
                             }
                             return null
                         })}
                         <div className="mt-2">
-                            Deposit Address <QrcodeSVG className="pull-right"
-                                                       onClick={this.showQrCode}>gradient</QrcodeSVG>
+                            Deposit Address
                         </div>
                         <div>
+                            <QrcodeSVG className="pull-right" onClick={this.showQrCode}>gradient</QrcodeSVG>
                             <CopyClipboard value={this.props.deposit}/>
                         </div>
-                        <CovertCardFooter {...this.props} showDetails={this.showDetails}/>
+                        {/*<CovertCardFooter {...this.props} showDetails={this.showDetails}/>*/}
                     </div>
                 </div>
             </div>

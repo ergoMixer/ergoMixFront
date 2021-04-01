@@ -9,6 +9,7 @@ import { NavLink } from "react-router-dom";
 import ProjectModal from "../../../components/modal/modal";
 import { TextField } from "@material-ui/core";
 import { COVERT_NAME_SIZE } from "../../../const";
+import Panel from "../../../components/panel/Panel";
 
 const create = (
     <NavLink className="btn btn-outline-primary" style={{marginRight: "15px"}} to='/covert/new'>
@@ -86,10 +87,24 @@ class CovertList extends React.Component {
                         <div className="row">
                             <div className="col-12 text-center">
                                 <button className="btn" onClick={this.closeModal}>Close</button>
-                                <button className="btn btn-success" disabled={this.state.editingName==''} onClick={this.submitName}>Save</button>
+                                <button className="btn btn-success" disabled={this.state.editingName===''} onClick={this.submitName}>Save</button>
                             </div>
                         </div>
                     </ProjectModal>
+                    <div className="row">
+                        <div className="col-12">
+                            <Panel>
+                                <div className="help-content-wrapper">
+                                    <i className="material-icons box-display warning">call_split</i>
+                                    <span className="helper-text"> Without any active or completed mix </span>
+                                    <i className="material-icons box-display info">call_split</i>
+                                    <span className="helper-text">Have Some Completed Mix</span>
+                                    <i className="material-icons box-display success">call_split</i>
+                                    <span className="helper-text">Have Some Active Mix</span>
+                                </div>
+                            </Panel>
+                        </div>
+                    </div>
                     <div className="row">
                         {this.state.addresses.map((address, index) => (
                             <CovertCard

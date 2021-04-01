@@ -89,7 +89,7 @@ class Step3 extends React.Component {
 
     loadJsonAddressObject = addressJson => {
         let addresses = [...this.state.addresses];
-        addressJson.map((value, index) => {
+        addressJson.forEach((value, index) => {
             if (addresses.length > index) {
                 addresses[index] = {...addresses[index], withdraw: value};
             }

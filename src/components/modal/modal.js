@@ -25,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
         maxHeight: "80vh",
-        overflowX: "scroll"
+        overflowY: "scroll",
+        overflowX: "hidden"
     },
     closeBtn: {
         position: "absolute",

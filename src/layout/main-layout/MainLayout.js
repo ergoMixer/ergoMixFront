@@ -2,17 +2,16 @@ import React from 'react';
 import Navigation from './navigation/Navigation';
 import Footer from './footer/Footer';
 import Toggle from './toggle/Toggle';
+import { changeSidebar } from "../../store/action";
+import { connect } from "react-redux";
 
 class MainLayout extends React.Component {
     state = {
-        sidebarMini: false,
         navigationOpen: false
     };
 
     toggleSidebar = () => {
-        this.setState(state => {
-            return {...state, sidebarMini: !state.sidebarMini};
-        });
+        this.props.toggleSidebar();
     };
 
     toggleNavigation = () => {
@@ -22,7 +21,7 @@ class MainLayout extends React.Component {
     };
 
     render = () => {
-        let className = this.state.sidebarMini ? "sidebar-mini " : "";
+        let className = this.props.sidebarMini ? "sidebar-mini " : "";
         className += this.state.navigationOpen ? "nav-open" : "";
         return (
             <div className={className}>
@@ -41,7 +40,8 @@ class MainLayout extends React.Component {
                             </div>
                         </div>
                         <Footer/>
-                        <div onClick={this.toggleNavigation} className={"close-layer " + (this.state.navigationOpen ? "visible" : "")}/>
+                        <div onClick={this.toggleNavigation}
+                             className={"close-layer " + (this.state.navigationOpen ? "visible" : "")}/>
                     </div>
                 </div>
             </div>
@@ -49,4 +49,14 @@ class MainLayout extends React.Component {
     };
 }
 
-export default MainLayout;
+const mapStateToProps = state => ({
+    sidebarMini: state.sidebarMini,
+});
+
+const mapDispatchToProps = dispatch => {
+    return {
+        toggleSidebar: () => dispatch(changeSidebar())
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainLayout);

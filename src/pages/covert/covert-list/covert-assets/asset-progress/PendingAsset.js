@@ -1,7 +1,6 @@
 import React from 'react';
 import { withRouter } from "react-router";
 import * as formatter from "../../../../../formatter/formatters";
-import CovertTokenProgress from "../../../../../components/status-card/covert-card/CovertTokenProgress";
 import { connect } from "react-redux";
 
 const pendingAsset = props => {

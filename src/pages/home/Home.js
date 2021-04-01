@@ -2,15 +2,12 @@ import React from 'react';
 import withLayout from "../../hoc/with_layout/withLayout";
 import MainLayout from '../../layout/main-layout/MainLayout';
 
-import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import * as formatter from "../../formatter/formatters";
 import CopyClipboard from "../../components/copy-clipboard/CopyClipboard";
-import CopyToClipboard from "@vigosan/react-copy-to-clipboard";
 
 const HOME_BOXES = [
     {
@@ -86,6 +83,16 @@ const HOME_BOXES = [
                 rings in which you are mixing, and the level of mixing that you have selected.
                 If you are satisfied with the number of mixing rounds that your boxes have gone through,
                 you can withdraw them whenever and however you want without needing to wait for completion.
+            </div>
+        )
+    },
+    {
+        title: 'Purchasing SigmaUSD and SigmaRSV', content: (
+            <div>
+                You can use your mixing boxes to purchase SigmaUSD/SigmaRSV directly in the mixer.
+                Easily, use mixing boxes that are completed, set their withdrawal address,
+                and purchase the AgeUSD token you like. SigmaUSD/SigmaRSV tokens will be purchased directly from
+                the deployed AgeUSD contracts and will be sent to the withdrawal address.
             </div>
         )
     },

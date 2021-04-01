@@ -32,7 +32,6 @@ class LoadFromNode extends React.Component {
         }
         this.setState({loadingNode: true});
         ApiNetwork.getNodeAddress(this.state.nodeAddress, this.state.nodeApiKey, count).then(response => {
-            debugger
             this.setState({loadingNode: false});
             this.props.setAddress(response.data);
         }).catch(error => {

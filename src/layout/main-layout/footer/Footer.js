@@ -17,10 +17,10 @@ const Footer = (props) => {
                 {/*</nav>*/}
                 <div className="copyright float-right">
                     No Rights Reserved - Use at Your Own Risk &nbsp;&nbsp;
-                    <a href="https://github.com/ergoMixer" target="_blank" style={{display: "inline-block"}}>
+                    <a rel="noopener noreferrer" href="https://github.com/ergoMixer" target="_blank" style={{display: "inline-block"}}>
                         <i className="fa fa-github"/>
                     </a>&nbsp;&nbsp;
-                    <a href="/swagger" style={{lineHeight: "0px", verticalAlign: "bottom", display: "inline-block"}}>
+                    <a href="/swagger" rel="noopener noreferrer" style={{lineHeight: "0px", verticalAlign: "bottom", display: "inline-block"}}>
                         <SwaggerIcon/>
                     </a>
                     {/*made with <i className="material-icons">favorite</i> for better using Ergo.*/}

@@ -1,7 +1,7 @@
 import React from 'react';
-import {ApiNetwork} from "../../../network/api";
+import { ApiNetwork } from "../../../network/api";
 import ProjectModal from "../../../components/modal/modal";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import CopyToClipboard from "@vigosan/react-copy-to-clipboard";
 
 import CopyClipboard from "../../../components/copy-clipboard/CopyClipboard";
@@ -21,6 +21,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Loading from "../../../components/loading/Loading";
 import OrderTd from '../../../components/order-td/OrderTd';
 
+import AgeUsd from "../ageusd/AgeUsd";
+
 class StatDetail extends React.Component {
     state = {
         mix: [],
@@ -28,6 +30,7 @@ class StatDetail extends React.Component {
         transactionShow: false,
         setAddressShow: false,
         withdrawListShow: false,
+        ageUsdShow: false,
         withdrawAddress: '',
         mixId: '',
         status: 'active',
@@ -49,10 +52,9 @@ class StatDetail extends React.Component {
             return mixes.sort(function (a, b) {
                 const keyA = a[order],
                     keyB = b[order];
-                debugger
                 // Compare the 2 dates
-                if (keyA < keyB) return orderDir === "asc" ? -1 : 1;
-                if (keyA > keyB) return orderDir === "asc" ? 1 : -1;
+                if (keyA<keyB) return orderDir === "asc" ? -1 : 1;
+                if (keyA>keyB) return orderDir === "asc" ? 1 : -1;
                 return 0;
             });
         }
@@ -60,14 +62,24 @@ class StatDetail extends React.Component {
     }
 
     loadData = () => {
+        let selectedMixes = [];
+        this.state.mix.forEach(box => {
+            if (box.checked && box.withdrawStatus === "nothing") {
+                selectedMixes.push(box.id);
+            }
+        })
         const group = (this.props.path === 'covert' ? this.props.match.params.covertId : this.props.match.params.groupId);
         const neededStatus = this.neededStatus()
         if (this.state.group !== group || neededStatus !== this.state.loadedStatus) {
             ApiNetwork.mixRequestList(group, neededStatus).then((response => {
                 const res = response.data.map(item => {
-                    return {...item, checked: false}
+                    return {...item, checked: (selectedMixes.indexOf(item.id)>=0 && item.withdrawStatus === "nothing")}
                 });
-                this.setState({mix: this.sortMix(res, this.state.order, this.state.orderDir), group: group, loadedStatus: neededStatus});
+                this.setState({
+                    mix: this.sortMix(res, this.state.order, this.state.orderDir),
+                    group: group,
+                    loadedStatus: neededStatus
+                });
             })).catch(error => {
 
             });
@@ -80,6 +92,7 @@ class StatDetail extends React.Component {
 
     componentDidMount() {
         this.loadData();
+        // mintSc("10");
     };
 
     closeModal = () => {
@@ -87,6 +100,7 @@ class StatDetail extends React.Component {
             transactionShow: false,
             withdrawListShow: false,
             setAddressShow: false,
+            ageUsdShow: false,
             group: '',
         });
     };
@@ -192,6 +206,10 @@ class StatDetail extends React.Component {
         this.setState({withdrawListShow: true})
     };
 
+    showAgeUSDDetail = () => {
+        this.setState({ageUsdShow: true})
+    };
+
     showSetAddress = () => {
         this.setState({setAddressShow: true})
     };
@@ -211,7 +229,6 @@ class StatDetail extends React.Component {
     }
 
     render() {
-        console.log(this.state);
         const statusSelected = this.statusSelected();
         return (
             <div className="row">
@@ -220,6 +237,9 @@ class StatDetail extends React.Component {
                 </ProjectModal>
                 <ProjectModal close={this.closeModal} show={this.state.withdrawListShow} padding={true}>
                     <WithdrawList mix={this.state.mix} close={this.closeModal}/>
+                </ProjectModal>
+                <ProjectModal close={this.closeModal} show={this.state.ageUsdShow} padding={true}>
+                    <AgeUsd mix={this.state.mix} close={this.closeModal}/>
                 </ProjectModal>
                 <ProjectModal close={this.closeModal} show={this.state.transactionShow}>
                     <div>Transaction ID:</div>
@@ -234,6 +254,7 @@ class StatDetail extends React.Component {
                         /> &nbsp;
                         <a href={this.props.info.ergoExplorerFront + "/en/transactions/" + this.state.transactionId}
                            target="_blank"
+                           rel="noopener noreferrer"
                            className="btn btn-outline-primary">
                             View In Explorer
                         </a>
@@ -260,6 +281,15 @@ class StatDetail extends React.Component {
                                        className={"nav-link active"}
                                        onClick={statusSelected !== "None" ? () => this.showWithdrawDetail() : null}>
                                         <i className="material-icons">edit</i> Withdraw Now
+                                        <div className="ripple-container"/>
+                                    </a>
+                                </li>
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                <li className="nav-item">
+                                    <a style={statusSelected !== "None" ? {cursor: "pointer"} : {cursor: "not-allowed"}}
+                                       className={"nav-link active"}
+                                       onClick={statusSelected !== "None" ? () => this.showAgeUSDDetail() : null}>
+                                        <i className="material-icons">edit</i> Age USD
                                         <div className="ripple-container"/>
                                     </a>
                                 </li>
@@ -301,7 +331,7 @@ class StatDetail extends React.Component {
                                                  order={this.state.order}
                                                  orderDir={this.state.orderDir}/>
                                         <OrderTd itemLabel="Amount"
-                                                 itemKey={(this.state.mix.length > 0 && this.state.mix[0].mixingTokenId)
+                                                 itemKey={(this.state.mix.length>0 && this.state.mix[0].mixingTokenId)
                                                      ? "mixingTokenAmount" : "amount"}
                                                  setOrder={this.setOrder}
                                                  order={this.state.order}

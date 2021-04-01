@@ -21,7 +21,7 @@ class SetAddress extends React.Component {
 
     componentDidMount = () => {
         const mixCopy = [];
-        this.props.mix.map( (box, index) => {
+        this.props.mix.forEach( (box, index) => {
             if (box.checked)
                 mixCopy.push({...box, loading: ""})
         });
@@ -38,7 +38,7 @@ class SetAddress extends React.Component {
     updateWithdraw = () => {
         let mixCopy = [...this.state.mix];
         this.setState({loading: "update"});
-        mixCopy.map( (box, index) => {
+        mixCopy.forEach( (box, index) => {
             mixCopy[index] = {...box, loading: "Start"};
             this.setState({mix: mixCopy});
             this.callApi(mixCopy, index, false);
@@ -48,7 +48,7 @@ class SetAddress extends React.Component {
     withdrawNow = () => {
         let mixCopy = [...this.state.mix];
         this.setState({loading: "withdraw"});
-        mixCopy.map( (box, index) => {
+        mixCopy.forEach( (box, index) => {
             mixCopy[index] = {...box, loading: "Start"};
             this.setState({mix: mixCopy});
             this.callApi(mixCopy, index, true);
@@ -91,7 +91,7 @@ class SetAddress extends React.Component {
 
     loadJsonAddressObject = addressJson => {
         let mixCopy = [...this.state.mix];
-        addressJson.map((value, index) => {
+        addressJson.forEach((value, index) => {
             if (mixCopy.length > index) {
                 mixCopy[index] = {...mixCopy[index], withdraw: value};
             }

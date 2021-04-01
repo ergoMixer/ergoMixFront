@@ -8,7 +8,6 @@ import Step2 from "./step2/Step2";
 import Step3 from "./step3/Step3";
 import Step4 from "./step4/Step4";
 import { connect } from "react-redux";
-import Panel from "../../components/panel/Panel";
 import Loading from "../../components/loading/Loading";
 
 

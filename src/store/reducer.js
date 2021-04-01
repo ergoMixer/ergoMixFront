@@ -26,6 +26,7 @@ export const apiInitialState = {
     covertLoaded: false,
     activeLoaded: false,
     historyLoaded: false,
+    sidebarMini: false,
 };
 
 export const reducer = (state = apiInitialState, action) => {
@@ -51,6 +52,11 @@ export const reducer = (state = apiInitialState, action) => {
                 ...state,
                 info: action.payload,
                 loadedData: {...state.loadedData, info: true}
+            }
+        case actionTypes.CHANGE_SIDEBAR:
+            return {
+                ...state,
+                sidebarMini: !state.sidebarMini,
             }
         case actionTypes.STORE_SUPPORTED_TOKENS:
             return {

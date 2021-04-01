@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React  from 'react';
 import Step from './step/Step'
 import { NotificationManager } from 'react-notifications';
 import * as formatter from '../../formatter/formatters';

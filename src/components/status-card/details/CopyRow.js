@@ -1,5 +1,4 @@
 import React from 'react';
-import CopyToClipboard from "@vigosan/react-copy-to-clipboard";
 import CopyClipboard from "../../copy-clipboard/CopyClipboard";
 
 

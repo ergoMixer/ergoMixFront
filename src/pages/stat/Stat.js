@@ -24,7 +24,6 @@ class Stat extends React.Component {
             return mixes.sort(function (a, b) {
                 const keyA = a[order],
                     keyB = b[order];
-                debugger
                 // Compare the 2 dates
                 if (keyA < keyB) return orderDir === "asc" ? -1 : 1;
                 if (keyA > keyB) return orderDir === "asc" ? 1 : -1;
