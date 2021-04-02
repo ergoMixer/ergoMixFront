@@ -1,5 +1,6 @@
 import { CUSTOM_TOKEN } from "../const";
 import { store } from "../store";
+import moment from 'moment/moment';
 
 export const ergWithoutSuffix = value => (value / 1e9);
 
@@ -86,5 +87,13 @@ export const capFirst = msg => {
         return msg.charAt(0).toUpperCase() + msg.substring(1);
     }catch (e) {
         return '';
+    }
+}
+
+export const dateTime = value => {
+    try {
+        return moment(new Date(value)).format("yyyy-MM-DD hh:mm");
+    }catch (e){
+        return value;
     }
 }

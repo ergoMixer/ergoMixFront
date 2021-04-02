@@ -96,11 +96,11 @@ class CovertList extends React.Component {
                             <Panel>
                                 <div className="help-content-wrapper">
                                     <i className="material-icons box-display warning">call_split</i>
-                                    <span className="helper-text"> Without any active or completed mix </span>
+                                    <span className="helper-text"> No active/completed mixes </span>
                                     <i className="material-icons box-display info">call_split</i>
-                                    <span className="helper-text">Have Some Completed Mix</span>
+                                    <span className="helper-text"> Has some completed mixes </span>
                                     <i className="material-icons box-display success">call_split</i>
-                                    <span className="helper-text">Have Some Active Mix</span>
+                                    <span className="helper-text"> Has some active mixes </span>
                                 </div>
                             </Panel>
                         </div>

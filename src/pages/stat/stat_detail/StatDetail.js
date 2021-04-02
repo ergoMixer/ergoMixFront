@@ -289,7 +289,7 @@ class StatDetail extends React.Component {
                                     <a style={statusSelected !== "None" ? {cursor: "pointer"} : {cursor: "not-allowed"}}
                                        className={"nav-link active"}
                                        onClick={statusSelected !== "None" ? () => this.showAgeUSDDetail() : null}>
-                                        <i className="material-icons">edit</i> Age USD
+                                        <i className="material-icons">edit</i> Sig USD
                                         <div className="ripple-container"/>
                                     </a>
                                 </li>
@@ -385,7 +385,7 @@ class StatDetail extends React.Component {
                                             </td>
                                             <td>{formatter.token(mixItem.mixingTokenId ? mixItem.mixingTokenAmount : mixItem.amount, mixItem.mixingTokenId)}</td>
                                             <td>{mixItem.boxType}</td>
-                                            <td>{mixItem.lastMixTime}</td>
+                                            <td>{formatter.dateTime(mixItem.lastMixTime)}</td>
                                             <td>{mixItem.rounds}</td>
                                             <td>
                                                 <Tooltip title={<span

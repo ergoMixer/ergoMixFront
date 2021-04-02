@@ -105,7 +105,7 @@ class Stat extends React.Component {
                                             <td>
                                                 {formatter.token(group.mixingTokenId ? group.mixingTokenAmount : group.amount, group.mixingTokenId)}
                                             </td>
-                                            <td>{group.createdDate}</td>
+                                            <td>{formatter.dateTime(group.createdDate)}</td>
                                             <td>
                                                 <CopyClipboard value={group.deposit}/>
                                             </td>

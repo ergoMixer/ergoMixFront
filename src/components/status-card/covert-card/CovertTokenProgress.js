@@ -9,7 +9,7 @@ const CovertTokenProgress = props => {
     const getTooltip = () => {
         return (
             <div>
-                <div className="tooltip-text">Last Activity: {props.lastActivity}</div>
+                <div className="tooltip-text">Last Activity: {formatter.dateTime(props.lastActivity)}</div>
                 <div className="tooltip-text">Completed: {formatter.token(props.currentMixingAmount - props.runningMixingAmount, props.tokenId)}</div>
                 <div className="tooltip-text">Mixing: {formatter.token(props.runningMixingAmount, props.tokenId)}</div>
             </div>
