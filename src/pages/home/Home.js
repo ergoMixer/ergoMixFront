@@ -204,7 +204,7 @@ const HOME_BOXES = [
 
 class Home extends React.Component {
     state = {
-        active: 0,
+        active: 5,
     }
     handleChange = (index) => {
         this.setState({active: index});

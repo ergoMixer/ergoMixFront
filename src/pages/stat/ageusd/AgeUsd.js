@@ -218,10 +218,10 @@ class AgeUsd extends React.Component {
 
     getBoxMessage = box => {
         if(box.status !== 'complete')
-            return "This mix is not completed and cant sell to buy coins"
+            return "Only completed mixes can be used to buy SigUSD/SigRSV."
         if(box.withdrawStatus !== 'nothing')
-            return "This mix is already spent and cant spent again"
-        return 'This mix have no withdraw address and cant spent to buy coins'
+            return "The box is withdrawn or processing."
+        return 'Withdraw address is not set.'
     }
 
     render() {
