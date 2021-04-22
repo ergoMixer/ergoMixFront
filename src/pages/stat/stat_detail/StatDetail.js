@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { ApiNetwork } from "../../../network/api";
 import ProjectModal from "../../../components/modal/modal";
 import { connect } from "react-redux";
@@ -20,8 +20,6 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Loading from "../../../components/loading/Loading";
 import OrderTd from '../../../components/order-td/OrderTd';
-
-import AgeUsd from "../ageusd/AgeUsd";
 
 class StatDetail extends React.Component {
     state = {
@@ -228,6 +226,28 @@ class StatDetail extends React.Component {
         })
     }
 
+    ageUsdModal = () => {
+        if (window.BigUint64Array) {
+            const AgeUsd = React.lazy(() => import('../ageusd/AgeUsd'));
+            return (
+                <Suspense fallback={<div>loading</div>}>
+                    <AgeUsd mix={this.state.mix} close={this.closeModal}/>
+                </Suspense>
+            )
+        } else {
+            const AgeUsd = props => (
+                <div className="card-body text-center">
+                    <div className="row">
+                        <div className="col-12">
+                            SigmaUSD is not supported in this browser. Please use the latest version of Firefox, Brave Browser, or Chrome instead.
+                        </div>
+                    </div>
+                </div>
+            )
+            return <AgeUsd/>
+        }
+    }
+
     render() {
         const statusSelected = this.statusSelected();
         return (
@@ -239,7 +259,7 @@ class StatDetail extends React.Component {
                     <WithdrawList mix={this.state.mix} close={this.closeModal}/>
                 </ProjectModal>
                 <ProjectModal close={this.closeModal} show={this.state.ageUsdShow} padding={true}>
-                    <AgeUsd mix={this.state.mix} close={this.closeModal}/>
+                    {this.ageUsdModal()}
                 </ProjectModal>
                 <ProjectModal close={this.closeModal} show={this.state.transactionShow}>
                     <div>Transaction ID:</div>
