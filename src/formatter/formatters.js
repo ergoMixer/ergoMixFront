@@ -92,7 +92,9 @@ export const capFirst = msg => {
 
 export const dateTime = value => {
     try {
-        return moment(new Date(value)).format("yyyy-MM-DD hh:mm");
+        const valueInt = parseInt(value);
+        if(isNaN(valueInt)) return value;
+        return moment(new Date(valueInt)).format("yyyy-MM-DD hh:mm");
     }catch (e){
         return value;
     }

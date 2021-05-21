@@ -192,9 +192,11 @@ class CovertAddress extends React.Component {
                                             {this.state.saving ? <i className="fa fa-circle-o-notch fa-spin"/> : null}
                                         </button>
                                     )}
-                                    <button className="btn btn-outline-primary"
-                                            onClick={this.addRow}>Add Row
-                                    </button>
+                                    {this.state.fillingType === "later" ? null : (
+                                        <button className="btn btn-outline-primary"
+                                                onClick={this.addRow}>Add Row
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>
