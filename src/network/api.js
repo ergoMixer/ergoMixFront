@@ -2,7 +2,7 @@ import axios from 'axios';
 import { saveActiveMixMap, saveCovertMap, saveMixHistoryMap } from "../store/action";
 import { store } from "../store";
 
-// const DEFAULT_BASE_URL = "http://10.10.10.4:9000";
+// const DEFAULT_BASE_URL = "http://10.10.9.4:9001";
 const DEFAULT_BASE_URL = "/";
 export const BASE_URL = (window.backend === undefined ?  DEFAULT_BASE_URL : window.backend);
 // export const BASE_URL = "/";
@@ -92,8 +92,24 @@ export class ApiNetwork {
         }));
     }
 
+    static covertPrivateKey = covertId => {
+        return this.createPromise(instance.get('covert/' + covertId + "/key"));
+    }
+
     static covertAssetSet = (covertId, tokenId, ring) => {
         return this.createPromise(ApiNetwork.postJson('covert/' + covertId + '/asset', {tokenId: tokenId, ring: ring}));
+    }
+
+    static withdrawCovertAsset = (covertId, tokenIds, withdrawAddress) => {
+        return this.createPromise(
+            ApiNetwork.postJson(
+                'covert/' + covertId + '/withdraw',
+                {
+                    tokenIds: tokenIds,
+                    withdrawAddress: withdrawAddress
+                }
+            )
+        );
     }
 
     static mixRequestGroupCompleteList = () => {

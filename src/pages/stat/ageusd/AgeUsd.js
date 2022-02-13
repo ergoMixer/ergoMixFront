@@ -152,9 +152,8 @@ class AgeUsd extends React.Component {
                     transaction = (await ApiNetwork.mint(this.state.mix[index].id, transaction, newTransaction)).data;
                     this.setMixState(index, "Done");
                 } catch (e) {
-                    const message = e.response.data.message
                     console.log(e);
-                    this.setMixState(index, "Failed", message);
+                    this.setMixState(index, "Failed", e);
                     // break;
                 }
             }
@@ -244,7 +243,7 @@ class AgeUsd extends React.Component {
                         </li>
                     </ul>
                 </div>
-                <div className="card-body">
+                <div className="card-body" style={{overflowY: 'scroll', maxHeight: '40vh'}}>
                     <div className="table-responsive">
                         <table className="table">
                             <thead className=" text-primary">

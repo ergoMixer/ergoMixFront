@@ -148,7 +148,7 @@ class SetAddress extends React.Component {
                 </div>
                 <div className="row">
                     <div className="col-12">
-                        <div className="card-body">
+                        <div className="card-body" style={{overflowY: 'scroll', maxHeight: '40vh'}}>
                             <div className="row"
                                  style={this.state.fillingType === 'manual' ? {} : {"display": 'none'}}>
                                 <div className="col-12 pb-2">

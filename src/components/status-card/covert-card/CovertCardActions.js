@@ -1,9 +1,9 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import {IconButton} from "@material-ui/core";
-import {useHistory} from 'react-router-dom';
+import { IconButton } from "@material-ui/core";
+import { useHistory } from 'react-router-dom';
 
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import HistoryIcon from "@material-ui/icons/History"
@@ -46,6 +46,16 @@ export default function CustomizedMenus(props) {
     const handleEdit = () => {
         handleClose();
         props.handleEdit();
+    }
+
+    const handlePrivateKey = () => {
+        handleClose();
+        props.handlePrivateKey();
+    }
+
+    const handleWithdrawAllAssets = () => {
+        handleClose();
+        props.handleWithdraw();
     }
 
     const handleAllAssets = () => {
@@ -101,9 +111,16 @@ export default function CustomizedMenus(props) {
                     All Assets
                 </MenuItem>
                 <MenuItem onClick={handleEditAddress}>
-
                     Edit Addresses
                 </MenuItem>
+                <MenuItem onClick={handlePrivateKey}>
+                    Show PrivateKey
+                </MenuItem>
+                {props.showWithdrawAssets ? (
+                    <MenuItem onClick={handleWithdrawAllAssets}>
+                        Withdraw All Assets
+                    </MenuItem>
+                ) : null}
                 <MenuItem onClick={handleHistory}>
                     <HistoryIcon/> &nbsp;
                     History

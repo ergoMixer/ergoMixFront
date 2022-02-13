@@ -49,9 +49,9 @@ export const token = (value, tokenId, excludeTokenSuffix=false) => {
     return res + " " + tokenName(tokenId, excludeTokenSuffix, resultToken);
 }
 
-export const id = value => {
-    if (value.length > 5) {
-        return value.substr(0, 5) + '...'
+export const id = (value, max_printing_str = 5) => {
+    if (value.length > max_printing_str) {
+        return value.substr(0, max_printing_str) + '...'
     } else {
         return value
     }

@@ -103,7 +103,7 @@ export async function mintScTx(amount, addr) {
     let height = await currentHeight();
     let pr = new age.StableCoinProtocol();
     let prc = BigInt(await priceToMintSc(amount)) + 1000000n;
-    const amountToMint = BigInt(dollarToCent("" + (amount)));
+    const amountToMint = BigInt(await dollarToCent("" + (amount)));
     const txFeeBigInt = BigInt(await txFee());
     let res = pr.w_assembler_mint_stablecoin(
         amountToMint,
@@ -147,6 +147,56 @@ export async function mintRcTx(amount, withdrawAddress) {
     return res;
 }
 
+export async function redeemScTx(amount) {
+    await updateState();
+
+    let age = await ageusd;
+    let height = await currentHeight();
+    let addr = getWalletAddress();
+    let pr = new age.StableCoinProtocol();
+    let res = pr.w_assembler_redeem_stablecoin(
+        BigInt(dollarToCent(amount)),
+        addr,
+        BigInt(txFee),
+        BigInt(height),
+        oracleBox,
+        bankBox,
+        implementor
+    );
+    res = JSON.parse(res);
+    res.requests.splice(2, 1);
+    res.inputs[1] = '$userIns';
+    return res;
+}
+
+export async function redeemRcTx(amount) {
+    await updateState();
+
+    let age = await ageusd;
+    let height = await currentHeight();
+    let addr = getWalletAddress();
+    let pr = new age.StableCoinProtocol();
+    let res = pr.w_assembler_redeem_reservecoin(
+        BigInt(Math.floor(amount)),
+        addr,
+        BigInt(txFee),
+        BigInt(height),
+        oracleBox,
+        bankBox,
+        implementor
+    );
+    res = JSON.parse(res);
+    res.requests.splice(2, 1);
+    res.inputs[1] = '$userIns';
+    return res;
+}
+
+export async function maxRcToRedeem() {
+    if (!bankBox || !oracleBox) await forceUpdateState();
+    if (bankBox.current_reserve_ratio(oracleBox) <= 400n) return 0
+    return Number(bankBox.num_able_to_redeem_reservecoin(oracleBox));
+}
+
 export async function maxScToMint() {
     if (!bankBox || !oracleBox) await forceUpdateState();
     if (bankBox.current_reserve_ratio(oracleBox) <= 400n) return 0
@@ -156,8 +206,16 @@ export async function maxScToMint() {
 export async function maxRcToMint(height) {
     if (!bankBox || !oracleBox) await forceUpdateState();
     if (bankBox.current_reserve_ratio(oracleBox) >= 800n) return 0
-    if (bankBox.current_reserve_ratio(oracleBox) <= 410) return rcNumCirc()
-    return Number(bankBox.num_able_to_mint_reservecoin(oracleBox, BigInt(height)));
+    let circ = await rcNumCirc()
+    let rr = Number(bankBox.current_reserve_ratio(oracleBox))
+    let rcForReserve = parseInt(circ / rr)
+    return rcForReserve * (800 - rr)
+}
+
+export async function ableRcToRedeem(amount) {
+    if (!bankBox || !oracleBox) await forceUpdateState();
+    console.log(amount, BigInt(bankBox.redeem_reservecoin_reserve_ratio(oracleBox, BigInt(amount))));
+    return Number(bankBox.able_to_redeem_reservecoin_amount(oracleBox, BigInt(amount)));
 }
 
 export async function ableScToMint(amount) {
@@ -202,7 +260,12 @@ export async function ergBalance(bal) {
     return bal['erg'] || 0;
 }
 
-export function currentReserveRatio() {
+export async function currentReserveRatio() {
+    if (!bankBox || !oracleBox) await forceUpdateState();
     return Number(bankBox.current_reserve_ratio(oracleBox));
 }
 
+export async function baseReserves() {
+    if (!bankBox || !oracleBox) await forceUpdateState();
+    return bankBox.base_reserves();
+}

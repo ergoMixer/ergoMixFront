@@ -6,10 +6,15 @@ import { connect } from "react-redux";
 
 const AssetProgress = props => {
     const history = useHistory();
-    const handleClick = () => {
+    const handleChangeRing = () => {
         const ringUrl = '/covert/' + props.covertId + '/asset/' + (props.tokenId ? props.tokenId + '/ring/' : 'ring/') + props.ring;
         history.push(ringUrl);
     }
+
+    const handleWithdraw =() => {
+        props.withdraw(props.tokenId)
+    }
+
     return (
         <div className="col-12 col-md-6">
             <div className="card card-stats">
@@ -25,9 +30,16 @@ const AssetProgress = props => {
                     <CovertTokenProgress {...props}/>
                     <div className="row mt-4">
                         <div className="col-12">
-                            <div className="float-right">
-                                <button className="btn btn-outline-primary" onClick={handleClick}>Change Ring</button>
+                            <div className="float-right ml-2">
+                                <button className="btn btn-outline-primary" onClick={handleChangeRing}>Change Ring</button>
                             </div>
+                            {props.tokenId === '' || props.confirmedDeposit === 0 ?
+                                null :
+                                <div className="float-right">
+                                    <button className="btn btn-outline-primary" onClick={handleWithdraw}>Withdraw
+                                    </button>
+                                </div>
+                            }
                             <div>{formatter.token(props.ring, props.tokenId)} Ring</div>
                             {props.currentMixingAmount ? (
                                 <div>Mixing {formatter.token(props.currentMixingAmount, props.tokenId)}</div>

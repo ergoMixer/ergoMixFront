@@ -35,6 +35,18 @@ function addHeapObject(obj) {
 
 function getObject(idx) { return heap[idx]; }
 
+function dropObject(idx) {
+    if (idx < 36) return;
+    heap[idx] = heap_next;
+    heap_next = idx;
+}
+
+function takeObject(idx) {
+    const ret = getObject(idx);
+    dropObject(idx);
+    return ret;
+}
+
 let WASM_VECTOR_LEN = 0;
 
 const lTextEncoder = typeof TextEncoder === 'undefined' ? (0, module.require)('util').TextEncoder : TextEncoder;
@@ -98,18 +110,6 @@ function getInt32Memory0() {
         cachegetInt32Memory0 = new Int32Array(wasm.memory.buffer);
     }
     return cachegetInt32Memory0;
-}
-
-function dropObject(idx) {
-    if (idx < 36) return;
-    heap[idx] = heap_next;
-    heap_next = idx;
-}
-
-function takeObject(idx) {
-    const ret = getObject(idx);
-    dropObject(idx);
-    return ret;
 }
 
 function isLikeNone(x) {
@@ -242,34 +242,6 @@ function handleError(f) {
     };
 }
 /**
-* newtype for box registers R4 - R9
-*/
-export const NonMandatoryRegisterId = Object.freeze({
-/**
-* id for R4 register
-*/
-R4:4,"4":"R4",
-/**
-* id for R5 register
-*/
-R5:5,"5":"R5",
-/**
-* id for R6 register
-*/
-R6:6,"6":"R6",
-/**
-* id for R7 register
-*/
-R7:7,"7":"R7",
-/**
-* id for R8 register
-*/
-R8:8,"8":"R8",
-/**
-* id for R9 register
-*/
-R9:9,"9":"R9", });
-/**
 * Network type
 */
 export const NetworkPrefix = Object.freeze({
@@ -297,6 +269,34 @@ Pay2SH:2,"2":"Pay2SH",
 * 0x03 - Pay-to-Script(P2S)
 */
 Pay2S:3,"3":"Pay2S", });
+/**
+* newtype for box registers R4 - R9
+*/
+export const NonMandatoryRegisterId = Object.freeze({
+/**
+* id for R4 register
+*/
+R4:4,"4":"R4",
+/**
+* id for R5 register
+*/
+R5:5,"5":"R5",
+/**
+* id for R6 register
+*/
+R6:6,"6":"R6",
+/**
+* id for R7 register
+*/
+R7:7,"7":"R7",
+/**
+* id for R8 register
+*/
+R8:8,"8":"R8",
+/**
+* id for R9 register
+*/
+R9:9,"9":"R9", });
 /**
 * A specified box which is an Oracle Pool box that stores a `Long` integer
 * datapoint inside of R4 that represents how many lovelaces can be bought
@@ -4258,7 +4258,7 @@ export class Tokens {
     * @returns {number}
     */
     len() {
-        var ret = wasm.secretkeys_len(this.ptr);
+        var ret = wasm.tokens_len(this.ptr);
         return ret >>> 0;
     }
     /**
@@ -4971,8 +4971,12 @@ export const __wbg_adausdoraclepoolbox_new = function(arg0) {
     return addHeapObject(ret);
 };
 
-export const __wbindgen_json_parse = function(arg0, arg1) {
-    var ret = JSON.parse(getStringFromWasm0(arg0, arg1));
+export const __wbindgen_object_drop_ref = function(arg0) {
+    takeObject(arg0);
+};
+
+export const __wbindgen_number_new = function(arg0) {
+    var ret = arg0;
     return addHeapObject(ret);
 };
 
@@ -4985,29 +4989,15 @@ export const __wbindgen_json_serialize = function(arg0, arg1) {
     getInt32Memory0()[arg0 / 4 + 0] = ptr0;
 };
 
-export const __wbindgen_number_new = function(arg0) {
-    var ret = arg0;
+export const __wbindgen_json_parse = function(arg0, arg1) {
+    var ret = JSON.parse(getStringFromWasm0(arg0, arg1));
     return addHeapObject(ret);
-};
-
-export const __wbindgen_object_drop_ref = function(arg0) {
-    takeObject(arg0);
 };
 
 export const __wbg_self_86b4b13392c7af56 = handleError(function() {
     var ret = self.self;
     return addHeapObject(ret);
 });
-
-export const __wbg_static_accessor_MODULE_452b4680e8614c81 = function() {
-    var ret = module;
-    return addHeapObject(ret);
-};
-
-export const __wbg_require_f5521a5b85ad2542 = function(arg0, arg1, arg2) {
-    var ret = getObject(arg0).require(getStringFromWasm0(arg1, arg2));
-    return addHeapObject(ret);
-};
 
 export const __wbg_crypto_b8c92eaac23d0d80 = function(arg0) {
     var ret = getObject(arg0).crypto;
@@ -5022,6 +5012,16 @@ export const __wbg_msCrypto_9ad6677321a08dd8 = function(arg0) {
 export const __wbindgen_is_undefined = function(arg0) {
     var ret = getObject(arg0) === undefined;
     return ret;
+};
+
+export const __wbg_static_accessor_MODULE_452b4680e8614c81 = function() {
+    var ret = module;
+    return addHeapObject(ret);
+};
+
+export const __wbg_require_f5521a5b85ad2542 = function(arg0, arg1, arg2) {
+    var ret = getObject(arg0).require(getStringFromWasm0(arg1, arg2));
+    return addHeapObject(ret);
 };
 
 export const __wbg_getRandomValues_dd27e6b0652b3236 = function(arg0) {

@@ -8,6 +8,11 @@ const pendingAsset = props => {
         const ringUrl = '/covert/' + props.covertId + '/asset/' + (props.tokenId ? props.tokenId + '/ring/' : 'ring/') + props.ring;
         props.history.push(ringUrl);
     }
+
+    const handleWithdraw =() => {
+        props.withdraw(props.tokenId)
+    }
+
     return (
         <div className="col-12 col-md-6">
             <div className="card card-stats">
@@ -26,11 +31,21 @@ const pendingAsset = props => {
                     </div>
                     <div className="row mt-4">
                         <div className="col-12">
-                            <div className="float-right">
+                            <div className="float-right ml-2">
                                 <button className="btn btn-outline-primary" onClick={handleClick}>Select Ring</button>
                             </div>
+                                {props.tokenId === '' ?
+                                    null :
+                                    <div className="float-right">
+                                        <button className="btn btn-outline-primary" onClick={handleWithdraw}>Withdraw
+                                        </button>
+                                    </div>
+                                }
+
                         </div>
+
                     </div>
+
                 </div>
             </div>
         </div>

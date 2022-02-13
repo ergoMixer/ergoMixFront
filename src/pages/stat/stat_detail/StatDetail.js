@@ -252,16 +252,21 @@ class StatDetail extends React.Component {
         const statusSelected = this.statusSelected();
         return (
             <div className="row">
-                <ProjectModal close={this.closeModal} show={this.state.setAddressShow} padding={true}>
+                <ProjectModal close={this.closeModal} show={this.state.setAddressShow} padding={true} scroll={'hidden'}>
                     <SetAddress mix={this.state.mix} close={this.closeModal}/>
                 </ProjectModal>
-                <ProjectModal close={this.closeModal} show={this.state.withdrawListShow} padding={true}>
+                <ProjectModal
+                    close={this.closeModal}
+                    show={this.state.withdrawListShow}
+                    padding={true}
+                    scroll={'hidden'}
+                >
                     <WithdrawList mix={this.state.mix} close={this.closeModal}/>
                 </ProjectModal>
-                <ProjectModal close={this.closeModal} show={this.state.ageUsdShow} padding={true}>
+                <ProjectModal close={this.closeModal} show={this.state.ageUsdShow} padding={true} scroll={'hidden'}>
                     {this.ageUsdModal()}
                 </ProjectModal>
-                <ProjectModal close={this.closeModal} show={this.state.transactionShow}>
+                <ProjectModal close={this.closeModal} show={this.state.transactionShow} scroll={'hidden'}>
                     <div>Transaction ID:</div>
                     <CopyClipboard value={this.state.transactionId}/>
                     <div className="text-center">

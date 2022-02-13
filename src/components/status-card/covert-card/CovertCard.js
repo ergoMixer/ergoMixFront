@@ -42,9 +42,10 @@ class CovertCard extends React.Component {
 
     render() {
         const assets = [...this.props.assets].slice(0, 3)
+        const extraAssetCount = this.props.assets.filter(item => item.tokenId).length
         return (
             <div className="col-12 col-md-6">
-                <ProjectModal close={this.hideQrCode} show={this.state.showQrCode}>
+                <ProjectModal close={this.hideQrCode} show={this.state.showQrCode} scroll={'hidden'}>
                     <div className="text-center">
                         <CopyClipboard value={this.props.deposit}/>
                         <br/>
@@ -58,9 +59,17 @@ class CovertCard extends React.Component {
                         </div>
                         <h3 className="card-title">
                             <CovertCardAction
+                                showWithdrawAssets={extraAssetCount > 0}
                                 {...this.props}
-                                handleEdit={() => this.props.edit(this.props.id, this.props.nameCovert)}/>
-                            <div style={{padding: "6px 12px 6px 0", textAlign: "left"}}>{this.props.nameCovert ? this.props.nameCovert : "No Name"}</div>
+                                handleEdit={() => this.props.edit(this.props.id, this.props.nameCovert)}
+                                handlePrivateKey={()=>this.props.privateKey(this.props.id)}
+                                handleWithdraw={()=>{this.props.withdraw(this.props.id)}}
+                            />
+                            <div
+                                style={{padding: "6px 12px 6px 0", textAlign: "left"}}
+                            >
+                                {this.props.nameCovert ? this.props.nameCovert : "No Name"}
+                            </div>
                         </h3>
                     </div>
                     <div className="card-body statistic-card card-little text-left">

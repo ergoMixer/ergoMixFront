@@ -49,7 +49,7 @@ class WithdrawList extends React.Component {
         return (
             <div className="row">
                 <div className="col-12">
-                    <div className="card-body">
+                    <div className="card-body" style={{overflowY: 'scroll', maxHeight: '40vh'}}>
                         <div className="table-responsive">
                             <table className="table">
                                 <thead className=" text-primary">

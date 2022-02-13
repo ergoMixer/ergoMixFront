@@ -11,6 +11,7 @@ class Settings extends React.Component {
         selectedFile: null,
         backupModal: false,
         restoreModal: false,
+        exportSK:false,
         showComplete: false,
         success: false,
         loading: false,
@@ -35,7 +36,7 @@ class Settings extends React.Component {
     };
 
     closeModal = () => {
-        this.setState({selectedFile: null, restoreModal: false, backupModal: false});
+        this.setState({selectedFile: null, restoreModal: false, backupModal: false, exportSK: false});
     }
 
     closeSuccessModal = () => {
@@ -48,10 +49,16 @@ class Settings extends React.Component {
         window.open(url, "_blank")
     }
 
+    downloadSecretKeys = () => {
+        const url = BASE_URL + "covert/keys";
+        this.setState({exportSK: false});
+        window.open(url, "_blank");
+    }
+
     render = () => {
         return (
             <div className="row">
-                <ProjectModal close={this.closeModal} show={this.state.backupModal}>
+                <ProjectModal close={this.closeModal} show={this.state.backupModal} scroll={'hidden'}>
                     <div className="row">
                         <div className="col-12 text-center">
                             <strong>Please read the "Sensitive data and backup" section in About page before relying on backup/restore.</strong>
@@ -88,6 +95,22 @@ class Settings extends React.Component {
                             <button className="btn btn-danger" onClick={this.onFileUpload}>
                                 Restore &nbsp;
                                 {this.state.loading ? <i className="fa fa-circle-o-notch fa-spin"/> : null}
+                            </button>
+                            &nbsp;
+                            <button className="btn" onClick={this.closeModal}>Cancel</button>
+                        </div>
+                    </div>
+                </ProjectModal>
+                <ProjectModal close={this.closeModal} show={this.state.exportSK} scroll={'hidden'}>
+                    <div className="row">
+                        <div className="col-12 text-center">
+                            <strong>Please read the "Sensitive data and backup" section in About page before relying on export secret keys.</strong>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-12 text-center">
+                            <button className="btn btn-danger" onClick={this.downloadSecretKeys}>
+                                Export &nbsp;
                             </button>
                             &nbsp;
                             <button className="btn" onClick={this.closeModal}>Cancel</button>
@@ -146,6 +169,15 @@ class Settings extends React.Component {
                                     Select File to Restore
                                 </label>
                                 <div style={{padding: '17px 0'}}>Restore Database
+                                </div>
+                            </Panel>
+                        </div>
+                        <div className="col-12 col-sm-6">
+                            <Panel>
+                                <button className="btn btn-outline-primary float-right"
+                                        onClick={() => this.setState({exportSK: true})}>Export
+                                </button>
+                                <div style={{padding: "17px 0"}}>Export All Secret Keys of Covert Address
                                 </div>
                             </Panel>
                         </div>

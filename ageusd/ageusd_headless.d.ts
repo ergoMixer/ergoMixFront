@@ -1,35 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
-* newtype for box registers R4 - R9
-*/
-export enum NonMandatoryRegisterId {
-/**
-* id for R4 register
-*/
-  R4,
-/**
-* id for R5 register
-*/
-  R5,
-/**
-* id for R6 register
-*/
-  R6,
-/**
-* id for R7 register
-*/
-  R7,
-/**
-* id for R8 register
-*/
-  R8,
-/**
-* id for R9 register
-*/
-  R9,
-}
-/**
 * Network type
 */
 export enum NetworkPrefix {
@@ -58,6 +29,35 @@ export enum AddressTypePrefix {
 * 0x03 - Pay-to-Script(P2S)
 */
   Pay2S,
+}
+/**
+* newtype for box registers R4 - R9
+*/
+export enum NonMandatoryRegisterId {
+/**
+* id for R4 register
+*/
+  R4,
+/**
+* id for R5 register
+*/
+  R5,
+/**
+* id for R6 register
+*/
+  R6,
+/**
+* id for R7 register
+*/
+  R7,
+/**
+* id for R8 register
+*/
+  R8,
+/**
+* id for R9 register
+*/
+  R9,
 }
 /**
 * A specified box which is an Oracle Pool box that stores a `Long` integer

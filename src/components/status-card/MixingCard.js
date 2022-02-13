@@ -44,7 +44,7 @@ class MixingCard extends React.Component {
                         <QRCode size={128} value={this.props.deposit}/>
                     </div>
                 </ProjectModal>
-                <ProjectModal close={this.hideDetails} show={this.state.showDetail}>
+                <ProjectModal close={this.hideDetails} show={this.state.showDetail} scroll={'hidden'}>
                     <MoreDetail {...this.props}/>
                 </ProjectModal>
 

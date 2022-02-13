@@ -6,6 +6,10 @@ import Loading from "../../../../components/loading/Loading";
 import { ApiNetwork } from "../../../../network/api";
 import AssetProgressSelect from "./asset-progress/AssetProgressSelect";
 import AddAsset from "./AddAsset";
+import { TextField } from "@material-ui/core";
+import ProjectModal from "../../../../components/modal/modal";
+import { NotificationManager } from "react-notifications";
+import * as formatter from "../../../../formatter/formatters";
 
 class CovertAsset extends React.Component {
     state = {
@@ -13,7 +17,39 @@ class CovertAsset extends React.Component {
         loaded: false,
         loading: false,
         covertId: null,
-        address: ''
+        address: '',
+        isEditing: false,
+        showWithdraw: false,
+        selectedTokenId: '',
+        depositAddress: ''
+    }
+
+    closeModal = () => {
+        this.setState({showWithdraw: false, isEditing: false, depositAddress: '', selectedTokenId: ''})
+    }
+
+    handleWithdraw = () => {
+        this.setState({isEditing: true})
+        return null
+    }
+
+    handleAddress = (e) => {
+        this.setState({depositAddress: e.target.value});
+    }
+
+    withdrawAsset = () => {
+        ApiNetwork.withdrawCovertAsset(
+            this.state.covertId,
+            [this.state.selectedTokenId],
+            this.state.depositAddress
+        ).then(() => {
+            NotificationManager.success('Withdraw Was Successful', 'Success');
+        }).catch(
+            error => {
+                NotificationManager.error(formatter.errorMessage(error), 'Update Exception!', 5000);
+            }
+        );
+        this.closeModal();
     }
 
     loadAssets = () => {
@@ -64,9 +100,34 @@ class CovertAsset extends React.Component {
                          loaded={this.state.loaded}
                          emptyMessage={["There are no asset for this address"]}
                 >
+                    <ProjectModal close={this.closeModal} show={this.state.isEditing} scroll={'hidden'}>
+                        <div className="row">
+                            <div className="col-12">
+                                <TextField
+                                    label="Withdraw Address"
+                                    onChange={this.handleAddress}
+                                    error={this.state.depositAddress === ''}
+                                    value={this.state.depositAddress}
+                                    required={true}
+                                />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-12 text-center">
+                                <button className="btn" onClick={this.closeModal}>Close</button>
+                                <button
+                                    className="btn btn-success"
+                                    disabled={this.state.depositAddress === ''}
+                                    onClick={this.withdrawAsset}>
+                                    Withdraw
+                                </button>
+                            </div>
+                        </div>
+                    </ProjectModal>
                     <div className="row">
                         {this.state.assets.map((item, index) => (
-                            <AssetProgressSelect {...item} key={index} covertId={this.props.match.params.covertId}/>
+                            <AssetProgressSelect {...item} key={index} covertId={this.props.match.params.covertId} withdraw={(id)=>this.setState(
+                                {selectedTokenId:id},this.handleWithdraw)}/>
                         ))}
                         <AddAsset covertId={this.props.match.params.covertId} currentTokens={currentAssetIds}/>
                     </div>
