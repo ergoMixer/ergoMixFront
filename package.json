@@ -4,7 +4,7 @@
   "homepage": "/dashboard/",
   "private": true,
   "scripts": {
-    "start": "webpack serve",
+    "start": "NODE_ENV=development webpack serve --mode development",
     "build-dev": "NODE_ENV=development webpack build --mode development",
     "build-prod": "NODE_ENV=prodution webpack build --mode production",
     "watch": "NODE_ENV=development webpack watch --mode development"
