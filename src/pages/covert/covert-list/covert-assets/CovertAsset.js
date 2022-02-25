@@ -10,6 +10,7 @@ import { TextField } from "@mui/material";
 import ProjectModal from "../../../../components/modal/modal";
 import { NotificationManager } from "react-notifications";
 import * as formatter from "../../../../formatter/formatters";
+import { withParams } from '../../../../hoc/withParams';
 
 class CovertAsset extends React.Component {
     state = {
@@ -138,4 +139,4 @@ class CovertAsset extends React.Component {
     }
 }
 
-export default withLayout(MainLayout)(CovertAsset);
+export default withLayout(MainLayout)(withParams(CovertAsset));

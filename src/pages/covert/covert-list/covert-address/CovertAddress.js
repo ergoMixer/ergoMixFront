@@ -12,7 +12,7 @@ import Panel from "../../../../components/panel/Panel";
 import SettingsEthernet from "@mui/icons-material/SettingsEthernet";
 import Cloud from "@mui/icons-material/Cloud";
 import ArrowRightAlt from "@mui/icons-material/ArrowRightAlt";
-
+import { withParams } from '../../../../hoc/withParams';
 class CovertAddress extends React.Component {
     state = {
         addresses: [],
@@ -216,4 +216,4 @@ const mapStateToProps = state => ({
 });
 
 
-export default withLayout(MainLayout)(connect(mapStateToProps)(CovertAddress));
+export default withLayout(MainLayout)(connect(mapStateToProps)(withParams(CovertAddress)));

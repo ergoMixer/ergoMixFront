@@ -153,6 +153,8 @@ class CovertList extends React.Component {
                                     error={this.state.editingName === ''}
                                     value={this.state.editingName}
                                     required={true}
+                                    variant='filled'
+                                    sx={{backgroundColor: 'rgba(0,0,0,0)'}}
                                 />
                             </div>
                         </div>

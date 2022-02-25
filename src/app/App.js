@@ -23,9 +23,21 @@ import { ThemeProvider } from '@mui/material/styles';
 import { createTheme } from '@mui/material';
 
 export const theme = createTheme({
-    // palette: {
-    //     mode: 'dark',
-    // },
+    components: {
+        MuiFilledInput: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: 'rgba(0,0,0,0.0)',
+                    '&:hover': {
+                        backgroundColor: 'rgba(0,0,0,0.0)'
+                    },
+                    '&.Mui-focused': {
+                        backgroundColor: 'rgba(0,0,0,0.0)'
+                    }
+                },
+            },
+        },
+    },
 });
 
 class App extends React.Component {

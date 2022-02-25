@@ -21,6 +21,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Loading from "../../../components/loading/Loading";
 import OrderTd from '../../../components/order-td/OrderTd';
 import Edit from "@mui/icons-material/Edit";
+import { withParams } from '../../../hoc/withParams';
 
 class StatDetail extends React.Component {
     state = {
@@ -454,4 +455,4 @@ const mapStateToProps = state => ({
     covertLoaded: state.covertLoaded,
 });
 
-export default withLayout(MainLayout)(connect(mapStateToProps)(StatDetail));
+export default withLayout(MainLayout)(connect(mapStateToProps)(withParams(StatDetail)));

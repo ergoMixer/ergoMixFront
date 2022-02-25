@@ -12,7 +12,7 @@ import CopyClipboard from "../../../../components/copy-clipboard/CopyClipboard";
 import Breadcrumb from "../../../../components/broadcom/Breadcrumb";
 import Withdraw from "../../../stat/withdraw/Withdraw";
 import Tooltip from "../../../../components/tooltip/Tooltip";
-
+import { withParams } from '../../../../hoc/withParams';
 class CovertHistory extends React.Component {
     state = {
         mix: [],
@@ -159,5 +159,5 @@ const mapStateToProps = state => ({
     covertLoaded: state.covertLoaded
 });
 
-export default withLayout(MainLayout)(connect(mapStateToProps)(CovertHistory));
+export default withLayout(MainLayout)(connect(mapStateToProps)(withParams(CovertHistory)));
 
