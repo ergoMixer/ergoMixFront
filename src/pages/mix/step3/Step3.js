@@ -7,6 +7,8 @@ import Panel from "../../../components/panel/Panel";
 import SettingsEthernet from "@mui/icons-material/SettingsEthernet";
 import Edit from "@mui/icons-material/Edit";
 import Cloud from "@mui/icons-material/Cloud";
+import ArrowRightAlt from "@mui/icons-material/ArrowRightAlt";
+
 class Step3 extends React.Component {
     state = {
         addresses: [],
@@ -153,7 +155,7 @@ class Step3 extends React.Component {
                                         <li className="nav-item">
                                             <a className={this.state.fillingType === "later" ? "nav-link active" : "nav-link"}
                                                onClick={() => this.setFillingType("later")}>
-                                                <i className="material-icons">arrow_right_alt</i> Set Later
+                                                <i className="material-icons"><ArrowRightAlt /></i> Set Later
                                                 <div className="ripple-container"/>
                                             </a>
                                         </li>

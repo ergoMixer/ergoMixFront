@@ -6,10 +6,10 @@ import { connect } from "react-redux";
 import Schedule from "@mui/icons-material/Schedule";
 
 const AssetProgress = props => {
-    const history = useNavigate();
+    const navigate = useNavigate();
     const handleChangeRing = () => {
         const ringUrl = '/covert/' + props.covertId + '/asset/' + (props.tokenId ? props.tokenId + '/ring/' : 'ring/') + props.ring;
-        history.push(ringUrl);
+        navigate(ringUrl);
     }
 
     const handleWithdraw =() => {

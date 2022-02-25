@@ -2,11 +2,13 @@ import React from 'react';
 import * as formatter from "../../../../../formatter/formatters";
 import { connect } from "react-redux";
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
+import { useNavigate } from 'react-router-dom';
 
 const pendingAsset = props => {
+    const navigate = useNavigate();
     const handleClick = () => {
         const ringUrl = '/covert/' + props.covertId + '/asset/' + (props.tokenId ? props.tokenId + '/ring/' : 'ring/') + props.ring;
-        props.history.push(ringUrl);
+        navigate(ringUrl);
     }
 
     const handleWithdraw =() => {

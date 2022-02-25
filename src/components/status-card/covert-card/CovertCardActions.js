@@ -10,7 +10,6 @@ import HistoryIcon from "@mui/icons-material/History"
 import EditIcon from "@mui/icons-material/Edit"
 import Tooltip from "../../tooltip/Tooltip";
 
-
 const StyledMenu = withStyles({
     paper: {
         border: '1px solid #d3d4d5',
@@ -32,8 +31,8 @@ const StyledMenu = withStyles({
 ));
 
 export default function CustomizedMenus(props) {
+    const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const history = useNavigate();
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -60,17 +59,17 @@ export default function CustomizedMenus(props) {
 
     const handleAllAssets = () => {
         handleClose()
-        history.push('/covert/' + props.id + '/asset');
+        navigate(`/covert/${props.id}/asset`);
     }
 
     const handleEditAddress = () => {
         handleClose()
-        history.push("/covert/" + props.id + '/address');
+        navigate(`/covert/${props.id}/address`);
     }
 
     const handleHistory = () => {
         handleClose()
-        history.push('/covert/' + props.id + '/');
+        navigate(`/covert/${props.id}/`);
     }
 
     return (

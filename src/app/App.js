@@ -28,7 +28,6 @@ export const theme = createTheme({
     // },
 });
 
-const CovertStatDetail = (props ) => <StatDetail {...props} path='covert'/>;
 class App extends React.Component {
     componentDidMount = () => {
         this.props.getSupportedToken();
@@ -58,8 +57,7 @@ class App extends React.Component {
                     <Route path="/covert/:covertId/" element={<StatDetail path='covert'/>}/>
                     <Route path="/covert" element={<CovertList />}/>
                     <Route path="/shutdown" element={<Shutdown />}/>
-                    <Route path="/" element={(<Home/>)} />
-                    <Route element={(<Home/>)} />
+                    <Route element={(<Home/>)} index={true} />
                 </Routes>
             </BrowserRouter>
           </ThemeProvider>

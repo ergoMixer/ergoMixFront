@@ -3,82 +3,82 @@ import ProjectModal from "../../components/modal/modal";
 import withLayout from "../../hoc/with_layout/withLayout";
 import MainLayout from "../../layout/main-layout/MainLayout";
 import { ApiNetwork } from "../../network/api";
+import { useNavigate } from "react-router-dom";
 
-class Shutdown extends React.Component {
-    state = {
+export const Shutdown = (props) => {
+    const navigate = useNavigate();
+    const [state, setState] = React.useState({
         activeMix: false,
         loading: false,
-    }
+    })
 
-    componentDidMount() {
+    React.useEffect(() => {
         ApiNetwork.mixRequestGroupActiveList().then((response => {
-            this.setState({activeMix: response.data.length > 0})
+            setState({ ...state, activeMix: response.data.length > 0})
         })).catch(error => {
 
         });
+    }, []);
+
+    const closeModal = () => {
+        navigate("/");
     }
 
-    closeModal = () => {
-        this.props.history.push("/");
-    }
-
-    shutdown = () => {
-        this.setState({loading: true})
+    const shutdown = () => {
+        setState({ ...state, loading: true})
         ApiNetwork.shutdown().catch(error => {
-            this.setState({loading: false, showComplete: true})
+            setState({ ...state, loading: false, showComplete: true})
         });
     }
 
-    render() {
-        return (
-            <React.Fragment>
-                <ProjectModal close={this.closeModal} show={!this.state.showComplete}>
-                    <div className="row">
-                        <div className="col-12 text-center">
-                            {this.state.activeMix ? (
-                                <React.Fragment>
-                                    <div>There are some mixes in progress. Shutting the mixer down will result in
-                                        pausing
-                                        all mixes.
-                                    </div>
-                                    <div>Mixes will resume when you start the ErgoMixer again.</div>
-                                    <br/>
-                                    <div>Shutdown anyway?</div>
-                                </React.Fragment>
-                            ) : (
-                                <div>Do you want to shutdown the mixer?</div>
-                            )}
+    return (
+        <React.Fragment>
+            <ProjectModal close={closeModal} show={!state.showComplete}>
+                <div className="row">
+                    <div className="col-12 text-center">
+                        {state.activeMix ? (
+                            <React.Fragment>
+                                <div>There are some mixes in progress. Shutting the mixer down will result in
+                                    pausing
+                                    all mixes.
+                                </div>
+                                <div>Mixes will resume when you start the ErgoMixer again.</div>
+                                <br/>
+                                <div>Shutdown anyway?</div>
+                            </React.Fragment>
+                        ) : (
+                            <div>Do you want to shutdown the mixer?</div>
+                        )}
 
-                            <br/>
-                        </div>
+                        <br/>
                     </div>
-                    <div className="row">
-                        <div className="col-12 text-center">
-                            <button className="btn btn-danger" onClick={this.shutdown}>
-                                Shutdown &nbsp;
-                                {this.state.loading ? <i className="fa fa-circle-o-notch fa-spin"/> : null}
-                            </button>
-                            &nbsp;
-                            <button className="btn" onClick={this.closeModal}>Cancel</button>
-                        </div>
+                </div>
+                <div className="row">
+                    <div className="col-12 text-center">
+                        <button className="btn btn-danger" onClick={shutdown}>
+                            Shutdown &nbsp;
+                            {state.loading ? <i className="fa fa-circle-o-notch fa-spin"/> : null}
+                        </button>
+                        &nbsp;
+                        <button className="btn" onClick={closeModal}>Cancel</button>
                     </div>
-                </ProjectModal>
-                <ProjectModal close={this.closeModal} show={this.state.showComplete}>
-                    <div className="row">
-                        <div className="col-12 text-center">
-                            <b>Shutdown request successfully was sent! It may take a few seconds for ErgoMixer to peacefully shutdown...</b>
-                            <br/>
-                        </div>
+                </div>
+            </ProjectModal>
+            <ProjectModal close={closeModal} show={state.showComplete}>
+                <div className="row">
+                    <div className="col-12 text-center">
+                        <b>Shutdown request successfully was sent! It may take a few seconds for ErgoMixer to peacefully shutdown...</b>
+                        <br/>
                     </div>
-                    <div className="row">
-                        <div className="col-12 text-center">
-                            <button className="btn" onClick={this.closeModal}>Close</button>
-                        </div>
+                </div>
+                <div className="row">
+                    <div className="col-12 text-center">
+                        <button className="btn" onClick={closeModal}>Close</button>
                     </div>
-                </ProjectModal>
-            </React.Fragment>
-        )
-    }
+                </div>
+            </ProjectModal>
+        </React.Fragment>
+    );
 }
 
 export default withLayout(MainLayout)(Shutdown);
