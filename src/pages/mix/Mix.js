@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 export const Mix = (props) => {
     const navigate = useNavigate();
-    [state, setState] = React.useState({
+    const [state, setState] = React.useState({
         values: {
             amount: "",
             mix: "",
