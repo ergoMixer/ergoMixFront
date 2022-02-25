@@ -5,9 +5,9 @@
   "private": true,
   "scripts": {
     "start": "webpack serve",
-    "build-dev": "webpack build --mode development",
-    "build-prod": "webpack build --mode production",
-    "watch": "webpack watch"
+    "build-dev": "NODE_ENV=development webpack build --mode development",
+    "build-prod": "NODE_ENV=prodution webpack build --mode production",
+    "watch": "NODE_ENV=development webpack watch --mode development"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -55,7 +55,6 @@
     "file-loader": "^6.2.0",
     "font-awesome": "^4.7.0",
     "html-webpack-plugin": "^5.5.0",
-    "interpolate-html-plugin": "^4.0.0",
     "json-bigint": "^1.0.0",
     "moment": "^2.29.1",
     "node-sass": "^7.0.1",

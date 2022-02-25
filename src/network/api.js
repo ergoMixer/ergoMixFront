@@ -4,7 +4,7 @@ import { store } from "../store";
 
 // const DEFAULT_BASE_URL = "http://10.10.9.4:9001";
 const DEFAULT_BASE_URL = "http://localhost:9000/";
-export const BASE_URL = "http://localhost:9000/" // (window.backend === undefined ?  DEFAULT_BASE_URL : window.backend);
+export const BASE_URL = (window.backend === undefined ?  DEFAULT_BASE_URL : window.backend);
 // export const BASE_URL = "/";
 const instance = axios.create({baseURL: BASE_URL});
 

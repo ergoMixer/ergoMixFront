@@ -1,30 +1,7 @@
-// const path = require('path');
-
-// module.exports = {
-//   entry: './src/index.ts',
-//   module: {
-//     rules: [
-//       {
-//         test: /\.tsx?$/,
-//         use: 'ts-loader',
-//         exclude: /node_modules/,
-//       },
-//     ],
-//   },
-//   resolve: {
-//     extensions: [ '.tsx', '.ts', '.js' ],
-//   },
-//   output: {
-//     filename: 'bundle.js',
-//     path: path.resolve(__dirname, 'dist'),
-//   },
-// };
-
 const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const InterpolateHtmlPlugin = require('interpolate-html-plugin');
 
 const config = {
   entry: [
@@ -90,12 +67,16 @@ const config = {
     new CopyPlugin({
       patterns: [{
         from: 'public',
+        filter: (filePath) => !filePath.includes('index_template.html')
       }],
     }),
     new HtmlWebpackPlugin({
       template: 'public/index_template.html',
       inject: true,
-      filename: 'index.html'
+      filename: 'index.html',
+      templateParameters: {
+        backendUri: process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:9000/'
+      }
     }),
     new webpack.ContextReplacementPlugin(
         /ergo-lib-wasm-browser/,
@@ -120,8 +101,7 @@ const config = {
   experiments: {
     asyncWebAssembly: true
     // syncWebAssembly: true
-  },
-  mode: 'development'
+  }
 };
 
 module.exports = config;
