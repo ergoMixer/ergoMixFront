@@ -20,7 +20,7 @@ import CovertAddress from "../pages/covert/covert-list/covert-address/CovertAddr
 import Shutdown from "../pages/shutdown/Shutdown";
 
 import { ThemeProvider } from '@mui/material/styles';
-import { createTheme } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 
 export const theme = createTheme({
     components: {

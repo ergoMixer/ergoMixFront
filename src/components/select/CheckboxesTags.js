@@ -70,8 +70,8 @@ class CheckboxesTags extends React.Component {
                             aria-expanded={this.state.open ? 'true' : undefined}
                             aria-label="select merge strategy"
                             aria-haspopup="menu"
-                            style={{border: 0, padding: 0, marginLeft:0, minWidth: 0}}
-                            color={'default'}
+                            style={{ border: 0, padding: 0, marginLeft: 0, minWidth: 0 }}
+                            color="primary"
                             onClick={this.handleToggle}
                         >
                             <ArrowDropDownIcon />
