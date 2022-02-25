@@ -1,8 +1,8 @@
 import React from 'react';
 import MaterialSelect from "../../../../components/select/MaterialSelect";
 import { MenuItem, TextField } from "@mui/material";
-// import { withRouter } from "react-router";
 import { connect } from "react-redux";
+import Add from "@mui/icons-material/Add";
 
 class AddAsset extends React.Component {
     state = {
@@ -93,7 +93,7 @@ class AddAsset extends React.Component {
                 <div className="card card-stats">
                     <div className="card-header card-header-info card-header-icon">
                         <div className="card-icon">
-                            <i className="material-icons">add</i>
+                            <i className="material-icons"><Add /></i>
                         </div>
                         <h3 className="card-title">
                             Add New

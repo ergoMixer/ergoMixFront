@@ -13,6 +13,7 @@ import Panel from "../../../components/panel/Panel";
 import * as formatter from "../../../formatter/formatters";
 import DataTable from "../../../components/table/assetTable";
 import { NotificationManager } from "react-notifications";
+import CallSplit from "@mui/icons-material/CallSplit";
 
 const create = (
     <NavLink className="btn btn-outline-primary" style={{marginRight: "15px"}} to='/covert/new'>
@@ -240,11 +241,11 @@ class CovertList extends React.Component {
                         <div className="col-12">
                             <Panel>
                                 <div className="help-content-wrapper">
-                                    <i className="material-icons box-display warning">call_split</i>
+                                    <i className="material-icons box-display warning"><CallSplit /></i>
                                     <span className="helper-text"> No active/completed mixes </span>
-                                    <i className="material-icons box-display info">call_split</i>
+                                    <i className="material-icons box-display info"><CallSplit /></i>
                                     <span className="helper-text"> Has some completed mixes </span>
-                                    <i className="material-icons box-display success">call_split</i>
+                                    <i className="material-icons box-display success"><CallSplit /></i>
                                     <span className="helper-text"> Has some active mixes </span>
                                 </div>
                             </Panel>

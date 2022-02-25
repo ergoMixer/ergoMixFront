@@ -6,7 +6,7 @@ import MoreDetail from "./MoreDetail";
 import CardHeaderTitle from './details/CardHeaderTitle';
 import CardFooter from "./details/CardFooter";
 import CopyClipboard from "../copy-clipboard/CopyClipboard";
-
+import Autorenew from "@mui/icons-material/Autorenew";
 class MixingCard extends React.Component {
     state = {
         showQrCode: false,
@@ -51,7 +51,7 @@ class MixingCard extends React.Component {
                 <div className="card card-stats">
                     <div className="card-header card-header-success card-header-icon">
                         <div className="card-icon">
-                            <i className="material-icons">autorenew</i>
+                            <i className="material-icons"><Autorenew /></i>
                         </div>
                         <CardHeaderTitle {...this.props}/>
                     </div>

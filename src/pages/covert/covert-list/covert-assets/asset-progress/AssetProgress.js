@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import CovertTokenProgress from "../../../../../components/status-card/covert-card/CovertTokenProgress";
 import * as formatter from "../../../../../formatter/formatters";
 import { connect } from "react-redux";
+import Schedule from "@mui/icons-material/Schedule";
 
 const AssetProgress = props => {
     const history = useNavigate();
@@ -20,7 +21,7 @@ const AssetProgress = props => {
             <div className="card card-stats">
                 <div className="card-header card-header-success card-header-icon">
                     <div className="card-icon">
-                        <i className="material-icons">schedule</i>
+                        <i className="material-icons"><Schedule /></i>
                     </div>
                     <h3 className="card-title">
                         {formatter.tokenName(props.tokenId ? props.tokenId : "")}

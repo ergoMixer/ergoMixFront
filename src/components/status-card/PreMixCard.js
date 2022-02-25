@@ -3,7 +3,7 @@ import ProjectModal from "../modal/modal";
 import MoreDetail from "./MoreDetail";
 import CardHeaderTitle from "./details/CardHeaderTitle";
 import CardFooter from "./details/CardFooter";
-
+import CompareArrows from "@mui/icons-material/CompareArrows";
 class PreMixCard extends React.Component {
     state = {
         showDetail: false,
@@ -27,7 +27,7 @@ class PreMixCard extends React.Component {
                 <div className="card card-stats">
                     <div className="card-header card-header-info card-header-icon">
                         <div className="card-icon">
-                            <i className="material-icons">compare_arrows</i>
+                            <i className="material-icons"><CompareArrows /></i>
                         </div>
                         <CardHeaderTitle {...this.props}/>
                     </div>

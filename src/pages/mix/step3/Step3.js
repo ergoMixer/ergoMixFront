@@ -4,7 +4,9 @@ import { ApiNetwork } from "../../../network/api";
 import * as formatter from '../../../formatter/formatters';
 import { TOKEN_ERGO_AMOUNT } from "../../../const";
 import Panel from "../../../components/panel/Panel";
-
+import SettingsEthernet from "@mui/icons-material/SettingsEthernet";
+import Edit from "@mui/icons-material/Edit";
+import Cloud from "@mui/icons-material/Cloud";
 class Step3 extends React.Component {
     state = {
         addresses: [],
@@ -130,21 +132,21 @@ class Step3 extends React.Component {
                                         <li className="nav-item">
                                             <a className={this.state.fillingType === "manual" ? "nav-link active" : "nav-link"}
                                                onClick={() => this.setFillingType("manual")}>
-                                                <i className="material-icons">edit</i> Set Manually
+                                                <i className="material-icons"><Edit /></i> Set Manually
                                                 <div className="ripple-container"/>
                                             </a>
                                         </li>
                                         <li className="nav-item">
                                             <a className={this.state.fillingType === "json" ? "nav-link active" : "nav-link"}
                                                onClick={() => this.setFillingType("json")}>
-                                                <i className="material-icons">settings_ethernet</i> Using Json
+                                                <i className="material-icons"><SettingsEthernet /></i> Using Json
                                                 <div className="ripple-container"/>
                                             </a>
                                         </li>
                                         <li className="nav-item">
                                             <a className={this.state.fillingType === "node" ? "nav-link active" : "nav-link"}
                                                onClick={() => this.setFillingType("node")}>
-                                                <i className="material-icons">cloud</i> Using a Node
+                                                <i className="material-icons"><Cloud /></i> Using a Node
                                                 <div className="ripple-container"/>
                                             </a>
                                         </li>

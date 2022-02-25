@@ -20,6 +20,7 @@ import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Loading from "../../../components/loading/Loading";
 import OrderTd from '../../../components/order-td/OrderTd';
+import Edit from "@mui/icons-material/Edit";
 
 class StatDetail extends React.Component {
     state = {
@@ -296,7 +297,7 @@ class StatDetail extends React.Component {
                                     <a style={statusSelected !== "None" ? {cursor: "pointer"} : {cursor: "not-allowed"}}
                                        className={"nav-link active"}
                                        onClick={statusSelected !== "None" ? () => this.showSetAddress() : null}>
-                                        <i className="material-icons">edit</i> Set Address
+                                        <i className="material-icons"><Edit /></i> Set Address
                                         <div className="ripple-container"/>
                                     </a>
                                 </li>
@@ -305,7 +306,7 @@ class StatDetail extends React.Component {
                                     <a style={statusSelected !== "None" ? {cursor: "pointer"} : {cursor: "not-allowed"}}
                                        className={"nav-link active"}
                                        onClick={statusSelected !== "None" ? () => this.showWithdrawDetail() : null}>
-                                        <i className="material-icons">edit</i> Withdraw Now
+                                        <i className="material-icons"><Edit /></i> Withdraw Now
                                         <div className="ripple-container"/>
                                     </a>
                                 </li>
@@ -314,7 +315,7 @@ class StatDetail extends React.Component {
                                     <a style={statusSelected !== "None" ? {cursor: "pointer"} : {cursor: "not-allowed"}}
                                        className={"nav-link active"}
                                        onClick={statusSelected !== "None" ? () => this.showAgeUSDDetail() : null}>
-                                        <i className="material-icons">edit</i> Sig USD
+                                        <i className="material-icons"><Edit /></i> Sig USD
                                         <div className="ripple-container"/>
                                     </a>
                                 </li>

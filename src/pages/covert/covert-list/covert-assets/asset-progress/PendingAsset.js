@@ -1,7 +1,7 @@
 import React from 'react';
-// import { withRouter } from "react-router";
 import * as formatter from "../../../../../formatter/formatters";
 import { connect } from "react-redux";
+import ErrorOutline from "@mui/icons-material/ErrorOutline";
 
 const pendingAsset = props => {
     const handleClick = () => {
@@ -18,7 +18,7 @@ const pendingAsset = props => {
             <div className="card card-stats">
                 <div className="card-header card-header-warning card-header-icon">
                     <div className="card-icon">
-                        <i className="material-icons">error_outline</i>
+                        <i className="material-icons"><ErrorOutline /></i>
                     </div>
                     <h3 className="card-title">
                         {formatter.tokenName(props.tokenId ? props.tokenId : "")}

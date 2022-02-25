@@ -3,6 +3,8 @@ import { NotificationManager } from "react-notifications";
 import { ApiNetwork } from "../../../network/api";
 import * as formatter from '../../../formatter/formatters';
 import Tooltip from "../../../components/tooltip/Tooltip";
+import Done from "@mui/icons-material/Done";
+import Clear from "@mui/icons-material/Clear";
 
 class WithdrawList extends React.Component {
     state = {
@@ -71,7 +73,7 @@ class WithdrawList extends React.Component {
                                         <td>{formatter.token(box.mixingTokenId ? box.mixingTokenAmount : box.amount, box.mixingTokenId)}</td>
                                         <td>{box.withdraw}</td>
                                         <td>
-                                            {box.loading === "Start" ? <i className="fa fa-circle-o-notch fa-spin"/> : box.loading === "Done" ? <i className="material-icons" style={{color: "green"}}>done</i> : box.loading === "Failed" ? <i className="material-icons" style={{color: "red"}}>clear</i> : null }
+                                            {box.loading === "Start" ? <i className="fa fa-circle-o-notch fa-spin"/> : box.loading === "Done" ? <i className="material-icons" style={{color: "green"}}><Done /></i> : box.loading === "Failed" ? <i className="material-icons" style={{color: "red"}}><Clear /></i> : null }
                                         </td>
                                     </tr>
                                 ))}
