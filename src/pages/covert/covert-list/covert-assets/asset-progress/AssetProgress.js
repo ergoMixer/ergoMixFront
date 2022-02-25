@@ -1,11 +1,11 @@
 import React from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CovertTokenProgress from "../../../../../components/status-card/covert-card/CovertTokenProgress";
 import * as formatter from "../../../../../formatter/formatters";
 import { connect } from "react-redux";
 
 const AssetProgress = props => {
-    const history = useHistory();
+    const history = useNavigate();
     const handleChangeRing = () => {
         const ringUrl = '/covert/' + props.covertId + '/asset/' + (props.tokenId ? props.tokenId + '/ring/' : 'ring/') + props.ring;
         history.push(ringUrl);

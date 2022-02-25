@@ -10,14 +10,14 @@ import withLayout from '../../../hoc/with_layout/withLayout';
 import MainLayout from '../../../layout/main-layout/MainLayout';
 import * as formatter from '../../../formatter/formatters'
 import CheckboxesTags from "../../../components/select/CheckboxesTags";
-import Checkbox from '@material-ui/core/Checkbox';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import Checkbox from '@mui/material/Checkbox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import WithdrawList from "../withdraw/WithdrawList";
 import SetAddress from "./SetAddress";
 import Tooltip from "../../../components/tooltip/Tooltip";
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import Loading from "../../../components/loading/Loading";
 import OrderTd from '../../../components/order-td/OrderTd';
 

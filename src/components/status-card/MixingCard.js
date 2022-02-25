@@ -1,6 +1,6 @@
 import React from 'react';
 import QRCode from "react-qr-code";
-import LinearProgress from '@material-ui/core/LinearProgress';
+import LinearProgress from '@mui/material/LinearProgress';
 import ProjectModal from "../modal/modal";
 import MoreDetail from "./MoreDetail";
 import CardHeaderTitle from './details/CardHeaderTitle';

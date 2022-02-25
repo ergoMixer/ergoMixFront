@@ -1,10 +1,10 @@
 import React from 'react';
 import QRCode from "react-qr-code";
-import LinearProgress from '@material-ui/core/LinearProgress';
+import LinearProgress from '@mui/material/LinearProgress';
 import * as formatter from '../../formatter/formatters'
 import ProjectModal from "../modal/modal";
 import MoreDetail from "./MoreDetail";
-import { ReactComponent as QrcodeSVG } from '../../assets/img/qrcode.svg';
+import QrcodeSVG from '../../assets/img/qrcode.svg';
 import CardHeaderTitle from './details/CardHeaderTitle';
 import CardFooter from './details/CardFooter.js';
 import { connect } from "react-redux";

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Mix from "../pages/mix/Mix";
 import Ring from "../pages/ring/Ring";
 import Stat from '../pages/stat/Stat';
@@ -19,6 +19,16 @@ import CovertSetRing from "../pages/covert/covert-list/covert-assets/set-ring/Co
 import CovertAddress from "../pages/covert/covert-list/covert-address/CovertAddress";
 import Shutdown from "../pages/shutdown/Shutdown";
 
+import { ThemeProvider } from '@mui/material/styles';
+import { createTheme } from '@mui/material';
+
+export const theme = createTheme({
+    // palette: {
+    //     mode: 'dark',
+    // },
+});
+
+const CovertStatDetail = (props ) => <StatDetail {...props} path='covert'/>;
 class App extends React.Component {
     componentDidMount = () => {
         this.props.getSupportedToken();
@@ -29,28 +39,30 @@ class App extends React.Component {
 
     render = () => {
         return (
-            <BrowserRouter basename={"dashboard"}>
+          <ThemeProvider theme={theme}>
+            <BrowserRouter basename={"/"}>
                 <NotificationContainer/>
-                <Switch>
-                    <Route path="/mix/history/:groupId" component={(props) => <StatDetail {...props} path='history'/>}/>
-                    <Route path="/mix/history" component={Stat}/>
-                    <Route path="/mix/active/new" component={Mix}/>
-                    <Route path="/mix/active/:groupId" component={(props) => <StatDetail {...props} path='active'/>}/>
-                    <Route path="/mix/active" component={ActiveStat}/>
-                    <Route path="/ring" component={Ring}/>
-                    <Route path="/settings" component={Settings}/>
-                    <Route path="/covert/new" component={NewCovert}/>
-                    <Route path="/covert/:covertId/asset/:assetId/ring/:oldRing" component={CovertSetRing}/>
-                    <Route path="/covert/:covertId/asset/ring/:oldRing" component={CovertSetRing}/>
-                    <Route path="/covert/:covertId/asset/" component={CovertAsset}/>
-                    <Route path="/covert/:covertId/address/" component={CovertAddress}/>
-                    <Route path="/covert/:covertId/" component={(props) => <StatDetail {...props} path='covert'/>}/>
-                    <Route path="/covert" component={CovertList}/>
-                    <Route path="/shutdown" component={Shutdown}/>
-                    <Route path="/" component={Home} exact={true}/>
-                    <Redirect to="/"/>
-                </Switch>
+                <Routes>
+                    <Route path="/mix/history/:groupId" element={<StatDetail path='history'/>}/>
+                    <Route path="/mix/history" element={<Stat />}/>
+                    <Route path="/mix/active/new" element={<Mix />}/>
+                    <Route path="/mix/active/:groupId" element={<StatDetail path='active'/>}/>
+                    <Route path="/mix/active" element={<ActiveStat />}/>
+                    <Route path="/ring" element={<Ring />}/>
+                    <Route path="/settings" element={<Settings />}/>
+                    <Route path="/covert/new" element={<NewCovert />}/>
+                    <Route path="/covert/:covertId/asset/:assetId/ring/:oldRing" element={<CovertSetRing />}/>
+                    <Route path="/covert/:covertId/asset/ring/:oldRing" element={<CovertSetRing />}/>
+                    <Route path="/covert/:covertId/asset/" element={<CovertAsset />}/>
+                    <Route path="/covert/:covertId/address/" element={<CovertAddress />}/>
+                    <Route path="/covert/:covertId/" element={<StatDetail path='covert'/>}/>
+                    <Route path="/covert" element={<CovertList />}/>
+                    <Route path="/shutdown" element={<Shutdown />}/>
+                    <Route path="/" element={(<Home/>)} />
+                    <Route element={(<Home/>)} />
+                </Routes>
             </BrowserRouter>
+          </ThemeProvider>
         )
     };
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import {ReactComponent as SwaggerIcon} from './swagger.svg';
+import SwaggerIcon from './swagger.svg';
 
 const Footer = (props) => {
     return (

@@ -6,7 +6,7 @@ import Loading from "../../../../components/loading/Loading";
 import { ApiNetwork } from "../../../../network/api";
 import AssetProgressSelect from "./asset-progress/AssetProgressSelect";
 import AddAsset from "./AddAsset";
-import { TextField } from "@material-ui/core";
+import { TextField } from "@mui/material";
 import ProjectModal from "../../../../components/modal/modal";
 import { NotificationManager } from "react-notifications";
 import * as formatter from "../../../../formatter/formatters";

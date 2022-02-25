@@ -1,5 +1,5 @@
 import React from 'react';
-import { MenuItem, TextField } from "@material-ui/core";
+import { MenuItem, TextField } from "@mui/material";
 import MaterialSelect from "../../../components/select/MaterialSelect";
 import { connect } from "react-redux";
 import Panel from "../../../components/panel/Panel";

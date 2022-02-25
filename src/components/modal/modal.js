@@ -1,6 +1,6 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
+import { useClasses } from '../../hoc/useClasses';
+import Modal from '@mui/material/Modal';
 
 function getModalStyle() {
     const top = 50;
@@ -13,7 +13,7 @@ function getModalStyle() {
     };
 }
 
-const useStyles = makeStyles((theme) => ({
+const styles = theme => ({
     paper: {
         position: 'relative',
         maxWidth: 800,
@@ -45,10 +45,11 @@ const useStyles = makeStyles((theme) => ({
         zIndex: "100",
         boxShadow: "0 14px 26px -12px rgba(153, 153, 153, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(153, 153, 153, 0.2)"
     }
-}));
+});
 
 const ProjectModal = (props) => {
-    const classes = useStyles(props);
+    // const classes = useStyles(props);
+    const classes = useClasses(styles);
     // getModalStyle is not a pure function, we roll the style only on the first render
     const [modalStyle] = React.useState(getModalStyle);
     const modalCopy = props.padding ? {...modalStyle, padding: 0} : {...modalStyle};

@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from "react-router";
+// import { withRouter } from "react-router";
 import * as formatter from "../../../../../formatter/formatters";
 import { connect } from "react-redux";
 
@@ -56,4 +56,5 @@ const mapStateToProps = state => ({
     tokens: state.tokens,
 });
 
-export default connect(mapStateToProps)(withRouter(pendingAsset));
+// export default connect(mapStateToProps)(withRouter(pendingAsset));
+export default connect(mapStateToProps)(pendingAsset);

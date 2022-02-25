@@ -1,6 +1,6 @@
 import React from 'react';
 import * as formatter from "../../../formatter/formatters";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import LinearProgress from "@mui/material/LinearProgress";
 import Tooltip from "../../tooltip/Tooltip";
 import {connect} from "react-redux";
 

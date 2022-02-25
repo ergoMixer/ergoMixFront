@@ -1,10 +1,10 @@
 import React from 'react';
-import { TextField } from "@material-ui/core";
-import Checkbox from '@material-ui/core/Checkbox';
+import { TextField } from "@mui/material";
+import Checkbox from '@mui/material/Checkbox';
 import { connect } from "react-redux";
 import Panel from "../../../../components/panel/Panel";
 import { COVERT_NAME_SIZE } from "../../../../const";
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 class CovertStep1 extends React.Component {
     state = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import MaterialSelect from "../../../../components/select/MaterialSelect";
-import { MenuItem, TextField } from "@material-ui/core";
-import { withRouter } from "react-router";
+import { MenuItem, TextField } from "@mui/material";
+// import { withRouter } from "react-router";
 import { connect } from "react-redux";
 
 class AddAsset extends React.Component {
@@ -149,4 +149,5 @@ const mapStateToProps = state => ({
     tokens: state.tokens
 });
 
-export default withRouter(connect(mapStateToProps)(AddAsset));
+// export default withRouter(connect(mapStateToProps)(AddAsset));
+export default connect(mapStateToProps)(AddAsset);

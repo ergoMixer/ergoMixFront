@@ -1,15 +1,15 @@
 import React from 'react';
-import { makeStyles} from '@material-ui/core/styles';
-import Tooltip from '@material-ui/core/Tooltip';
+import { useClasses } from '../../hoc/useClasses';
+import Tooltip from '@mui/material/Tooltip';
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
     noMaxWidth: {
         maxWidth: 'none',
     }
-}));
+};
 
 const TooltipC = props => {
-    const classes = useStyles();
+    const classes = useClasses(styles);
     return (
         <Tooltip {...props} classes={{ tooltip: classes.noMaxWidth }}>
             {props.children}

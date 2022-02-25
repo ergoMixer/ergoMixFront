@@ -1,7 +1,7 @@
 import React from 'react';
 import QRCode from "react-qr-code";
 import ProjectModal from "../../modal/modal";
-import {ReactComponent as QrcodeSVG} from '../../../assets/img/qrcode.svg';
+import QrcodeSVG from '../../../assets/img/qrcode.svg';
 import {connect} from "react-redux";
 import CopyClipboard from "../../copy-clipboard/CopyClipboard";
 import CovertTokenProgress from "./CovertTokenProgress";
