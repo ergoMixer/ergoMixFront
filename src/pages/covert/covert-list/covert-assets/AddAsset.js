@@ -123,6 +123,7 @@ export const AddAsset = (props) => {
                                     disabled={state.token.type !== "custom"}
                                     value={state.token.id}
                                     required={state.token.type === "custom"}
+                                    variant='filled'
                                 />
                                 {state.validation.token !== '' && state.focused.token ? (
                                     <div className="text-danger text-sm">{state.validation.token}</div>

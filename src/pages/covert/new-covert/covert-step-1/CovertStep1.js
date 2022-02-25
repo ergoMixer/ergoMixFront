@@ -91,6 +91,7 @@ class CovertStep1 extends React.Component {
                                 onChange={event => this.saveName(event.target.value)}
                                 value={this.state.name}
                                 required={false}
+                                variant='filled'
                             />
                         </div>
                     </div>
@@ -134,6 +135,7 @@ class CovertStep1 extends React.Component {
                                     value={this.state.pk}
                                     required={false}
                                     disabled={!this.state.needPK}
+                                    variant='filled'
                                 />
                                 <span className="small">To import address from other wallets (magnum or ...)</span>
                             </div>

@@ -77,7 +77,14 @@ const config = {
     'static': {
       directory: './dist'
     },
-    historyApiFallback: true,
+    historyApiFallback: {
+      rewrites: [
+        { from: /.*\..*/, to: (context) => {
+          return '/' + context.parsedUrl.pathname.split('/').pop(); // gets just the filename and retrieves it from root where devserver serves it
+        } },
+        { from: /^.*\/$/, to: '/index.html' },
+      ],
+    },
   },
   plugins: [
     new CopyPlugin({
