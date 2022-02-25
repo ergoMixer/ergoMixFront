@@ -61,7 +61,7 @@ class CheckboxesTags extends React.Component {
                         style={{ marginLeft:20, padding: 0, border: 0 , minWidth: 0}}
                         checked={this.props.checked}
                         onChange={event => this.props.onChange(event)}
-                        color="secondary"
+                        color="primary"
                         inputProps={{ 'aria-label': 'secondary checkbox' }}
                         />
                         <Button
