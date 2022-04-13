@@ -1,25 +1,15 @@
 import React from 'react';
-import QRCode from "react-qr-code";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ProjectModal from "../modal/modal";
 import MoreDetail from "./MoreDetail";
 import CardHeaderTitle from './details/CardHeaderTitle';
 import CardFooter from "./details/CardFooter";
-import CopyClipboard from "../copy-clipboard/CopyClipboard";
 
 class MixingCard extends React.Component {
     state = {
         showQrCode: false,
         showDetail: false,
     };
-
-    showQrCode = () => {
-        this.setState({showQrCode: true});
-    }
-
-    hideQrCode = () => {
-        this.setState({showQrCode: false});
-    }
 
     showDetails = () => {
         this.setState({showDetail: true})
@@ -35,15 +25,6 @@ class MixingCard extends React.Component {
         const boxProgress = this.props.groupStat.doneMixRound / this.props.groupStat.totalMixRound * 100
         return (
             <div className="col-12 col-md-6">
-                <ProjectModal close={this.hideQrCode} show={this.state.showQrCode}>
-                    <div className="text-center">
-                        <b>
-                            <CopyClipboard value={this.props.deposit}/>
-                        </b>
-                        <br/>
-                        <QRCode size={128} value={this.props.deposit}/>
-                    </div>
-                </ProjectModal>
                 <ProjectModal close={this.hideDetails} show={this.state.showDetail} scroll={'hidden'}>
                     <MoreDetail {...this.props}/>
                 </ProjectModal>

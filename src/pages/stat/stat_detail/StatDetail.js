@@ -20,6 +20,7 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Loading from "../../../components/loading/Loading";
 import OrderTd from '../../../components/order-td/OrderTd';
+import TransactionStatus from "../../../components/transaction-status/TransactionStatus";
 
 class StatDetail extends React.Component {
     state = {
@@ -421,13 +422,10 @@ class StatDetail extends React.Component {
                                             </td>
                                             <td>{mixItem.status}</td>
                                             <td>
-                                                {mixItem.withdrawStatus === "nothing" ? (
-                                                    null
-                                                ) : mixItem.withdrawTxId === "" ? "Transaction is being generated" : (
-                                                    <button className="btn btn-outline-primary"
-                                                            onClick={() => this.showTransaction(mixItem)}
-                                                    >View Transaction</button>
-                                                )}
+                                                <TransactionStatus
+                                                    mixItem={mixItem}
+                                                    showTransaction={(mixItem) => this.showTransaction(mixItem)}
+                                                />
                                             </td>
                                         </tr>
                                     ))}

@@ -29,12 +29,23 @@ class CovertCard extends React.Component {
         this.setState({showDetail: false})
     }
     cardHeaderClass = assets => {
-        const running = assets.map(item => item.runningMixingAmount).reduce((accumulator, currentValue) => accumulator + currentValue);
-        const current = assets.map(item => item.currentMixingAmount).reduce((accumulator, currentValue) => accumulator + currentValue);
+        const running = (
+            assets.length == 0
+                ? 0
+                : assets.map(item => item.runningMixingAmount)
+                    .reduce(
+                        (accumulator, currentValue) => accumulator + currentValue)
+        );
+        const current = (
+            assets.length == 0 ? 0
+                : assets.map(item => item.currentMixingAmount)
+                    .reduce(
+                        (accumulator, currentValue) => accumulator + currentValue
+                    ));
         const card_class = "card-header card-header-icon"
-        if(running > 0){
+        if (running > 0) {
             return card_class + " card-header-success"
-        }else if(current - running > 0){
+        } else if (current - running > 0) {
             return card_class + " card-header-info"
         }
         return card_class + " card-header-warning"
