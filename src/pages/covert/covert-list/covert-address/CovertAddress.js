@@ -13,6 +13,8 @@ import SettingsEthernet from "@mui/icons-material/SettingsEthernet";
 import Cloud from "@mui/icons-material/Cloud";
 import ArrowRightAlt from "@mui/icons-material/ArrowRightAlt";
 import { withParams } from '../../../../hoc/withParams';
+import LoadFromWallet from "../../../../components/load-from-wallet/LoadFromWallet";
+
 class CovertAddress extends React.Component {
     state = {
         addresses: [],
@@ -127,6 +129,13 @@ class CovertAddress extends React.Component {
                                             </a>
                                         </li>
                                         <li className="nav-item">
+                                            <a className={this.state.fillingType === "dapp" ? "nav-link active" : "nav-link"}
+                                               onClick={() => this.setFillingType("dapp")}>
+                                                <i className="material-icons" style={{color: "white"}}>exit_to_app</i> Using Dapp Connector
+                                                <div className="ripple-container"/>
+                                            </a>
+                                        </li>
+                                        <li className="nav-item">
                                             <a className={this.state.fillingType === "later" ? "nav-link active" : "nav-link"}
                                                onClick={() => this.setFillingType("later")}>
                                                 <i className="material-icons"><ArrowRightAlt /></i> Withdraw Manually
@@ -149,6 +158,11 @@ class CovertAddress extends React.Component {
                             </div>
                             <div className="row" style={this.state.fillingType === 'node' ? {} : {"display": 'none'}}>
                                 <LoadFromNode
+                                    manualCount={true}
+                                    setAddress={addresses => this.saveAddresses([...addresses])}/>
+                            </div>
+                            <div className="row" style={this.state.fillingType === 'dapp' ? {} : {"display": 'none'}}>
+                                <LoadFromWallet
                                     manualCount={true}
                                     setAddress={addresses => this.saveAddresses([...addresses])}/>
                             </div>
@@ -178,7 +192,7 @@ class CovertAddress extends React.Component {
                                                 <td>
                                                     <button className="btn btn-outline-primary"
                                                             onClick={() => this.deleteRow(index)}>
-                                                        <i className="fa fa-times"/>
+                                                        <i className="fa fa-trash"/>
                                                     </button>
                                                 </td>
                                             </tr>

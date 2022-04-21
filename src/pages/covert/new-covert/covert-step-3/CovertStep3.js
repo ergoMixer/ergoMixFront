@@ -5,12 +5,14 @@ import LoadFromNode from "../../../../components/load-from-node/LoadFromNode";
 import SettingsEthernet from "@mui/icons-material/SettingsEthernet";
 import ArrowRightAlt from "@mui/icons-material/ArrowRightAlt";
 import Cloud from "@mui/icons-material/Cloud";
+import ExitToApp from "@mui/icons-material/ExitToApp";
+import LoadFromWallet from "../../../../components/load-from-wallet/LoadFromWallet";
 
 const CovertStep3 = props => {
     const setValid = (fillingType, addresses) => {
-        if(fillingType === "later" || addresses.length !== 0){
+        if (fillingType === "later" || addresses.length !== 0) {
             props.setValid(true)
-        }else{
+        } else {
             props.setValid(false);
         }
     }
@@ -20,11 +22,21 @@ const CovertStep3 = props => {
         setValid(value, props.addresses)
     }
 
+    const deleteRow = (index) => {
+        let tmpAddresses = [...props.addresses];
+        tmpAddresses.splice(index, 1);
+        props.saveValue({addresses: tmpAddresses});
+    }
+
+    const addRow = () => {
+        props.saveValue({addresses: [...props.addresses, '']});
+    }
+
     const saveAddress = (index, address) => {
         let tmpAddresses = [...props.addresses];
-        if(index < props.addresses.length && index !== -1){
+        if (index < props.addresses.length && index !== -1) {
             tmpAddresses[index] = address
-        }else{
+        } else {
             tmpAddresses.push(address);
         }
         props.saveValue({addresses: tmpAddresses})
@@ -40,7 +52,8 @@ const CovertStep3 = props => {
                         When a new mix starts for this covert address, its withdraw address will
                         be selected randomly from the list of addresses you specify here.
                         You can change this list later and also leave it empty and withdraw manually. <br/>
-                        Since these addresses will be reused randomly, the more addresses you provide, the better the security gains.
+                        Since these addresses will be reused randomly, the more addresses you provide, the better the
+                        security gains.
                     </h4>
                 </Panel>
             </div>
@@ -61,6 +74,14 @@ const CovertStep3 = props => {
                                         <a className={props.fillingType === "node" ? "nav-link active" : "nav-link"}
                                            onClick={() => setFillingType("node")}>
                                             <i className="material-icons"><Cloud /></i> Using a Node
+                                            <div className="ripple-container"/>
+                                        </a>
+                                    </li>
+                                    <li className="nav-item">
+                                        <a className={props.fillingType === "dapp" ? "nav-link active" : "nav-link"}
+                                           onClick={() => setFillingType("dapp")}>
+                                            <i className="material-icons" style={{color: "white"}}><ExitToApp /></i> Using
+                                            Dapp Connector
                                             <div className="ripple-container"/>
                                         </a>
                                     </li>
@@ -88,7 +109,12 @@ const CovertStep3 = props => {
                         <div className="row" style={props.fillingType === 'node' ? {} : {"display": 'none'}}>
                             <LoadFromNode
                                 manualCount={true}
-                                setAddress={addresses => props.saveValue({addresses: [...addresses]})} />
+                                setAddress={addresses => props.saveValue({addresses: [...addresses]})}/>
+                        </div>
+                        <div className="row" style={props.fillingType === 'dapp' ? {} : {"display": 'none'}}>
+                            <LoadFromWallet
+                                manualCount={true}
+                                setAddress={addresses => props.saveValue({addresses: [...addresses]})}/>
                         </div>
                         {props.fillingType === "later" ? (
                             <div className="col-12">
@@ -101,6 +127,7 @@ const CovertStep3 = props => {
                                     <tr>
                                         <th>#</th>
                                         <th>Withdraw Address</th>
+                                        <th style={{width: "100px"}}></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -112,12 +139,27 @@ const CovertStep3 = props => {
                                                        value={address}
                                                        onChange={(event) => saveAddress(index, event.target.value)}/>
                                             </td>
+                                            <td>
+                                                <button className="btn btn-outline-primary"
+                                                        onClick={() => deleteRow(index)}>
+                                                    <i className="fa fa-trash"/>
+                                                </button>
+                                            </td>
                                         </tr>
                                     ))}
                                     </tbody>
                                 </table>
                             </div>
                         )}
+                        <div className="row">
+                            {
+                                props.fillingType !== "later" ?
+                                    <button className="btn btn-outline-primary"
+                                            onClick={addRow}>Add Row
+                                    </button>
+                                    : null
+                            }
+                        </div>
                     </div>
                 </div>
             </div>

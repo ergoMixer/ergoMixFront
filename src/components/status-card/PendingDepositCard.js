@@ -1,5 +1,4 @@
 import React from 'react';
-import QRCode from "react-qr-code";
 import LinearProgress from '@mui/material/LinearProgress';
 import * as formatter from '../../formatter/formatters'
 import ProjectModal from "../modal/modal";
@@ -10,6 +9,7 @@ import CardFooter from './details/CardFooter.js';
 import { connect } from "react-redux";
 import CopyClipboard from "../copy-clipboard/CopyClipboard";
 import Schedule from "@mui/icons-material/Schedule";
+import QRCodeUrl from "../qr-code/QRCodeUrl";
 
 class PendingDepositCard extends React.Component {
     state = {
@@ -42,7 +42,10 @@ class PendingDepositCard extends React.Component {
                     <div className="text-center">
                         <CopyClipboard value={this.props.deposit}/>
                         <br/>
-                        <QRCode size={256} value={this.props.deposit}/>
+                        <QRCodeUrl
+                            amount={formatter.ergWithoutSuffix(this.props.amount - this.props.doneDeposit)}
+                            address={this.props.deposit}
+                        />
                     </div>
                 </ProjectModal>
                 <ProjectModal close={this.hideDetails} show={this.state.showDetail}>

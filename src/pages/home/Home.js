@@ -97,6 +97,19 @@ const HOME_BOXES = [
         )
     },
     {
+        title: 'Hops', content: (
+            <div>
+                Using Hop feature you can withdraw your boxes through some P2PK addresses as 'hops',
+                obfuscating the fact that a box is mixed.
+                Note that any withdrawn box will pay for its mining fee as it hops.
+                <br/>
+                This feature is disabled by default;
+                To enable it, change <b>hopRounds</b> to any desired number of hops in the configuration file.
+                Changing this value will immediately affect all mix and covert withdrawals.
+            </div>
+        )
+    },
+    {
         title: 'Communication through the Internet', content: (
             <div>
                 ErgoMixer connects to the Internet in order to communicate
@@ -134,6 +147,8 @@ const HOME_BOXES = [
                 then make sure you have no data in your current database, then remove it and set the password you wish in the configuration file.
                 The database and the log files are saved in your home directory in a folder called ergoMixer.
                 You can backup these data in case of any future disaster using backup/restore in the UI.
+                <br/>
+                Also, you can view and download the private keys of your covert addresses using the <b>Show PrivateKey</b> option.
                 <br/>
                 <br/>
                 <strong>We highly recommend you to use backup only for the sake of having covert addresses' secrets in case of future disasters.
@@ -204,7 +219,7 @@ const HOME_BOXES = [
 
 class Home extends React.Component {
     state = {
-        active: 5,
+        active: 6,
     }
     handleChange = (index) => {
         this.setState({active: index});
