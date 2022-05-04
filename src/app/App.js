@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Mix from "../pages/mix/Mix";
 import Ring from "../pages/ring/Ring";
 import Stat from '../pages/stat/Stat';
@@ -51,7 +51,7 @@ class App extends React.Component {
     render = () => {
         return (
           <ThemeProvider theme={theme}>
-            <BrowserRouter basename={"/"}>
+            <BrowserRouter basename={"/dashboard"}>
                 <NotificationContainer/>
                 <Routes>
                     <Route path="/mix/history/:groupId" element={<StatDetail path='history'/>}/>
