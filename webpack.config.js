@@ -11,6 +11,7 @@ const config = {
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/dashboard/',
     filename: 'bundle.js'
   },
   module: {
@@ -52,14 +53,15 @@ const config = {
   },
   devServer: {
     'static': {
-      directory: './dist'
+      directory: './dist',
+      publicPath: '/dashboard/'
     },
     historyApiFallback: {
       rewrites: [
         { from: /.*\..*/, to: (context) => {
-          return '/' + context.parsedUrl.pathname.split('/').pop(); // gets just the filename and retrieves it from root where devserver serves it
+          return '/dashboard/' + context.parsedUrl.pathname.split('/').pop(); // gets just the filename and retrieves it from root where devserver serves it
         } },
-        { from: /^.*\/$/, to: '/index.html' },
+        { from: /^\/dashboard\/.*$/, to: '/dashboard/index.html' },
       ],
     },
   },
@@ -75,7 +77,8 @@ const config = {
       inject: true,
       filename: 'index.html',
       templateParameters: {
-        backendUri: process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:9000/'
+        backendUri: process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:9000/',
+	      publicPath: '/dashboard/'
       }
     }),
     new webpack.ContextReplacementPlugin(
