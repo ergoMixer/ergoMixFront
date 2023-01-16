@@ -54,16 +54,18 @@ class Step3 extends React.Component {
         const filling = this.props.filling === undefined ? this.state.fillingType : this.props.filling;
         this.setState({addresses: new_addresses, fillingType: filling});
         if (this.props.saveValue) {
-            this.props.saveValue({addresses: new_addresses});
+            this.props.saveValue({addresses: new_addresses, filling: filling});
         }
-        this.setFillingType(filling);
+        this.setFillingType(filling, false);
     };
 
-    setFillingType = fillingType => {
+    setFillingType = (fillingType, propagate=true) => {
         this.setValidate(this.state.addresses, fillingType);
         this.setState({fillingType: fillingType});
         const filling = fillingType === "manual" ? "manual" : "manual";
-        this.props.saveValue({filling: filling});
+        if(this.props.saveValue && propagate) {
+            this.props.saveValue({filling: filling});
+        }
     };
 
     setValidate = (addresses, fillingType) => {

@@ -170,7 +170,7 @@ class Step1 extends React.Component {
                 <Panel>
                     <div className="row">
                         <div
-                            className={"col-12 mb-6 " + (this.state.token && (this.state.token.type === "custom" || this.state.token.id !== '') ? 'col-sm-4' : '')}>
+                            className={"col-12 mb-6 " + (this.state.token && (this.state.token.type === "custom" || this.state.token.id !== '') ? 'col-md-4' : '')}>
                             <MaterialSelect
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
@@ -196,7 +196,6 @@ class Step1 extends React.Component {
                                     disabled={this.state.token.type !== "custom"}
                                     value={this.state.token.id}
                                     required={this.state.token.type === "custom"}
-                                    variant='filled'
                                 />
                                 {this.state.validation.token !== '' && this.state.focused.token ? (
                                     <div className="text-danger text-sm">{this.state.validation.token}</div>
@@ -214,7 +213,6 @@ class Step1 extends React.Component {
                                     onChange={event => this.saveAmount(event.target.value)}
                                     error={this.state.validation.amount !== '' && this.state.focused.amount}
                                     value={this.state.amount}
-                                    variant='filled'
                                 />
                                 {this.state.validation.amount !== '' && this.state.focused.amount ? (
                                     <div className="text-danger text-sm">{this.state.validation.amount}</div>

@@ -16,9 +16,9 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import IndeterminateCheckBoxIcon  from '@mui/icons-material/IndeterminateCheckBox'
 
 class CheckboxesTags extends React.Component {
-    icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-    checkedIcon = <CheckBoxIcon fontSize="small" />;
-    IndeterminateCheckBoxIcon  = <IndeterminateCheckBoxIcon  fontSize="small"/>;
+    icon = <CheckBoxOutlineBlankIcon fontSize="small" color="action"/>;
+    checkedIcon = <CheckBoxIcon fontSize="small" color="secondary"/>;
+    IndeterminateCheckBoxIcon  = <IndeterminateCheckBoxIcon fontSize="small" color="action"/>;
     state = {
         options: [],
         open: false,
@@ -71,7 +71,7 @@ class CheckboxesTags extends React.Component {
                             aria-label="select merge strategy"
                             aria-haspopup="menu"
                             style={{ border: 0, padding: 0, marginLeft: 0, minWidth: 0 }}
-                            color="primary"
+                            color={"inherit"}
                             onClick={this.handleToggle}
                         >
                             <ArrowDropDownIcon />

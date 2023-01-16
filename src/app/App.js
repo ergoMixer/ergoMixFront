@@ -23,6 +23,14 @@ import { ThemeProvider } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 
 export const theme = createTheme({
+    palette: {
+        secondary: {
+            light: "#f73378",
+            main: "#f50057",
+            dark: "#ab003c",
+            contrastText: "#ffffff"
+        }
+    },
     components: {
         MuiFilledInput: {
             styleOverrides: {
@@ -36,6 +44,26 @@ export const theme = createTheme({
                     }
                 },
             },
+        },
+        MuiIconButton: {
+            styleOverrides: {
+                root: {
+                    padding: "12px"
+                },
+                colorPrimary: {
+                    color: "#3f51b5"
+                }
+            }
+        },
+        MuiTextField: {
+            defaultProps: {
+                variant: "standard"
+            }
+        },
+        MuiSelect: {
+            defaultProps: {
+                variant: "standard"
+            }
         },
     },
 });
@@ -51,7 +79,7 @@ class App extends React.Component {
     render = () => {
         return (
           <ThemeProvider theme={theme}>
-            <BrowserRouter basename={"/dashboard/"}>
+            <BrowserRouter basename={"/dashboard"}>
                 <NotificationContainer/>
                 <Routes>
                 <Route path="/index.html" element={(<Navigate to="/" replace={true} />)} />

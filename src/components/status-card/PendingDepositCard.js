@@ -3,7 +3,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import * as formatter from '../../formatter/formatters'
 import ProjectModal from "../modal/modal";
 import MoreDetail from "./MoreDetail";
-import QrcodeSVG from '../../assets/img/qrcode.svg';
+import { ReactComponent as QrcodeSVG } from '../../assets/img/qrcode.svg';
 import CardHeaderTitle from './details/CardHeaderTitle';
 import CardFooter from './details/CardFooter.js';
 import { connect } from "react-redux";
@@ -37,7 +37,7 @@ class PendingDepositCard extends React.Component {
         const progressValue = Math.max(0, Math.min(100, 100 * this.props.doneDeposit / this.props.amount));
         const tokenProgressValue = this.props.tokenAmount > 0 ? Math.max(0, Math.min(100, 100 * this.props.doneTokenDeposit / this.props.tokenAmount)) : 0;
         return (
-            <div className="col-12 col-md-6">
+            <div className="col-12 col-md-6 d-flex">
                 <ProjectModal close={this.hideQrCode} show={this.state.showQrCode}>
                     <div className="text-center">
                         <CopyClipboard value={this.props.deposit}/>
@@ -79,8 +79,8 @@ class PendingDepositCard extends React.Component {
                         <div>
                             <CopyClipboard value={this.props.deposit}/>
                         </div>
-                        <CardFooter {...this.props} showDetails={this.showDetails}/>
                     </div>
+                    <CardFooter {...this.props} showDetails={this.showDetails}/>
                 </div>
             </div>
         )

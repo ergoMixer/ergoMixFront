@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { saveActiveMixMap, saveCovertMap, saveMixHistoryMap } from "../store/action";
-import { store } from "../store";
+import {saveActiveMixMap, saveCovertMap, saveMixHistoryMap} from "../store/action";
+import {store} from "../store";
+import Oracle from "../sigmausd/Oracle";
+import Bank from "../sigmausd/Bank";
 
-// const DEFAULT_BASE_URL = "http://10.10.9.4:9001";
-const DEFAULT_BASE_URL = "http://localhost:9000/";
+const DEFAULT_BASE_URL = "/";
 export const BASE_URL = (window.backend === undefined ?  DEFAULT_BASE_URL : window.backend);
-// export const BASE_URL = "/";
 const instance = axios.create({baseURL: BASE_URL});
 
 export class ApiNetwork {
@@ -179,12 +179,42 @@ export class ApiNetwork {
         return ApiNetwork.createPromise(instance.post('restore', formData));
     }
 
-    static mint = (boxId, oldTransaction, request) => {
-        return ApiNetwork.createPromise(instance.post('ageusd/mint', {'boxId': boxId, 'oldTransaction': oldTransaction, 'request': request}));
+    static mint = (mixId, reducedTransaction) => {
+        return ApiNetwork.createPromise(instance.post('ageusd/mint', {'mixId': mixId, 'reducedTransaction': reducedTransaction}));
     }
 
     static fee = () => {
         return ApiNetwork.createPromise(instance.get('ageusd/fee'));
+    }
+
+    static oracleBox = () => {
+        return ApiNetwork.createPromise(instance.get(`ageusd/oracle/${Oracle.TOKEN_ID}`), response => {
+            return response.data
+        });
+    }
+
+    static bankBox = () => {
+        return ApiNetwork.createPromise(instance.get(`ageusd/bank/${Bank.NFT_TOKEN_ID}`), response => {
+            return response.data
+        });
+    }
+
+    static getMixBox = (mixId) => {
+        return ApiNetwork.createPromise(instance.get(`mix/${mixId}/box`), response => {
+            return response.data
+        });
+    }
+
+    static currentHeight = async () => {
+        return await ApiNetwork.createPromise(instance.get('ageusd/height'), response => {
+            return response.data.height
+        })
+    }
+
+    static getLastBlocks = (limit = 100, offset = 0) => {
+        return ApiNetwork.createPromise(instance.get(`blocks?limit=${limit}&offset=${offset}`), response => {
+            return response.data
+        });
     }
 }
 

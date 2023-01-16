@@ -19,7 +19,7 @@ class PreMixCard extends React.Component {
 
     render() {
         return (
-            <div className="col-12 col-md-6">
+            <div className="col-12 col-md-6 d-flex">
                 <ProjectModal close={this.hideDetails} show={this.state.showDetail}>
                     <MoreDetail {...this.props}/>
                 </ProjectModal>
@@ -33,8 +33,8 @@ class PreMixCard extends React.Component {
                     </div>
                     <div className="card-body statistic-card text-left">
                         <div>Creating Mix Boxes...</div>
-                        <CardFooter {...this.props} showDetails={this.showDetails}/>
                     </div>
+                    <CardFooter {...this.props} showDetails={this.showDetails}/>
                 </div>
             </div>
         )

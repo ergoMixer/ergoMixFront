@@ -255,18 +255,18 @@ class StatDetail extends React.Component {
         const statusSelected = this.statusSelected();
         return (
             <div className="row">
-                <ProjectModal close={this.closeModal} show={this.state.setAddressShow} padding={true} scroll={'hidden'}>
+                <ProjectModal close={this.closeModal} show={this.state.setAddressShow} padding={[0]} scroll={'hidden'}>
                     <SetAddress mix={this.state.mix} close={this.closeModal}/>
                 </ProjectModal>
                 <ProjectModal
                     close={this.closeModal}
                     show={this.state.withdrawListShow}
-                    padding={true}
+                    padding={[0]}
                     scroll={'hidden'}
                 >
                     <WithdrawList mix={this.state.mix} close={this.closeModal}/>
                 </ProjectModal>
-                <ProjectModal close={this.closeModal} show={this.state.ageUsdShow} padding={true} scroll={'hidden'}>
+                <ProjectModal close={this.closeModal} show={this.state.ageUsdShow} padding={[0]} scroll={'hidden'}>
                     {this.ageUsdModal()}
                 </ProjectModal>
                 <ProjectModal close={this.closeModal} show={this.state.transactionShow} scroll={'hidden'}>
@@ -326,7 +326,8 @@ class StatDetail extends React.Component {
                                         <div className="header-slider">
                                             <FormControlLabel
                                                 control={<Switch checked={this.state.status === 'active'}
-                                                                 onChange={this.changeStatus}/>}
+                                                                 onChange={this.changeStatus}
+                                                                 color="secondary"/>}
                                                 label="Hide Withdrawn Boxes"
                                             />
                                         </div>
@@ -398,8 +399,8 @@ class StatDetail extends React.Component {
                                             <td>{index + 1}</td>
                                             <td>
                                                 <Checkbox
-                                                    icon={<CheckBoxOutlineBlankIcon fontSize="small"/>}
-                                                    checkedIcon={<CheckBoxIcon fontSize="small"/>}
+                                                    size="small"
+                                                    color="secondary"
                                                     disabled={mixItem.withdrawStatus !== "nothing"}
                                                     checked={!!this.state.mix[index].checked}
                                                     onChange={() => this.handleSingleCheckboxChange(index)}

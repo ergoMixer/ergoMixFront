@@ -153,7 +153,6 @@ class CovertList extends React.Component {
                                     error={this.state.editingName === ''}
                                     value={this.state.editingName}
                                     required={true}
-                                    variant='filled'
                                 />
                             </div>
                         </div>
@@ -227,7 +226,6 @@ class CovertList extends React.Component {
                                     error={this.state.depositAddress === ''}
                                     value={this.state.depositAddress}
                                     required={true}
-                                    variant='filled'
                                 />
                             </div>
 

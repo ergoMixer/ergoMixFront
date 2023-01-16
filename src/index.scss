@@ -26,36 +26,22 @@
   -o-user-select: none;
   user-select: none;
 }
-.statistic-card{
-  height: 240px;
-  position: relative;
 
-  .card-action{
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
-    margin-bottom: 15px;
-    hr{
-      margin-top: 0;
-      margin-bottom: 10px;
-    }
-  }
-  &.card-little{
-    height: 170px;
-  }
+.card-action {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 15px 20px;
 }
-.progress-card{
-  height: 140px;
-}
+
 .help-content-wrapper {
   margin: auto;
   text-align: center;
   .helper-text {
     display: inline-block;
     padding: 0 10px 0 5px;
-    line-height: 0;
+    line-height: 34px;
+    vertical-align: bottom;
   }
   i{
     display: inline-block;

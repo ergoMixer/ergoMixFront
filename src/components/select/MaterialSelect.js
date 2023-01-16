@@ -5,14 +5,13 @@ import Select from '@mui/material/Select';
 
 export default function SimpleSelect(props) {
     return (
-        <FormControl sx={{m: 1, minWidth: 120, width: '100%'}}>
+        <FormControl variant="standard" sx={{m: 1, minWidth: 120, width: '100%'}}>
             <InputLabel id="demo-simple-select-label">{props.label}</InputLabel>
             <Select
-                style={{width: '100%'}}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
+                fullWidth
                 {...props}
-                sx={{ marginTop: 2 }}
             >
                 {props.children}
             </Select>

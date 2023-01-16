@@ -1,5 +1,4 @@
 import React from 'react';
-import { withStyles } from '@mui/styles';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { IconButton } from "@mui/material";
@@ -10,11 +9,7 @@ import HistoryIcon from "@mui/icons-material/History"
 import EditIcon from "@mui/icons-material/Edit"
 import Tooltip from "../../tooltip/Tooltip";
 
-const StyledMenu = withStyles({
-    paper: {
-        border: '1px solid #d3d4d5',
-    },
-})((props) => (
+const StyledMenu = ((props) => (
     <Menu
         elevation={0}
         getContentAnchorEl={null}

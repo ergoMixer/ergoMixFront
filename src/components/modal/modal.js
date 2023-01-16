@@ -2,7 +2,7 @@ import React from 'react';
 // import { useClasses } from '../../hoc/useClasses';
 import Modal from '@mui/material/Modal';
 import Paper from '@mui/material/Paper';
-import Container from '@mui/material/Container';
+// import Container from '@mui/material/Container';
 
 // function getModalStyle() {
 //     const top = 50;
@@ -105,9 +105,9 @@ const ProjectModal = (props) => {
                 <div style={closeBtnStyles} onClick={props.close}>
                     <i className="fa fa-times"/>
                 </div>
-                <Container sx={containerStyles}>
+                <div sx={containerStyles}>
                     {props.children}
-                </Container>
+                </div>
             </Paper>
         </Modal>
     ) : null;

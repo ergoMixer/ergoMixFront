@@ -110,7 +110,6 @@ class CovertAsset extends React.Component {
                                     error={this.state.depositAddress === ''}
                                     value={this.state.depositAddress}
                                     required={true}
-                                    variant='filled'
                                 />
                             </div>
                         </div>

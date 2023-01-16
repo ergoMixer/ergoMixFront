@@ -17,7 +17,7 @@ const AssetProgress = props => {
     }
 
     return (
-        <div className="col-12 col-md-6">
+        <div className="col-12 col-md-6 d-flex">
             <div className="card card-stats">
                 <div className="card-header card-header-success card-header-icon">
                     <div className="card-icon">

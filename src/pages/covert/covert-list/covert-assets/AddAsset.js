@@ -86,7 +86,7 @@ export const AddAsset = (props) => {
     });
     const rowZeroPadding = state.validation.token !== '' && state.focused.token;
     return (
-        <div className="col-12 col-md-6">
+        <div className="col-12 col-md-6 d-flex">
             <div className="card card-stats">
                 <div className="card-header card-header-info card-header-icon">
                     <div className="card-icon">
@@ -123,7 +123,6 @@ export const AddAsset = (props) => {
                                     disabled={state.token.type !== "custom"}
                                     value={state.token.id}
                                     required={state.token.type === "custom"}
-                                    variant='filled'
                                 />
                                 {state.validation.token !== '' && state.focused.token ? (
                                     <div className="text-danger text-sm">{state.validation.token}</div>
@@ -140,7 +139,7 @@ export const AddAsset = (props) => {
             </div>
         </div>
     )
-    
+
 }
 
 const mapStateToProps = state => ({

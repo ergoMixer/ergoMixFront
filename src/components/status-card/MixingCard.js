@@ -24,7 +24,7 @@ class MixingCard extends React.Component {
         const totalProgress = this.props.groupStat.numComplete / this.props.groupStat.numBoxes * 100
         const boxProgress = this.props.groupStat.doneMixRound / this.props.groupStat.totalMixRound * 100
         return (
-            <div className="col-12 col-md-6">
+            <div className="col-12 col-md-6 d-flex">
                 <ProjectModal close={this.hideDetails} show={this.state.showDetail} scroll={'hidden'}>
                     <MoreDetail {...this.props}/>
                 </ProjectModal>
@@ -51,8 +51,8 @@ class MixingCard extends React.Component {
                             {/*    Deposited: {this.props.groupStat.doneMixRound}*/}
                         </div>
                         <LinearProgress variant='determinate' color="secondary" value={boxProgress}/>
-                        <CardFooter {...this.props} showDetails={this.showDetails}/>
                     </div>
+                    <CardFooter {...this.props} showDetails={this.showDetails}/>
                 </div>
             </div>
         )

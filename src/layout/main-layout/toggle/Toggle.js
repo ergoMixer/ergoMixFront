@@ -11,8 +11,8 @@ const toggle = (props) => {
                         <button id="minimizeSidebar"
                                 onClick={props.toggleSidebar}
                                 className="btn btn-just-icon btn-white btn-fab btn-round">
-                            <i className="material-icons text_align-center visible-on-sidebar-regular"><MoreVert sx={{verticalAlign: 'sub'}} /></i>
-                            <i className="material-icons design_bullet-list-67 visible-on-sidebar-mini"><ViewList sx={{ verticalAlign: 'sub' }} /></i>
+                            <i className="material-icons text_align-center visible-on-sidebar-regular" style={{lineHeight: "46px"}}><MoreVert /></i>
+                            <i className="material-icons design_bullet-list-67 visible-on-sidebar-mini" style={{lineHeight: "46px"}}><ViewList /></i>
                             <div className="ripple-container"/>
                         </button>
                     </div>

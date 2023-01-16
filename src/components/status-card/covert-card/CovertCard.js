@@ -1,7 +1,7 @@
 import React from 'react';
 import QRCode from "react-qr-code";
 import ProjectModal from "../../modal/modal";
-import QrcodeSVG from '../../../assets/img/qrcode.svg';
+import { ReactComponent as QrcodeSVG } from '../../../assets/img/qrcode.svg';
 import {connect} from "react-redux";
 import CopyClipboard from "../../copy-clipboard/CopyClipboard";
 import CovertTokenProgress from "./CovertTokenProgress";
@@ -56,7 +56,7 @@ class CovertCard extends React.Component {
         const assets = [...this.props.assets].slice(0, 3)
         const extraAssetCount = this.props.assets.filter(item => item.tokenId).length
         return (
-            <div className="col-12 col-md-6">
+            <div className="col-12 col-md-6 d-flex">
                 <ProjectModal close={this.hideQrCode} show={this.state.showQrCode} scroll={'hidden'}>
                     <div className="text-center">
                         <CopyClipboard value={this.props.deposit}/>

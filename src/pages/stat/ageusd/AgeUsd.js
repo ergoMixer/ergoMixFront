@@ -4,16 +4,14 @@ import * as formatter from '../../../formatter/formatters';
 import Tooltip from "../../../components/tooltip/Tooltip";
 import {
     feeToMintRc,
-    feeToMintSc,
+    feeToMintSc, forceUpdateState,
     maxRcToMint,
-    maxScToMint, priceToMintRc,
+    maxScToMint, mintTx,
+    priceToMintRc,
     priceToMintSc,
     rcPrice,
     scPrice
-} from "../../../utils/ageHelper";
-import { currentHeight } from "../../../utils/explorer";
-import { mintSc } from "../../../utils/mintSc";
-import { mintRc } from "../../../utils/mintRc";
+} from "../../../sigmausd/helper";
 import Edit from "@mui/icons-material/Edit";
 import Done from "@mui/icons-material/Done";
 import Clear from "@mui/icons-material/Clear";
@@ -42,7 +40,7 @@ class AgeUsd extends React.Component {
     async binarySearchPrice(ergs, price, curHeight, maxCount, priceFn, feeFn, decimalFactor) {
         let count = Math.floor(ergs / price);
         let upBoundary = Math.min(count * 2, maxCount), downBoundary = 0;
-        while (downBoundary<upBoundary) {
+        while (downBoundary < upBoundary) {
             count = Math.ceil((upBoundary + downBoundary) / 2);
             let countStr = "" + (count / decimalFactor);
             let price = await priceFn(countStr);
@@ -57,15 +55,13 @@ class AgeUsd extends React.Component {
         }
         let res = downBoundary / decimalFactor;
         return {
-            count: res,
-            mintPrice: await priceToMintSc("" + res),
-            fee: await feeToMintRc("" + res)
+            count: res
         }
     }
 
     async calcStableCount(prices, curHeight) {
         const stablePrice = await scPrice();
-        const maxCount = await maxScToMint(curHeight);
+        const maxCount = await maxScToMint();
         let values = {};
         for (let index = 0; index<prices.length; index++) {
             const ergs = prices[index];
@@ -90,7 +86,7 @@ class AgeUsd extends React.Component {
 
     async calcReserveCount(prices, curHeight) {
         const reservePrice = await rcPrice();
-        const maxCount = await maxRcToMint(curHeight);
+        const maxCount = await maxRcToMint();
         let values = {};
         for (let index = 0; index<prices.length; index++) {
             const ergs = prices[index];
@@ -118,19 +114,19 @@ class AgeUsd extends React.Component {
         const maxToMint = (this.state.selected === 'stable' ? maxScToMint : maxRcToMint);
         const priceToMint = (this.state.selected === 'stable' ? priceToMintSc : priceToMintRc);
         const feeToMint = (this.state.selected === 'stable' ? feeToMintSc : feeToMintRc);
-        const mint = (this.state.selected === 'stable' ? mintSc : mintRc);
         const decimalFactor = (this.state.selected === 'stable' ? 100 : 1);
-        const curHeight = await currentHeight();
+        const curHeight = await ApiNetwork.currentHeight();
         let count = await this.binarySearchPrice(
             mix.amount,
             await price(),
             curHeight,
-            await maxToMint(curHeight),
+            await maxToMint(),
             priceToMint,
             feeToMint,
             decimalFactor,
         )
-        return await mint("" + count.count, mix.withdraw, bankBox);
+        await forceUpdateState(bankBox)
+        return await mintTx(this.state.selected, mix.id, "" + count.count, mix.withdraw)
     }
 
     setMixState = (index, status, message="") => {
@@ -151,8 +147,8 @@ class AgeUsd extends React.Component {
                 try {
                     this.setMixState(index, "Start")
                     let bankBox = (transaction ? transaction.outputs[0] : null);
-                    const newTransaction = await this.buySingleCoin(this.state.mix[index], bankBox);
-                    transaction = (await ApiNetwork.mint(this.state.mix[index].id, transaction, newTransaction)).data;
+                    const reducedTransaction = await this.buySingleCoin(this.state.mix[index], bankBox);
+                    transaction = (await ApiNetwork.mint(this.state.mix[index].id, reducedTransaction)).data
                     this.setMixState(index, "Done");
                 } catch (e) {
                     console.log(e);
@@ -171,9 +167,9 @@ class AgeUsd extends React.Component {
                 values.push(mix.amount);
             }
         });
-        currentHeight().then(curHeight => {
-            this.calcStableCount(values, curHeight);
-            this.calcReserveCount(values, curHeight);
+        ApiNetwork.currentHeight().then(curHeight => {
+            this.calcStableCount(values, curHeight).then(() => null);
+            this.calcReserveCount(values, curHeight).then(() => null);
         })
     }
 
