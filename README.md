@@ -1,6 +1,6 @@
 This is frontend project of ErgoMixer!
 
-In order to build this project to be used in `ErgoMixer` install [node 12](https://nodejs.org/en/about/releases/) and then run:
+In order to build this project to be used in `ErgoMixer` install [node 16](https://nodejs.org/en/about/releases/) and then run:
 
 ### 1. `npm install`
 
