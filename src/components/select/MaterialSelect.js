@@ -1,30 +1,18 @@
 import React from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-
-const useStyles = makeStyles((theme) => ({
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 120,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-    },
-}));
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 export default function SimpleSelect(props) {
-    const classes = useStyles();
-
     return (
-        <FormControl className={classes.formControl} style={{width: '100%'}}>
+        <FormControl sx={{m: 1, minWidth: 120, width: '100%'}}>
             <InputLabel id="demo-simple-select-label">{props.label}</InputLabel>
             <Select
                 style={{width: '100%'}}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 {...props}
+                sx={{ marginTop: 2 }}
             >
                 {props.children}
             </Select>

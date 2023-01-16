@@ -2,6 +2,10 @@ import React from 'react';
 import Panel from "../../../../components/panel/Panel";
 import LoadFromJson from "../../../../components/load-from-json/LoadFromJson";
 import LoadFromNode from "../../../../components/load-from-node/LoadFromNode";
+import SettingsEthernet from "@mui/icons-material/SettingsEthernet";
+import ArrowRightAlt from "@mui/icons-material/ArrowRightAlt";
+import Cloud from "@mui/icons-material/Cloud";
+import ExitToApp from "@mui/icons-material/ExitToApp";
 import LoadFromWallet from "../../../../components/load-from-wallet/LoadFromWallet";
 
 const CovertStep3 = props => {
@@ -62,21 +66,21 @@ const CovertStep3 = props => {
                                     <li className="nav-item">
                                         <a className={props.fillingType === "json" ? "nav-link active" : "nav-link"}
                                            onClick={() => setFillingType("json")}>
-                                            <i className="material-icons">settings_ethernet</i> Using Json
+                                            <i className="material-icons"><SettingsEthernet /></i> Using Json
                                             <div className="ripple-container"/>
                                         </a>
                                     </li>
                                     <li className="nav-item">
                                         <a className={props.fillingType === "node" ? "nav-link active" : "nav-link"}
                                            onClick={() => setFillingType("node")}>
-                                            <i className="material-icons">cloud</i> Using a Node
+                                            <i className="material-icons"><Cloud /></i> Using a Node
                                             <div className="ripple-container"/>
                                         </a>
                                     </li>
                                     <li className="nav-item">
                                         <a className={props.fillingType === "dapp" ? "nav-link active" : "nav-link"}
                                            onClick={() => setFillingType("dapp")}>
-                                            <i className="material-icons" style={{color: "white"}}>exit_to_app</i> Using
+                                            <i className="material-icons" style={{color: "white"}}><ExitToApp /></i> Using
                                             Dapp Connector
                                             <div className="ripple-container"/>
                                         </a>
@@ -84,7 +88,7 @@ const CovertStep3 = props => {
                                     <li className="nav-item">
                                         <a className={props.fillingType === "later" ? "nav-link active" : "nav-link"}
                                            onClick={() => setFillingType("later")}>
-                                            <i className="material-icons">arrow_right_alt</i> Set later
+                                            <i className="material-icons"><ArrowRightAlt /></i> Set later
                                             <div className="ripple-container"/>
                                         </a>
                                     </li>

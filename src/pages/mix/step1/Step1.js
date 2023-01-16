@@ -1,5 +1,5 @@
 import React from 'react';
-import { MenuItem, TextField } from "@material-ui/core";
+import { MenuItem, TextField } from "@mui/material";
 import MaterialSelect from "../../../components/select/MaterialSelect";
 import { connect } from "react-redux";
 import Panel from "../../../components/panel/Panel";
@@ -196,6 +196,7 @@ class Step1 extends React.Component {
                                     disabled={this.state.token.type !== "custom"}
                                     value={this.state.token.id}
                                     required={this.state.token.type === "custom"}
+                                    variant='filled'
                                 />
                                 {this.state.validation.token !== '' && this.state.focused.token ? (
                                     <div className="text-danger text-sm">{this.state.validation.token}</div>
@@ -213,6 +214,7 @@ class Step1 extends React.Component {
                                     onChange={event => this.saveAmount(event.target.value)}
                                     error={this.state.validation.amount !== '' && this.state.focused.amount}
                                     value={this.state.amount}
+                                    variant='filled'
                                 />
                                 {this.state.validation.amount !== '' && this.state.focused.amount ? (
                                     <div className="text-danger text-sm">{this.state.validation.amount}</div>

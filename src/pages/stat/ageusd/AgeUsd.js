@@ -14,6 +14,9 @@ import {
 import { currentHeight } from "../../../utils/explorer";
 import { mintSc } from "../../../utils/mintSc";
 import { mintRc } from "../../../utils/mintRc";
+import Edit from "@mui/icons-material/Edit";
+import Done from "@mui/icons-material/Done";
+import Clear from "@mui/icons-material/Clear";
 
 class AgeUsd extends React.Component {
     state = {
@@ -230,14 +233,14 @@ class AgeUsd extends React.Component {
                     <ul className="nav nav-tabs" data-tabs="tabs">
                         <li className="nav-item">
                             <a className={this.getStableBtnClass()} onClick={() => this.setPage('stable')}>
-                                <i className="material-icons" style={{color: "white"}}>edit</i> Stable Coin
+                                <i className="material-icons" style={{color: "white"}}><Edit /></i> Stable Coin
                                 <div className="ripple-container"/>
                             </a>
                         </li>
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                         <li className="nav-item" style={{color: "white"}}>
                             <a className={this.getReserveBtnClass()} onClick={() => this.setPage('reserve')}>
-                                <i className="material-icons" style={{color: "white"}}>edit</i> Reserve Coin
+                                <i className="material-icons" style={{color: "white"}}><Edit /></i> Reserve Coin
                                 <div className="ripple-container"/>
                             </a>
                         </li>
@@ -274,8 +277,8 @@ class AgeUsd extends React.Component {
                                         <td>
                                             {box.loading === "Start" ?
                                                 <i className="fa fa-circle-o-notch fa-spin"/> : box.loading === "Done" ?
-                                                <i className="material-icons" style={{color: "green"}}>done</i> : box.loading === "Failed" ?
-                                                <i className="material-icons" style={{color: "red"}}>clear</i> : null
+                                                <i className="material-icons" style={{color: "green"}}><Done /></i> : box.loading === "Failed" ?
+                                                <i className="material-icons" style={{color: "red"}}><Clear /></i> : null
                                             }
                                         </td>
                                     </tr>

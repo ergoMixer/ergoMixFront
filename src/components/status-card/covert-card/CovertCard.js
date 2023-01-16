@@ -1,11 +1,12 @@
 import React from 'react';
 import QRCode from "react-qr-code";
 import ProjectModal from "../../modal/modal";
-import {ReactComponent as QrcodeSVG} from '../../../assets/img/qrcode.svg';
+import QrcodeSVG from '../../../assets/img/qrcode.svg';
 import {connect} from "react-redux";
 import CopyClipboard from "../../copy-clipboard/CopyClipboard";
 import CovertTokenProgress from "./CovertTokenProgress";
 import CovertCardAction from './CovertCardActions';
+import CallSplit from "@mui/icons-material/CallSplit";
 
 class CovertCard extends React.Component {
     state = {
@@ -66,7 +67,7 @@ class CovertCard extends React.Component {
                 <div className="card card-stats">
                     <div className={this.cardHeaderClass(assets)}>
                         <div className="card-icon">
-                            <i className="material-icons">call_split</i>
+                            <i className="material-icons"><CallSplit /></i>
                         </div>
                         <h3 className="card-title">
                             <CovertCardAction

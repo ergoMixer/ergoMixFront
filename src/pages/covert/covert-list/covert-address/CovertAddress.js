@@ -9,6 +9,10 @@ import { connect } from "react-redux";
 import { NotificationManager } from "react-notifications";
 import * as formatter from "../../../../formatter/formatters";
 import Panel from "../../../../components/panel/Panel";
+import SettingsEthernet from "@mui/icons-material/SettingsEthernet";
+import Cloud from "@mui/icons-material/Cloud";
+import ArrowRightAlt from "@mui/icons-material/ArrowRightAlt";
+import { withParams } from '../../../../hoc/withParams';
 import LoadFromWallet from "../../../../components/load-from-wallet/LoadFromWallet";
 
 class CovertAddress extends React.Component {
@@ -113,14 +117,14 @@ class CovertAddress extends React.Component {
                                         <li className="nav-item">
                                             <a className={this.state.fillingType === "json" ? "nav-link active" : "nav-link"}
                                                onClick={() => this.setFillingType("json")}>
-                                                <i className="material-icons">settings_ethernet</i> Using Json
+                                                <i className="material-icons"><SettingsEthernet /></i> Using Json
                                                 <div className="ripple-container"/>
                                             </a>
                                         </li>
                                         <li className="nav-item">
                                             <a className={this.state.fillingType === "node" ? "nav-link active" : "nav-link"}
                                                onClick={() => this.setFillingType("node")}>
-                                                <i className="material-icons">cloud</i> Using a Node
+                                                <i className="material-icons"><Cloud /></i> Using a Node
                                                 <div className="ripple-container"/>
                                             </a>
                                         </li>
@@ -134,7 +138,7 @@ class CovertAddress extends React.Component {
                                         <li className="nav-item">
                                             <a className={this.state.fillingType === "later" ? "nav-link active" : "nav-link"}
                                                onClick={() => this.setFillingType("later")}>
-                                                <i className="material-icons">arrow_right_alt</i> Withdraw Manually
+                                                <i className="material-icons"><ArrowRightAlt /></i> Withdraw Manually
                                                 <div className="ripple-container"/>
                                             </a>
                                         </li>
@@ -226,4 +230,4 @@ const mapStateToProps = state => ({
 });
 
 
-export default withLayout(MainLayout)(connect(mapStateToProps)(CovertAddress));
+export default withLayout(MainLayout)(connect(mapStateToProps)(withParams(CovertAddress)));

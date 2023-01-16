@@ -8,31 +8,30 @@ import CovertStep1 from "./covert-step-1/CovertStep1";
 import CovertStep2 from "./covert-step-2/CovertStep2";
 import CovertStep3 from "./covert-step-3/CovertStep3";
 import Loading from "../../../components/loading/Loading";
+import { useNavigate } from "react-router-dom";
 
-class NewCovert extends React.Component {
-    state = {
+export const NewCovert = (props) => {
+    const [state, setState] = React.useState({
         values: {
             addresses: [],
             level: 2,
             fillingType: 'later',
         }
+    });
+
+    const saveValue = (values) => {
+        setState({...state, values: {...state.values, ...values}});
     };
 
-    saveValue = (values) => {
-        this.setState(state => {
-            return {...state, values: {...state.values, ...values}}
-        });
-    };
-
-    getSteps = () => {
+    const getSteps = () => {
         return [
             {
                 title: "Name / Import Keys",
                 component: CovertStep1,
                 useCard: false,
                 props: {
-                    saveValue: this.saveValue,
-                    level: this.state.values.level,
+                    saveValue: saveValue,
+                    level: state.values.level,
                 }
             },
             {
@@ -40,57 +39,56 @@ class NewCovert extends React.Component {
                 component: CovertStep2,
                 useCard: false,
                 props: {
-                    saveValue: this.saveValue,
-                    level: this.state.values.level,
+                    saveValue: saveValue,
+                    level: state.values.level,
                 }
             },
             {
                 title: "Withdrawal addresses",
                 component: CovertStep3,
                 props: {
-                    addresses: this.state.values.addresses,
-                    saveValue: this.saveValue,
-                    fillingType: this.state.values.fillingType,
+                    addresses: state.values.addresses,
+                    saveValue: saveValue,
+                    fillingType: state.values.fillingType,
                 },
                 useCard: false
             },
         ];
     }
 
-    submit = () => {
+    const submit = (navigate) => {
         return new Promise((resolve, reject) => {
-            const values = this.state.values;
+            const values = state.values;
             const request = {
                 addresses: values.addresses ? values.addresses : [],
-                numRounds: this.props.levels[values.level].token,
+                numRounds: props.levels[values.level].token,
                 privateKey: values.pk, nameCovert: values.name
             }
             ApiNetwork.covertRequest(request).then(response => {
                 resolve();
-                this.props.history.push("/covert")
+                navigate("/covert");
             }).catch(exp => {
                 reject(exp);
             })
         });
     }
 
-    render() {
-        let loaded = true;
-        Object.keys(this.props.loadedData).forEach(key => {
-            if (!this.props.loadedData[key])
-                loaded = false;
-        })
-        return (
-            <Loading empty={false} loadingMessage={[]} loaded={loaded}>
-                <MultiStep
-                    steps={this.getSteps()}
-                    submit={this.submit}
-                    submitTitle="Create Covert Address"
-                    values={this.state.values}/>
-                <div className="clearfix"/>
-            </Loading>
-        )
-    }
+    let loaded = true;
+    const navigate = useNavigate();
+    Object.keys(props.loadedData).forEach(key => {
+        if (!props.loadedData[key])
+            loaded = false;
+    })
+    return (
+        <Loading empty={false} loadingMessage={[]} loaded={loaded}>
+            <MultiStep
+                steps={getSteps()}
+                submit={() => submit(navigate)}
+                submitTitle="Create Covert Address"
+                values={state.values}/>
+            <div className="clearfix"/>
+        </Loading>
+    )
 }
 
 const mapStateToProps = state => ({

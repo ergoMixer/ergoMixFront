@@ -7,81 +7,83 @@ import { CUSTOM_TOKEN } from "../../../../../const";
 import Breadcrumb from "../../../../../components/broadcom/Breadcrumb";
 import * as formatter from "../../../../../formatter/formatters";
 import { ApiNetwork } from "../../../../../network/api";
+import { useNavigate, useParams } from "react-router-dom";
 
-class CovertSetRing extends React.Component {
-    state = {
+export const CovertSetRing = (props) => {
+    const navigate = useNavigate();
+    const { oldRing, assetId, covertId } = useParams();
+    const [state, setState] = React.useState({
         selected: 0,
         loading: false,
-    }
-    componentDidMount() {
-        this.setState({selected: parseInt(this.props.match.params.oldRing)});
-    }
+    });
 
-    breadcrumbPath = () => {
-        if(!this.props.covertLoaded){
+    React.useEffect(() => {
+        setState({...state, selected: parseInt(oldRing)});
+    }, [])
+
+    const breadcrumbPath = () => {
+        if(!props.covertLoaded){
             ApiNetwork.covertList();
         }
-        const address = this.props.covertMap[this.props.match.params.covertId];
+        const address = props.covertMap[covertId];
         return [
             {url: '/covert', title: "Covert Address"},
-            {url: '/covert/' + this.props.match.params.covertId + '/asset', title: address},
-            {title: formatter.tokenName(this.props.match.params.assetId ? this.props.match.params.assetId : '', true)}
+            {url: '/covert/' + covertId + '/asset', title: address},
+            {title: formatter.tokenName(assetId ? assetId : '', true)}
         ]
     }
 
-    saveRing = () => {
-        this.setState({loading: true})
+    const saveRing = () => {
+        setState({ ...state, loading: true})
         ApiNetwork.covertAssetSet(
-            this.props.match.params.covertId,
-            this.props.match.params.assetId ? this.props.match.params.assetId : '',
-            this.state.selected
+            covertId,
+            assetId ? assetId : '',
+            state.selected
         ).then(data => {
-            this.props.history.push('/covert/' + this.props.match.params.covertId + '/asset')
+            navigate(`/covert/${covertId}/asset`)
         }).catch(exp => {
-            this.setState({loading: false});
+            setState({ ...state, loading: false});
         });
     }
 
-    render() {
-        let token = CUSTOM_TOKEN;
-        const tokenId = this.props.match.params.assetId ? this.props.match.params.assetId : '';
-        this.props.tokens.forEach(item => {
-            if (tokenId === item.id && item.type !== 'custom') {
-                token = item
-            }
-        });
-        return (
-            <React.Fragment>
-                <Breadcrumb path={this.breadcrumbPath()}/>
-                <div className="row non-selectable mt-4">
-                    {token.rings.map((ring, index) => (
-                        <MixRing
-                            key={index}
-                            amount={ring}
-                            tokenId={tokenId}
-                        >
-                            {this.state.selected === ring ? (
-                                <button className="btn btn-primary">Selected</button>
-                            ) : (
-                                <button className="btn btn-outline-primary"
-                                        onClick={() => this.setState({selected: ring})}>Use This Ring</button>
-                            )}
+    let token = CUSTOM_TOKEN;
+    const tokenId = assetId ? assetId : '';
+    props.tokens.forEach(item => {
+        if (tokenId === item.id && item.type !== 'custom') {
+            token = item
+        }
+    });
+    return (
+        <React.Fragment>
+            <Breadcrumb path={breadcrumbPath()}/>
+            <div className="row non-selectable mt-4">
+                {token.rings.map((ring, index) => (
+                    <MixRing
+                        key={index}
+                        amount={ring}
+                        tokenId={tokenId}
+                    >
+                        {state.selected === ring ? (
+                            <button className="btn btn-primary">Selected</button>
+                        ) : (
+                            <button className="btn btn-outline-primary"
+                                    onClick={() => setState({ ...state, selected: ring })}>Use This Ring</button>
+                        )}
 
-                        </MixRing>
-                    ))}
+                    </MixRing>
+                ))}
+            </div>
+            <div className="row">
+                <div className="col-12">
+                    <button className="btn btn-success float-right" onClick={saveRing}>
+                        Save
+                        &nbsp;&nbsp;
+                        {state.loading ? <i className="fa fa-circle-o-notch fa-spin"/> : null}
+                    </button>
                 </div>
-                <div className="row">
-                    <div className="col-12">
-                        <button className="btn btn-success float-right" onClick={this.saveRing}>
-                            Save
-                            &nbsp;&nbsp;
-                            {this.state.loading ? <i className="fa fa-circle-o-notch fa-spin"/> : null}
-                        </button>
-                    </div>
-                </div>
-            </React.Fragment>
-        )
-    }
+            </div>
+        </React.Fragment>
+    )
 }
 
 const mapStateToProps = state => ({

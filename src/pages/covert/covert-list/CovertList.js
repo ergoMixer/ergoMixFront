@@ -7,12 +7,13 @@ import Loading from "../../../components/loading/Loading";
 import CovertCard from "../../../components/status-card/covert-card/CovertCard";
 import { NavLink } from "react-router-dom";
 import ProjectModal from "../../../components/modal/modal";
-import { TextField } from "@material-ui/core";
+import { TextField } from "@mui/material";
 import { COVERT_NAME_SIZE } from "../../../const";
 import Panel from "../../../components/panel/Panel";
 import * as formatter from "../../../formatter/formatters";
 import DataTable from "../../../components/table/assetTable";
 import { NotificationManager } from "react-notifications";
+import CallSplit from "@mui/icons-material/CallSplit";
 
 const create = (
     <NavLink className="btn btn-outline-primary" style={{marginRight: "15px"}} to='/covert/new'>
@@ -152,6 +153,7 @@ class CovertList extends React.Component {
                                     error={this.state.editingName === ''}
                                     value={this.state.editingName}
                                     required={true}
+                                    variant='filled'
                                 />
                             </div>
                         </div>
@@ -225,6 +227,7 @@ class CovertList extends React.Component {
                                     error={this.state.depositAddress === ''}
                                     value={this.state.depositAddress}
                                     required={true}
+                                    variant='filled'
                                 />
                             </div>
 
@@ -240,11 +243,11 @@ class CovertList extends React.Component {
                         <div className="col-12">
                             <Panel>
                                 <div className="help-content-wrapper">
-                                    <i className="material-icons box-display warning">call_split</i>
+                                    <i className="material-icons box-display warning"><CallSplit /></i>
                                     <span className="helper-text"> No active/completed mixes </span>
-                                    <i className="material-icons box-display info">call_split</i>
+                                    <i className="material-icons box-display info"><CallSplit /></i>
                                     <span className="helper-text"> Has some completed mixes </span>
-                                    <i className="material-icons box-display success">call_split</i>
+                                    <i className="material-icons box-display success"><CallSplit /></i>
                                     <span className="helper-text"> Has some active mixes </span>
                                 </div>
                             </Panel>

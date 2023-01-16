@@ -1,16 +1,15 @@
 import React from 'react';
-import QRCode from "react-qr-code";
-import LinearProgress from '@material-ui/core/LinearProgress';
+import LinearProgress from '@mui/material/LinearProgress';
 import * as formatter from '../../formatter/formatters'
 import ProjectModal from "../modal/modal";
 import MoreDetail from "./MoreDetail";
-import { ReactComponent as QrcodeSVG } from '../../assets/img/qrcode.svg';
+import QrcodeSVG from '../../assets/img/qrcode.svg';
 import CardHeaderTitle from './details/CardHeaderTitle';
 import CardFooter from './details/CardFooter.js';
 import { connect } from "react-redux";
 import CopyClipboard from "../copy-clipboard/CopyClipboard";
+import Schedule from "@mui/icons-material/Schedule";
 import QRCodeUrl from "../qr-code/QRCodeUrl";
-import { ergWithoutSuffix } from "../../formatter/formatters";
 
 class PendingDepositCard extends React.Component {
     state = {
@@ -56,7 +55,7 @@ class PendingDepositCard extends React.Component {
                 <div className="card card-stats">
                     <div className="card-header card-header-warning card-header-icon">
                         <div className="card-icon">
-                            <i className="material-icons">schedule</i>
+                            <i className="material-icons"><Schedule /></i>
                         </div>
                         <CardHeaderTitle {...this.props}/>
                     </div>

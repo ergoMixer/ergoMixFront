@@ -1,5 +1,6 @@
 import React from 'react';
-
+import MoreVert from "@mui/icons-material/MoreVert";
+import ViewList from "@mui/icons-material/ViewList";
 
 const toggle = (props) => {
     return (
@@ -10,8 +11,8 @@ const toggle = (props) => {
                         <button id="minimizeSidebar"
                                 onClick={props.toggleSidebar}
                                 className="btn btn-just-icon btn-white btn-fab btn-round">
-                            <i className="material-icons text_align-center visible-on-sidebar-regular">more_vert</i>
-                            <i className="material-icons design_bullet-list-67 visible-on-sidebar-mini">view_list</i>
+                            <i className="material-icons text_align-center visible-on-sidebar-regular"><MoreVert sx={{verticalAlign: 'sub'}} /></i>
+                            <i className="material-icons design_bullet-list-67 visible-on-sidebar-mini"><ViewList sx={{ verticalAlign: 'sub' }} /></i>
                             <div className="ripple-container"/>
                         </button>
                     </div>

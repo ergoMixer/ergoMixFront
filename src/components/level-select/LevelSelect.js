@@ -1,7 +1,8 @@
 import React from 'react';
-import Slider from "@material-ui/core/Slider";
+import Slider from "@mui/material/Slider";
 import * as formatter from "../../formatter/formatters";
 import { connect } from "react-redux";
+import CallMerge from "@mui/icons-material/CallMerge";
 
 const levelSelect = props => {
     const marks = props.mixLevel.map((item, index) => {
@@ -13,7 +14,7 @@ const levelSelect = props => {
             <div className="card card-stats">
                 <div className="card-header card-header-success card-header-icon">
                     <div className="card-icon">
-                        <i className="material-icons">call_merge</i>
+                        <i className="material-icons"><CallMerge /></i>
                     </div>
                     <h4 className="card-title ">Mixing Level</h4>
                 </div>

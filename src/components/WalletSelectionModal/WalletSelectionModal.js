@@ -1,8 +1,8 @@
 import ProjectModal from "../modal/modal";
 import React, { useState } from "react";
-import { ReactComponent as YoroiIcon } from '../../assets/icons/yoroi-logo-icon.svg';
-import { ReactComponent as NautilusIcon } from '../../assets/icons/nautilus-logo-icon.svg';
-import Button from "@material-ui/core/Button";
+import YoroiIcon from '../../assets/icons/yoroi-logo-icon.svg';
+import NautilusIcon from '../../assets/icons/nautilus-logo-icon.svg';
+import Button from '@mui/material/Button';
 
 const getButtonStyle = () => {
     const width = 200;

@@ -1,10 +1,10 @@
 import React from 'react';
-import { TextField } from "@material-ui/core";
-import Checkbox from '@material-ui/core/Checkbox';
+import { TextField } from "@mui/material";
+import Checkbox from '@mui/material/Checkbox';
 import { connect } from "react-redux";
 import Panel from "../../../../components/panel/Panel";
 import { COVERT_NAME_SIZE } from "../../../../const";
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 class CovertStep1 extends React.Component {
     state = {
@@ -91,6 +91,7 @@ class CovertStep1 extends React.Component {
                                 onChange={event => this.saveName(event.target.value)}
                                 value={this.state.name}
                                 required={false}
+                                variant='filled'
                             />
                         </div>
                     </div>
@@ -134,6 +135,7 @@ class CovertStep1 extends React.Component {
                                     value={this.state.pk}
                                     required={false}
                                     disabled={!this.state.needPK}
+                                    variant='filled'
                                 />
                                 <span className="small">To import address from other wallets (magnum or ...)</span>
                             </div>

@@ -4,6 +4,11 @@ import { ApiNetwork } from "../../../network/api";
 import * as formatter from '../../../formatter/formatters';
 import { TOKEN_ERGO_AMOUNT } from "../../../const";
 import Panel from "../../../components/panel/Panel";
+import SettingsEthernet from "@mui/icons-material/SettingsEthernet";
+import Edit from "@mui/icons-material/Edit";
+import Cloud from "@mui/icons-material/Cloud";
+import ArrowRightAlt from "@mui/icons-material/ArrowRightAlt";
+import ExitToApp from "@mui/icons-material/ExitToApp";
 import { getAddressWallet, isWalletConnected, setupWallet } from "../../../utils/walletUtils";
 import WalletSelectionModal from "../../../components/WalletSelectionModal/WalletSelectionModal";
 
@@ -176,21 +181,21 @@ class Step3 extends React.Component {
                                             <li className="nav-item">
                                                 <a className={this.state.fillingType === "manual" ? "nav-link active" : "nav-link"}
                                                    onClick={() => this.setFillingType("manual")}>
-                                                    <i className="material-icons">edit</i> Set Manually
+                                                    <i className="material-icons"><Edit /></i> Set Manually
                                                     <div className="ripple-container"/>
                                                 </a>
                                             </li>
                                             <li className="nav-item">
                                                 <a className={this.state.fillingType === "json" ? "nav-link active" : "nav-link"}
                                                    onClick={() => this.setFillingType("json")}>
-                                                    <i className="material-icons">settings_ethernet</i> Using Json
+                                                    <i className="material-icons"><SettingsEthernet /></i> Using Json
                                                     <div className="ripple-container"/>
                                                 </a>
                                             </li>
                                             <li className="nav-item">
                                                 <a className={this.state.fillingType === "node" ? "nav-link active" : "nav-link"}
                                                    onClick={() => this.setFillingType("node")}>
-                                                    <i className="material-icons">cloud</i> Using a Node
+                                                    <i className="material-icons"><Cloud /></i> Using a Node
                                                     <div className="ripple-container"/>
                                                 </a>
                                             </li>
@@ -198,14 +203,14 @@ class Step3 extends React.Component {
                                                 <a className={this.state.fillingType === "dapp" ? "nav-link active" : "nav-link"}
                                                    onClick={() => this.setFillingType("dapp")}>
                                                     <i className="material-icons"
-                                                       style={{color: "white"}}>exit_to_app</i> Using Dapp Connector
+                                                       style={{color: "white"}}><ExitToApp /></i> Using Dapp Connector
                                                     <div className="ripple-container"/>
                                                 </a>
                                             </li>
                                             <li className="nav-item">
                                                 <a className={this.state.fillingType === "later" ? "nav-link active" : "nav-link"}
                                                    onClick={() => this.setFillingType("later")}>
-                                                    <i className="material-icons">arrow_right_alt</i> Set Later
+                                                    <i className="material-icons"><ArrowRightAlt /></i> Set Later
                                                     <div className="ripple-container"/>
                                                 </a>
                                             </li>

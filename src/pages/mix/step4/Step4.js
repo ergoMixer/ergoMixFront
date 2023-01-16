@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import * as formatter from '../../../formatter/formatters';
 import Panel from "../../../components/panel/Panel";
 import LevelSelect from "../../../components/level-select/LevelSelect";
+import Receipt from "@mui/icons-material/Receipt";
+import Assignment from "@mui/icons-material/Assignment";
 
 class Step4 extends React.Component {
     state = {
@@ -96,7 +98,7 @@ class Step4 extends React.Component {
                         <div className="card card-stats">
                             <div className="card-header card-header-warning card-header-icon">
                                 <div className="card-icon">
-                                    <i className="material-icons">receipt</i>
+                                    <i className="material-icons"><Receipt /></i>
                                 </div>
                                 <h4 className="card-title ">Summary</h4>
                             </div>
@@ -132,7 +134,7 @@ class Step4 extends React.Component {
                         <div className="card">
                             <div className="card-header card-header-icon card-header-rose">
                                 <div className="card-icon">
-                                    <i className="material-icons">assignment</i>
+                                    <i className="material-icons"><Assignment /></i>
                                 </div>
                                 <h4 className="card-title ">Details</h4>
                             </div>

@@ -9,10 +9,11 @@ import Step3 from "./step3/Step3";
 import Step4 from "./step4/Step4";
 import { connect } from "react-redux";
 import Loading from "../../components/loading/Loading";
+import { useNavigate } from "react-router-dom";
 
-
-class Mix extends React.Component {
-    state = {
+export const Mix = (props) => {
+    const navigate = useNavigate();
+    const [state, setState] = React.useState({
         values: {
             amount: "",
             mix: "",
@@ -20,46 +21,44 @@ class Mix extends React.Component {
             addresses: [],
             filling: "manual",
         }
-    };
+    });
 
-    submit = () => {
+    const submit = () => {
         return new Promise((resolve, reject) => {
-            ApiNetwork.mixRequest(this.state.values.addresses).then(response => {
+            ApiNetwork.mixRequest(state.values.addresses).then(response => {
                 resolve();
-                this.props.history.push("/mix/active")
+                navigate("/mix/active")
             }).catch(exp => {
                 reject(exp);
             })
         });
     };
 
-    saveValue = (values) => {
-        this.setState(state => {
-            return {...state, values: {...state.values, ...values}}
-        });
+    const saveValue = (values) => {
+        setState({...state, values: {...state.values, ...values}});
     };
 
-    getSteps = () => {
+    const getSteps = () => {
         return [
             {
                 title: "Number of Erg/Tokens to mix",
                 component: Step1,
                 useCard: false,
                 props: {
-                    saveValue: this.saveValue,
-                    mix: this.state.values.mix,
-                    amount: this.state.values.amount,
-                    token: this.state.values.token
+                    saveValue: saveValue,
+                    mix: state.values.mix,
+                    amount: state.values.amount,
+                    token: state.values.token
                 }
             },
             {
                 title: "Select rings",
                 component: Step2,
                 props: {
-                    total: this.state.values.amount,
-                    boxes: this.state.values.boxes,
-                    token: this.state.values.token,
-                    saveValue: this.saveValue
+                    total: state.values.amount,
+                    boxes: state.values.boxes,
+                    token: state.values.token,
+                    saveValue: saveValue
                 },
                 useCard: false
             },
@@ -67,11 +66,11 @@ class Mix extends React.Component {
                 title: "set withdraw addresses",
                 component: Step3,
                 props: {
-                    boxes: this.state.values.boxes,
-                    filling: this.state.values.filling,
-                    addresses: this.state.values.addresses,
-                    saveValue: this.saveValue,
-                    token: this.state.values.token,
+                    boxes: state.values.boxes,
+                    filling: state.values.filling,
+                    addresses: state.values.addresses,
+                    saveValue: saveValue,
+                    token: state.values.token,
                 },
                 useCard: false
             },
@@ -79,33 +78,31 @@ class Mix extends React.Component {
                 title: "review and start",
                 component: Step4,
                 props: {
-                    addresses: this.state.values.addresses,
-                    selectedLevel: this.state.values.selectedLevel,
-                    token: this.state.values.token,
-                    saveValue: this.saveValue,
+                    addresses: state.values.addresses,
+                    selectedLevel: state.values.selectedLevel,
+                    token: state.values.token,
+                    saveValue: saveValue,
                 },
                 useCard: false
             }
         ];
     }
 
-    render() {
-        let loaded = true;
-        Object.keys(this.props.loadedData).forEach(key => {
-            if (!this.props.loadedData[key])
-                loaded = false;
-        })
-        return (
-            <Loading empty={false} loaded={loaded} emptyMessage={[]}>
-                <MultiStep
-                    steps={this.getSteps()}
-                    submit={this.submit}
-                    submitTitle="Start Mixing"
-                    values={this.state.values}/>
-                <div className="clearfix"/>
-            </Loading>
-        )
-    };
+    let loaded = true;
+    Object.keys(props.loadedData).forEach(key => {
+        if (!props.loadedData[key])
+            loaded = false;
+    })
+    return (
+        <Loading empty={false} loaded={loaded} emptyMessage={[]}>
+            <MultiStep
+                steps={getSteps()}
+                submit={submit}
+                submitTitle="Start Mixing"
+                values={state.values}/>
+            <div className="clearfix"/>
+        </Loading>
+    )
 }
 
 const mapStateToProps = state => ({

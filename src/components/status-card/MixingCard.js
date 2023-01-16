@@ -1,10 +1,10 @@
 import React from 'react';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import LinearProgress from '@mui/material/LinearProgress';
 import ProjectModal from "../modal/modal";
 import MoreDetail from "./MoreDetail";
 import CardHeaderTitle from './details/CardHeaderTitle';
 import CardFooter from "./details/CardFooter";
-
+import Autorenew from "@mui/icons-material/Autorenew";
 class MixingCard extends React.Component {
     state = {
         showQrCode: false,
@@ -32,7 +32,7 @@ class MixingCard extends React.Component {
                 <div className="card card-stats">
                     <div className="card-header card-header-success card-header-icon">
                         <div className="card-icon">
-                            <i className="material-icons">autorenew</i>
+                            <i className="material-icons"><Autorenew /></i>
                         </div>
                         <CardHeaderTitle {...this.props}/>
                     </div>

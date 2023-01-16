@@ -1,11 +1,13 @@
 import React from 'react';
 import MaterialSelect from "../../../../components/select/MaterialSelect";
-import { MenuItem, TextField } from "@material-ui/core";
-import { withRouter } from "react-router";
+import { MenuItem, TextField } from "@mui/material";
 import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Add from "@mui/icons-material/Add";
 
-class AddAsset extends React.Component {
-    state = {
+export const AddAsset = (props) => {
+    const navigate = useNavigate();
+    const [state, setState] = React.useState({
         tokenIndex: "",
         token: {},
         validation: {
@@ -15,138 +17,135 @@ class AddAsset extends React.Component {
             token: false,
         }
 
-    }
+    });
 
-    saveToken = index => {
-        const value = this.props.tokens[index];
-        this.setState(state => {
-            const res = {
-                ...state,
-                tokenIndex: index,
-                token: {...value},
-            };
-            if (value.type === 'custom') {
-                res.validation = {...res.validation, token: 'This Field is required'}
+    const saveToken = index => {
+        const value = props.tokens[index];
+        const newState = {
+            ...state,
+            tokenIndex: index,
+            token: {...value},
+        };
+        if (value.type === 'custom') {
+            newState.validation = {...newState.validation, token: 'This Field is required'}
+        } else {
+            newState.validation = {...newState.validation, token: ''}
+        }
+        if (props.saveValue) {
+            if (state.validation.amount) {
+                props.saveValue({token: value});
             } else {
-                res.validation = {...res.validation, token: ''}
+                props.saveValue({amount: Math.pow(10, value.decimals) * newState.amount, token: value});
             }
-            if (this.props.saveValue) {
-                if (this.state.validation.amount) {
-                    this.props.saveValue({token: value});
-                } else {
-                    this.props.saveValue({amount: Math.pow(10, value.decimals) * res.amount, token: value});
-                }
-            }
-            return res;
-        });
+        }
+        setState(newState);
     }
 
-    saveTokenId = value => {
+    const saveTokenId = value => {
         let validation = "";
         if (value === "") {
             validation = "Required";
-        }else if (this.props.currentTokens.has(value)){
+        }else if (props.currentTokens.has(value)){
             validation = "Already exists";
         }
-        this.setState(state => {
-            const res = {
-                ...state,
-                token: {
-                    ...state.token,
-                    id: value
-                },
-                validation: {
-                    ...state.validation,
-                    token: validation,
-                },
-                focused: {
-                    ...state.focused,
-                    token: true
-                }
-            };
-            if (this.props.saveValue) {
-                this.props.saveValue({token: res.token});
+        const newState = {
+            ...state,
+            token: {
+                ...state.token,
+                id: value
+            },
+            validation: {
+                ...state.validation,
+                token: validation,
+            },
+            focused: {
+                ...state.focused,
+                token: true
             }
-            return res
-        });
+        };
+        if (props.saveValue) {
+            props.saveValue({token: newState.token});
+        }
+        setState(newState);
     }
 
-    configureRing = () => {
-        if(this.isValid()) {
-            const ringUrl = '/covert/' + this.props.covertId + '/asset/' + (this.state.token.id ? this.state.token.id + '/ring/0' : 'ring/0');
-            this.props.history.push(ringUrl);
+    const configureRing = () => {
+        if(isValid()) {
+            const ringUrl = '/covert/' + props.covertId + '/asset/' + (state.token.id ? state.token.id + '/ring/0' : 'ring/0');
+            navigate(ringUrl);
         }
     }
 
-    isValid = () => {
-        return (this.state.token.id || this.state.token.type === 'defined') && !this.props.currentTokens.has(this.state.token.id);
+    const isValid = () => {
+        return (state.token.id || state.token.type === 'defined') && !props.currentTokens.has(state.token.id);
     }
 
-    render = () => {
-        const haveTokenId = this.state.token && (this.state.token.type === "custom" || (this.state.token.id !== '' && this.state.token.id !== undefined));
-        const tokens = this.props.tokens.map(item => {
-            return {...item, enabled:(!this.props.currentTokens.has(item.id) || item.type === 'custom')}
-        });
-        const rowZeroPadding = this.state.validation.token !== '' && this.state.focused.token;
-        return (
-            <div className="col-12 col-md-6">
-                <div className="card card-stats">
-                    <div className="card-header card-header-info card-header-icon">
-                        <div className="card-icon">
-                            <i className="material-icons">add</i>
-                        </div>
-                        <h3 className="card-title">
-                            Add New
-                        </h3>
+    const haveTokenId = state.token && (state.token.type === "custom" || (state.token.id !== '' && state.token.id !== undefined));
+    const tokens = props.tokens.map(item => {
+        return {...item, enabled:(!props.currentTokens.has(item.id) || item.type === 'custom')}
+    });
+    const rowZeroPadding = state.validation.token !== '' && state.focused.token;
+    return (
+        <div className="col-12 col-md-6">
+            <div className="card card-stats">
+                <div className="card-header card-header-info card-header-icon">
+                    <div className="card-icon">
+                        <i className="material-icons"><Add /></i>
                     </div>
-                    <div className="card-body progress-card text-left" style={{paddingTop: '0'}}>
-                        <div className="row">
-                            <div
-                                className={"col-12 mb-6 " + (haveTokenId ? 'col-sm-4' : '')}>
-                                <MaterialSelect
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    label="Select Token"
-                                    value={this.state.tokenIndex}
-                                    onChange={event => this.saveToken(event.target.value)}
-                                >
-                                    <MenuItem selected disabled value="">
-                                        <em>Select Token</em>
-                                    </MenuItem>
-                                    {tokens.map((tokenItem, index) => <MenuItem value={index} disabled={!tokenItem.enabled} key={index}>{tokenItem.name}</MenuItem>)}
-                                </MaterialSelect>
-                            </div>
-                            {haveTokenId ? (
-                                <div className="col-12 col-md-8 form-group" style={rowZeroPadding ? {paddingBottom: '0'} : {}}>
-                                    <TextField
-                                        label={"Token ID"}
-                                        onBlur={event => this.saveTokenId(this.state.token.id)}
-                                        onChange={event => this.saveTokenId(event.target.value)}
-                                        error={this.state.validation.token !== '' && this.state.focused.token}
-                                        disabled={this.state.token.type !== "custom"}
-                                        value={this.state.token.id}
-                                        required={this.state.token.type === "custom"}
-                                    />
-                                    {this.state.validation.token !== '' && this.state.focused.token ? (
-                                        <div className="text-danger text-sm">{this.state.validation.token}</div>
-                                    ) : null}
-                                </div>
-                            ) : null}
+                    <h3 className="card-title">
+                        Add New
+                    </h3>
+                </div>
+                <div className="card-body progress-card text-left" style={{paddingTop: '0'}}>
+                    <div className="row">
+                        <div
+                            className={"col-12 mb-6 " + (haveTokenId ? 'col-sm-4' : '')}>
+                            <MaterialSelect
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                label="Select Token"
+                                value={state.tokenIndex}
+                                onChange={event => saveToken(event.target.value)}
+                            >
+                                <MenuItem selected disabled value="">
+                                    <em>Select Token</em>
+                                </MenuItem>
+                                {tokens.map((tokenItem, index) => <MenuItem value={index} disabled={!tokenItem.enabled} key={index}>{tokenItem.name}</MenuItem>)}
+                            </MaterialSelect>
                         </div>
-                        <div className="row">
-                            <div className="col-12">
-                                <button className={"btn pull-right " + (this.isValid() ? "btn-outline-primary": "btn-outline")} onClick={this.configureRing}>Configure Ring To Add Token</button>
+                        {haveTokenId ? (
+                            <div className="col-12 col-md-8 form-group" style={rowZeroPadding ? {paddingBottom: '0'} : {}}>
+                                <TextField
+                                    label={"Token ID"}
+                                    onBlur={event => saveTokenId(state.token.id)}
+                                    onChange={event => saveTokenId(event.target.value)}
+                                    error={state.validation.token !== '' && state.focused.token}
+                                    disabled={state.token.type !== "custom"}
+                                    value={state.token.id}
+                                    required={state.token.type === "custom"}
+                                    variant='filled'
+                                />
+                                {state.validation.token !== '' && state.focused.token ? (
+                                    <div className="text-danger text-sm">{state.validation.token}</div>
+                                ) : null}
                             </div>
+                        ) : null}
+                    </div>
+                    <div className="row">
+                        <div className="col-12">
+                            <button className={"btn pull-right " + (isValid() ? "btn-outline-primary": "btn-outline")} onClick={configureRing}>Configure Ring To Add Token</button>
                         </div>
                     </div>
                 </div>
             </div>
-        )
-    };
+        </div>
+    )
+    
 }
 
 const mapStateToProps = state => ({
     tokens: state.tokens
 });
 
-export default withRouter(connect(mapStateToProps)(AddAsset));
+// export default withRouter(connect(mapStateToProps)(AddAsset));
+export default connect(mapStateToProps)(AddAsset);

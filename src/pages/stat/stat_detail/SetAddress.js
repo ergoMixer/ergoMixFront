@@ -5,7 +5,13 @@ import * as formatter from '../../../formatter/formatters';
 import Tooltip from "../../../components/tooltip/Tooltip";
 import { getAddressWallet, isWalletConnected, setupWallet } from "../../../utils/walletUtils";
 import WalletSelectionModal from "../../../components/WalletSelectionModal/WalletSelectionModal";
-
+import Edit from "@mui/icons-material/Edit";
+import SettingsEthernet from "@mui/icons-material/SettingsEthernet";
+import Cloud from "@mui/icons-material/Cloud";
+import CallSplit from "@mui/icons-material/CallSplit";
+import Done from "@mui/icons-material/Done";
+import Clear from "@mui/icons-material/Clear";
+import ExitToApp from "@mui/icons-material/ExitToApp";
 
 class SetAddress extends React.Component {
     state = {
@@ -167,14 +173,14 @@ class SetAddress extends React.Component {
                             <li className="nav-item">
                                 <a className={this.state.fillingType === "manual" ? "nav-link active" : "nav-link"}
                                    onClick={() => this.setFillingType("manual")}>
-                                    <i className="material-icons" style={{color: "white"}}>edit</i> Set Manually
+                                    <i className="material-icons" style={{color: "white"}}><Edit /></i> Set Manually
                                     <div className="ripple-container"/>
                                 </a>
                             </li>
                             <li className="nav-item">
                                 <a className={this.state.fillingType === "json" ? "nav-link active" : "nav-link"}
                                    onClick={() => this.setFillingType("json")}>
-                                    <i className="material-icons" style={{color: "white"}}>settings_ethernet</i> Using
+                                    <i className="material-icons" style={{color: "white"}}><SettingsEthernet /></i> Using
                                     Json
                                     <div className="ripple-container"/>
                                 </a>
@@ -182,14 +188,14 @@ class SetAddress extends React.Component {
                             <li className="nav-item">
                                 <a className={this.state.fillingType === "node" ? "nav-link active" : "nav-link"}
                                    onClick={() => this.setFillingType("node")}>
-                                    <i className="material-icons" style={{color: "white"}}>cloud</i> Using a Node
+                                    <i className="material-icons" style={{color: "white"}}><Cloud /></i> Using a Node
                                     <div className="ripple-container"/>
                                 </a>
                             </li>
                             <li className="nav-item">
                                 <a className={this.state.fillingType === "dapp" ? "nav-link active" : "nav-link"}
                                    onClick={() => this.setFillingType("dapp")}>
-                                    <i className="material-icons" style={{color: "white"}}>exit_to_app</i> Using Dapp
+                                    <i className="material-icons" style={{color: "white"}}><ExitToApp /></i> Using Dapp
                                     Connector
                                     <div className="ripple-container"/>
                                 </a>
@@ -197,7 +203,7 @@ class SetAddress extends React.Component {
                             <li className="nav-item">
                                 <a className={this.state.fillingType === "oneForAll" ? "nav-link active" : "nav-link"}
                                    onClick={() => this.setFillingType("oneForAll")}>
-                                    <i className="material-icons" style={{color: "white"}}>call_split</i> One for all
+                                    <i className="material-icons" style={{color: "white"}}><CallSplit /></i> One for all
                                     <div className="ripple-container"/>
                                 </a>
                             </li>
@@ -357,9 +363,9 @@ class SetAddress extends React.Component {
                                                     {box.loading === "Start" ?
                                                         <i className="fa fa-circle-o-notch fa-spin"/> : box.loading === "Done" ?
                                                             <i className="material-icons"
-                                                               style={{color: "green"}}>done</i> : box.loading === "Failed" ?
+                                                               style={{color: "green"}}><Done /></i> : box.loading === "Failed" ?
                                                                 <i className="material-icons"
-                                                                   style={{color: "red"}}>clear</i> : null}
+                                                                   style={{color: "red"}}><Clear /></i> : null}
                                                 </td>
                                             </tr>
                                         ))}

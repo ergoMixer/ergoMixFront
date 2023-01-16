@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
 import './assets/material-dashboard.scss';
-import 'material-icons/iconfont/material-icons.scss'
 import 'font-awesome/css/font-awesome.css'
 import App from './app/App';
 import * as serviceWorker from './serviceWorker';

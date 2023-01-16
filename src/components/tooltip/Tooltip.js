@@ -1,17 +1,9 @@
 import React from 'react';
-import { makeStyles} from '@material-ui/core/styles';
-import Tooltip from '@material-ui/core/Tooltip';
-
-const useStyles = makeStyles((theme) => ({
-    noMaxWidth: {
-        maxWidth: 'none',
-    }
-}));
+import Tooltip from '@mui/material/Tooltip';
 
 const TooltipC = props => {
-    const classes = useStyles();
     return (
-        <Tooltip {...props} classes={{ tooltip: classes.noMaxWidth }}>
+        <Tooltip {...props} sx={{ maxWidth: 'none' }}>
             {props.children}
         </Tooltip>
     )

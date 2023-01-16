@@ -6,6 +6,9 @@ import StatusCard from "../../../components/status-card/StatusCard";
 import Panel from "../../../components/panel/Panel";
 import Loading from "../../../components/loading/Loading";
 import { NavLink } from "react-router-dom";
+import Schedule from "@mui/icons-material/Schedule";
+import CompareArrows from "@mui/icons-material/CompareArrows";
+import Autorenew from "@mui/icons-material/Autorenew";
 
 const create = (
     <NavLink className="btn btn-outline-primary" style={{marginRight: "15px"}} to='/mix/active/new'>
@@ -40,11 +43,11 @@ class ActiveStat extends React.Component {
                         <div className="col-12">
                             <Panel>
                                 <div className="help-content-wrapper">
-                                    <i className="material-icons box-display warning">schedule</i>
+                                    <i className="material-icons box-display warning"><Schedule /></i>
                                     <span className="helper-text"> Pending deposit </span>
-                                    <i className="material-icons box-display info">compare_arrows</i>
+                                    <i className="material-icons box-display info"><CompareArrows /></i>
                                     <span className="helper-text">Pre-mixing</span>
-                                    <i className="material-icons box-display success">autorenew</i>
+                                    <i className="material-icons box-display success"><Autorenew /></i>
                                     <span className="helper-text">Mixing</span>
                                 </div>
                                 <div className="text-center mt-3">excess deposit will be considered as donation</div>

@@ -10,16 +10,18 @@ import withLayout from '../../../hoc/with_layout/withLayout';
 import MainLayout from '../../../layout/main-layout/MainLayout';
 import * as formatter from '../../../formatter/formatters'
 import CheckboxesTags from "../../../components/select/CheckboxesTags";
-import Checkbox from '@material-ui/core/Checkbox';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import Checkbox from '@mui/material/Checkbox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import WithdrawList from "../withdraw/WithdrawList";
 import SetAddress from "./SetAddress";
 import Tooltip from "../../../components/tooltip/Tooltip";
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import Loading from "../../../components/loading/Loading";
 import OrderTd from '../../../components/order-td/OrderTd';
+import Edit from "@mui/icons-material/Edit";
+import { withParams } from '../../../hoc/withParams';
 import TransactionStatus from "../../../components/transaction-status/TransactionStatus";
 
 class StatDetail extends React.Component {
@@ -297,7 +299,7 @@ class StatDetail extends React.Component {
                                     <a style={statusSelected !== "None" ? {cursor: "pointer"} : {cursor: "not-allowed"}}
                                        className={"nav-link active"}
                                        onClick={statusSelected !== "None" ? () => this.showSetAddress() : null}>
-                                        <i className="material-icons">edit</i> Set Address
+                                        <i className="material-icons"><Edit /></i> Set Address
                                         <div className="ripple-container"/>
                                     </a>
                                 </li>
@@ -306,7 +308,7 @@ class StatDetail extends React.Component {
                                     <a style={statusSelected !== "None" ? {cursor: "pointer"} : {cursor: "not-allowed"}}
                                        className={"nav-link active"}
                                        onClick={statusSelected !== "None" ? () => this.showWithdrawDetail() : null}>
-                                        <i className="material-icons">edit</i> Withdraw Now
+                                        <i className="material-icons"><Edit /></i> Withdraw Now
                                         <div className="ripple-container"/>
                                     </a>
                                 </li>
@@ -315,7 +317,7 @@ class StatDetail extends React.Component {
                                     <a style={statusSelected !== "None" ? {cursor: "pointer"} : {cursor: "not-allowed"}}
                                        className={"nav-link active"}
                                        onClick={statusSelected !== "None" ? () => this.showAgeUSDDetail() : null}>
-                                        <i className="material-icons">edit</i> Sig USD
+                                        <i className="material-icons"><Edit /></i> Sig USD
                                         <div className="ripple-container"/>
                                     </a>
                                 </li>
@@ -451,4 +453,4 @@ const mapStateToProps = state => ({
     covertLoaded: state.covertLoaded,
 });
 
-export default withLayout(MainLayout)(connect(mapStateToProps)(StatDetail));
+export default withLayout(MainLayout)(connect(mapStateToProps)(withParams(StatDetail)));
