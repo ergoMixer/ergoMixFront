@@ -110,6 +110,22 @@ const HOME_BOXES = [
         )
     },
     {
+        title: 'Stealth Address', content: (
+            <div>
+                A stealth address is used when you want to hide the exact amount of your transactions.
+                You can share a stealth address with others, and they can generate a new stealth payment address to send Ergs or tokens to you.
+                On the other hand, the receiver can collect the stealth boxes and withdraw Ergs or tokens.
+                <br/>
+                <b>Notes:</b>
+                <ul>
+                    <li>To withdraw your stealth boxes, the minimum required Erg for the total selected inputs is 0.007 Erg.</li>
+                    <li>The implementor fee of stealth is 0.2% of the total assets (Erg and tokens), with a minimum of 0.001 Erg.</li>
+                    <li>If the fee cannot be collected for a token in stealth boxes, we will ignore that fee. Therefore, we will not collect fees from NFTs.</li>
+                </ul>
+            </div>
+        )
+    },
+    {
         title: 'Communication through the Internet', content: (
             <div>
                 ErgoMixer connects to the Internet in order to communicate
@@ -219,7 +235,7 @@ const HOME_BOXES = [
 
 class Home extends React.Component {
     state = {
-        active: 6,
+        active: 7,
     }
     handleChange = (index) => {
         this.setState({active: index});

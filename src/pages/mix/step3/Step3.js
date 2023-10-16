@@ -299,7 +299,7 @@ class Step3 extends React.Component {
                                                 className="btn btn-outline-primary">
                                             {this.state.loadingNode ?
                                                 <i className="fa fa-circle-o-notch fa-spin"/> : null}
-                                            {this.state.loadingNode ? " " : null}
+                                            {this.state.loadingNode ? "" : null}
                                             Load addresses
                                         </button>
                                     </div>
@@ -317,13 +317,13 @@ class Step3 extends React.Component {
                                             if (walletType) {
                                                 this.loadAddressFromWallet(walletType);
                                             } else {
-                                                this.setState({showWalletModal: true})
+                                                this.walletSelection("Nautilus")
                                             }
                                         }}
                                                 className="btn btn-outline-primary">
                                             {this.state.loadingWallet ?
                                                 <i className="fa fa-circle-o-notch fa-spin"/> : null}
-                                            {this.state.loadingWallet ? " " : null}
+                                            {this.state.loadingWallet ? "" : null}
                                             Load addresses
                                         </button>
                                     </div>

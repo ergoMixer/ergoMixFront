@@ -512,4 +512,20 @@
     &.warning{
         background: linear-gradient(60deg, #ffa726, #fb8c00);
     }
+    &.danger{
+        background: linear-gradient(60deg, #ff2626, #fb0000);
+    }
 }
+
+.spin-icon svg{
+    animation: spin 2s linear infinite
+  } 
+  @keyframes spin {
+    0% {
+      transform: rotate(-360deg)
+    }
+    100% {
+      transform: rotate(0deg)
+    }
+  }
+  

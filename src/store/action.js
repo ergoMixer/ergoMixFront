@@ -91,6 +91,11 @@ export const saveCovertMap = (covertMap) => ({
     payload: covertMap
 });
 
+export const saveStealthMap = (stealthMap) => ({
+    type: actionTypes.STEALTH_ADDRESS_MAP,
+    payload: stealthMap
+})
+
 export const saveActiveMixMap = (activeMixMap) => ({
     type: actionTypes.ACTIVE_MIX_MAP,
     payload: activeMixMap

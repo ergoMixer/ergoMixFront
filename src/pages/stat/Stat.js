@@ -99,7 +99,9 @@ class Stat extends React.Component {
                                             <td>{index + 1}</td>
                                             <td>
                                                 <Tooltip title={<span className="tooltip-text">{group.id}</span>} arrow>
-                                                    <CopyClipboard value={group.id} display={formatter.id(group.id)}/>
+                                                    <div>
+                                                        <CopyClipboard value={group.id} display={formatter.id(group.id)}/>
+                                                    </div>
                                                 </Tooltip>
                                             </td>
                                             <td>

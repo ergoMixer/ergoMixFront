@@ -5,8 +5,8 @@ import { IconButton } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import HistoryIcon from "@mui/icons-material/History"
 import EditIcon from "@mui/icons-material/Edit"
+import BoxIcon from '@mui/icons-material/WorkOutline'
 import Tooltip from "../../tooltip/Tooltip";
 
 const StyledMenu = ((props) => (
@@ -36,10 +36,15 @@ export default function CovertCardActions(props) {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    
+    const handleGenerateAddress = () => {
+        props.handleGenerateAddress();
+        handleClose();
+    }
 
     const handleEdit = () => {
-        handleClose();
         props.handleEdit();
+        handleClose();
     }
 
     const handlePrivateKey = () => {
@@ -47,52 +52,38 @@ export default function CovertCardActions(props) {
         props.handlePrivateKey();
     }
 
-    const handleWithdrawAllAssets = () => {
-        handleClose();
-        props.handleWithdraw();
-    }
 
-    const handleAllAssets = () => {
+    const gotoPage = () => {
         handleClose()
-        navigate(`/covert/${props.id}/asset`);
-    }
-
-    const handleEditAddress = () => {
-        handleClose()
-        navigate(`/covert/${props.id}/address`);
-    }
-
-    const handleHistory = () => {
-        handleClose()
-        navigate(`/covert/${props.id}/`);
+        navigate(`/stealth/${props.id}/boxes`);
     }
 
     return (
         <div className="float-right" style={{paddingLeft: "14px"}}>
-            <Tooltip title="History" arrow>
+            <Tooltip title="Show Boxes" arrow>
                 <IconButton
                     aria-controls="customized-menu"
                     aria-haspopup="true"
                     variant="contained"
                     color="primary"
-                    aria-label="History"
-                    onClick={handleHistory}
+                    aria-label="Show boxes"
+                    onClick={gotoPage}
                 >
-                    <HistoryIcon/>
+                    <BoxIcon/>
                 </IconButton>
             </Tooltip>
-            <Tooltip title="More" arrow>
+            <Tooltip title="" arrow>
                 <IconButton
                     aria-controls="customized-menu"
                     aria-haspopup="true"
                     variant="contained"
                     color="primary"
-                    aria-label="more"
+                    aria-label=""
                     onClick={handleClick}
                 >
                     <MoreVertIcon/>
                 </IconButton>
-            </Tooltip>
+            </Tooltip>            
 
             <StyledMenu
                 id="customized-menu"
@@ -101,27 +92,19 @@ export default function CovertCardActions(props) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleAllAssets}>
-                    All Assets
-                </MenuItem>
-                <MenuItem onClick={handleEditAddress}>
-                    Edit Addresses
+                <MenuItem onClick={handleGenerateAddress}>
+                    Generate Payment Address
                 </MenuItem>
                 <MenuItem onClick={handlePrivateKey}>
                     Show PrivateKey
                 </MenuItem>
-                {props.showWithdrawAssets ? (
-                    <MenuItem onClick={handleWithdrawAllAssets}>
-                        Withdraw All Assets
-                    </MenuItem>
-                ) : null}
-                <MenuItem onClick={handleHistory}>
-                    <HistoryIcon/> &nbsp;
-                    History
-                </MenuItem>
                 <MenuItem onClick={handleEdit}>
                     <EditIcon/> &nbsp;
                     Edit Name
+                </MenuItem>
+                <MenuItem onClick={gotoPage}>
+                    <BoxIcon/> &nbsp;
+                    Show Boxes
                 </MenuItem>
             </StyledMenu>
         </div>

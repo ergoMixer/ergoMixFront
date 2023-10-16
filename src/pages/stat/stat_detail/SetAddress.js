@@ -66,8 +66,25 @@ class SetAddress extends React.Component {
         });
     };
 
+    callApiStealth = (mix, index) => {
+        ApiNetwork.stealthWithdraw(mix[index].id, mix[index].withdraw).then(response => {
+            mix[index] = {...mix[index], loading: 'Done'};
+            this.setState({loading: ""});
+            this.setState({mix: mix});
+        }).catch(exp => {
+            mix[index] = {...mix[index], loading: 'Failed'};
+            this.setState({loading: ""});
+            this.setState({mix: mix});
+            NotificationManager.error(formatter.errorMessage(exp), 'Update Exception!', 5000);
+        });
+    }
+
     callApi = (mix, index, mixNow) => {
-        ApiNetwork.withdraw(mix[index].id, mix[index].withdraw, mixNow).then(response => {
+        const callFn = () => {
+            if(this.props.action === 'stealth') return ApiNetwork.stealthWithdraw(mix[index].id, mix[index].withdraw)
+            return ApiNetwork.withdraw(mix[index].id, mix[index].withdraw, mixNow)
+        }
+        callFn().then(response => {
             mix[index] = {...mix[index], loading: 'Done'};
             this.setState({loading: ""});
             this.setState({mix: mix});
@@ -308,7 +325,7 @@ class SetAddress extends React.Component {
                                             if (walletType) {
                                                 this.loadAddressFromWallet(walletType);
                                             } else {
-                                                this.setState({showWalletModal: true})
+                                                this.walletSelection("Nautilus")
                                             }
                                         }}
                                                 className="btn btn-outline-primary">
@@ -339,6 +356,9 @@ class SetAddress extends React.Component {
                                         <tr>
                                             <th>ID</th>
                                             <th>Amount</th>
+                                            {this.props.isStealth ? (
+                                                    <th>Tokens</th>
+                                                ) : null}
                                             <th>Withdraw Address</th>
                                             <th>Status</th>
                                         </tr>
@@ -353,6 +373,9 @@ class SetAddress extends React.Component {
                                                     </Tooltip>
                                                 </td>
                                                 <td>{formatter.token(box.mixingTokenId ? box.mixingTokenAmount : box.amount, box.mixingTokenId)}</td>
+                                                {this.props.isStealth ? (
+                                                    <td>{box.assets ? `${box.assets.length} Asset${box.assets.length > 1 ? 's':''}` : ''}</td>
+                                                ) : null}
                                                 <td>
                                                     <input className={"form-control"}
                                                            autoFocus={index === 0}
@@ -374,15 +397,17 @@ class SetAddress extends React.Component {
                                 </div>
                             </div>
                             <div className="row" style={{padding: 20}}>
-                                <div className="col-6">
-                                    <button className="btn btn-outline-primary" style={{width: "100%"}}
-                                            onClick={this.updateWithdraw} disabled={this.state.buttonEnable}>
-                                        {this.state.loading === "update" ?
-                                            <i className="fa fa-circle-o-notch fa-spin"/> : null}
-                                        &nbsp;&nbsp;update withdraw address
-                                    </button>
-                                </div>
-                                <div className="col-6">
+                                {this.props.action === 'stealth' ? null : (
+                                    <div className="col-6">
+                                        <button className="btn btn-outline-primary" style={{width: "100%"}}
+                                                onClick={this.updateWithdraw} disabled={this.state.buttonEnable}>
+                                            {this.state.loading === "update" ?
+                                                <i className="fa fa-circle-o-notch fa-spin"/> : null}
+                                            &nbsp;&nbsp;update withdraw address
+                                        </button>
+                                    </div>
+                                )}
+                                <div className={this.props.action === 'stealth' ? 'col-12' : 'col-6'}>
                                     <button className="btn btn-outline-warning" style={{width: "100%"}}
                                             onClick={this.withdrawNow} disabled={this.state.buttonEnable}>
                                         {this.state.loading === "withdraw" ?

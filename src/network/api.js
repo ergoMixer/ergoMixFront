@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {saveActiveMixMap, saveCovertMap, saveMixHistoryMap} from "../store/action";
+import {saveActiveMixMap, saveCovertMap, saveMixHistoryMap, saveStealthMap} from "../store/action";
 import {store} from "../store";
 import Oracle from "../sigmausd/Oracle";
 import Bank from "../sigmausd/Bank";
@@ -33,10 +33,10 @@ export class ApiNetwork {
 
     static postJson = (url, data) => {
         return instance({
-            method: "POST",
             headers: {"Content-Type": "application/json"},
             url: url,
-            data: JSON.stringify(data)
+            data: JSON.stringify(data),
+            method: 'post'
         })
     };
 
@@ -216,6 +216,53 @@ export class ApiNetwork {
             return response.data
         });
     }
+
+    static stealthInfo = () => {
+        return ApiNetwork.createPromise(instance.get('stealth/info'), response => response.data)
+    }
+
+    static stealthList = () => {
+        return ApiNetwork.createPromise(instance.get('stealth/list'), response => {
+            let stealthMap = {}
+            response.data.forEach(item => {
+                stealthMap[item.stealthId] = item.pk;
+            });
+            store.dispatch(saveStealthMap(stealthMap));
+            return response.data
+        })
+    }
+
+    static generateNewStealthAddress = (pk) => {
+        return ApiNetwork.createPromise(instance.get(`stealth/address/${pk}`), response => response.data)
+    }
+
+    static stealthName = (stealthId, name) => {
+        return this.createPromise(this.postJson('stealth/' + stealthId + "/name", {
+            "name": name
+        }));        
+    }
+
+    static createStealth = (name, pk) => {
+        return this.createPromise(this.postJson('/stealth', {name, secret: pk}))
+    }
+
+    static stealthBoxes = (stealthId, status='all') => {
+        return this.createPromise(instance.get(`/stealth/${stealthId}/box?status=${status}`), response => {
+            return response
+        })
+    }
+
+    static stealthWithdraw = (boxId, address) => {
+        return this.createPromise(this.postJson('stealth/withdraw', {
+            boxId: boxId,
+            withdrawAddress: address
+        }))
+    }
+
+    static stealthPrivateKey = stealthId => {
+        return this.createPromise(instance.get('/stealth/' + stealthId));
+    }
+
 }
 
 export default instance;

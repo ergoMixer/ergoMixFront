@@ -21,9 +21,11 @@ export const apiInitialState = {
         rings: false
     },
     covertMap: {},
+    stealthMap: {},
     activeMap: {},
     historyMap: {},
     covertLoaded: false,
+    stealthLoaded: false,
     activeLoaded: false,
     historyLoaded: false,
     sidebarMini: false,
@@ -63,6 +65,12 @@ export const reducer = (state = apiInitialState, action) => {
                 ...state,
                 tokens: [...action.payload, CUSTOM_TOKEN],
                 loadedData: {...state.loadedData, supported: true}
+            }
+        case actionTypes.STEALTH_ADDRESS_MAP:
+            return {
+                ...state,
+                stealthMap: {...action.payload},
+                stealthLoaded: true,
             }
         case actionTypes.COVERT_ADDRESS_MAP:
             return {

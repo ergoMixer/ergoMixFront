@@ -12,6 +12,7 @@ class Settings extends React.Component {
         backupModal: false,
         restoreModal: false,
         exportSK:false,
+        exportStealthSK: false,
         showComplete: false,
         success: false,
         loading: false,
@@ -36,7 +37,7 @@ class Settings extends React.Component {
     };
 
     closeModal = () => {
-        this.setState({selectedFile: null, restoreModal: false, backupModal: false, exportSK: false});
+        this.setState({selectedFile: null, restoreModal: false, backupModal: false, exportSK: false, exportStealthSK: false});
     }
 
     closeSuccessModal = () => {
@@ -52,6 +53,12 @@ class Settings extends React.Component {
     downloadSecretKeys = () => {
         const url = BASE_URL + "covert/keys";
         this.setState({exportSK: false});
+        window.open(url, "_blank");
+    }
+
+    downloadStealthSecretKeys = () => {
+        const url = BASE_URL + "stealth/export";
+        this.setState({exportStealthSK: false});
         window.open(url, "_blank");
     }
 
@@ -107,10 +114,30 @@ class Settings extends React.Component {
                             <strong>Please read the "Sensitive data and backup" section in About page before relying on export secret keys.</strong>
                         </div>
                     </div>
+                    <br/>
+                    <br/>
                     <div className="row">
                         <div className="col-12 text-center">
                             <button className="btn btn-danger" onClick={this.downloadSecretKeys}>
-                                Export &nbsp;
+                                Export Covert Secrets&nbsp;
+                            </button>
+                            &nbsp;
+                            <button className="btn" onClick={this.closeModal}>Cancel</button>
+                        </div>
+                    </div>
+                </ProjectModal>
+                <ProjectModal close={this.closeModal} show={this.state.exportStealthSK} scroll={'hidden'}>
+                    <div className="row">
+                        <div className="col-12 text-center">
+                            <strong>Please read the "Sensitive data and backup" section in About page before relying on export secret keys.</strong>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <div className="row">
+                        <div className="col-12 text-center">
+                            <button className="btn btn-danger" onClick={this.downloadStealthSecretKeys}>
+                                Export Stealth Secrets&nbsp;
                             </button>
                             &nbsp;
                             <button className="btn" onClick={this.closeModal}>Cancel</button>
@@ -178,6 +205,15 @@ class Settings extends React.Component {
                                         onClick={() => this.setState({exportSK: true})}>Export
                                 </button>
                                 <div style={{padding: "17px 0"}}>Export All Secret Keys of Covert Address
+                                </div>
+                            </Panel>
+                        </div>
+                        <div className="col-12 col-sm-6">
+                            <Panel>
+                                <button className="btn btn-outline-primary float-right"
+                                        onClick={() => this.setState({exportStealthSK: true})}>Export
+                                </button>
+                                <div style={{padding: "17px 0"}}>Export All Secret Keys of Stealth Address
                                 </div>
                             </Panel>
                         </div>

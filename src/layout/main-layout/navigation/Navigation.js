@@ -9,6 +9,7 @@ import ShowChart from "@mui/icons-material/ShowChart";
 import Settings from "@mui/icons-material/Settings";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
+import CallMerge from '@mui/icons-material/CallMerge';
 
 // Valid Data COLOR is data-color="purple | azure | green | orange | danger"
 // data-background-color: red-white-black
@@ -16,12 +17,11 @@ const MENU_ITEMS = [
     {url: '/mix/active', end: false, title: 'Active Mixes', icon: (<CompareArrows />), iconClass: 'material-icons'},
     {url: '/mix/history', end: false, title: 'Mixing History', icon: (<History />), iconClass: 'material-icons'},
     {url: '/covert', end: false, title: 'Covert Address', icon: (<CallSplit />), iconClass: 'material-icons'},
-    // {url: '/covert/new', end: true, title: 'Create Covert Address', icon: (<CallSplit />), iconClass:'material-icons'},
+    {url: '/stealth', end: false, title: 'Stealth Address', icon: (<CallMerge />), iconClass: 'material-icons'},
     {url: '/ring', end: true, title: 'Ring Statistics', icon: (<ShowChart />), iconClass: 'material-icons'},
     {url: '/settings', end: true, title: 'Configuration', icon: (<Settings />), iconClass: 'material-icons'},
     {url: '/', end: true, title: 'About', icon: (<InfoOutlined />), iconClass: 'material-icons'},
     {url: '/shutdown', end: true, title: 'Shutdown', icon: (<PowerSettingsNew />), iconClass: 'material-icons'},
-    // {url: '/swagger', end: true, external: true, title: 'Swagger', icon: 'local_library', iconClass:'material-icons'},
   ]
 const navigation = (props) => {
     return (

@@ -91,7 +91,7 @@ class LoadFromWallet extends React.Component {
                         if (walletType) {
                             this.loadAddressFromWallet(walletType);
                         } else {
-                            this.setState({showWalletModal: true})
+                            this.walletSelection("Nautilus")
                         }
                     }}
                             disabled={!loadingEnabled}

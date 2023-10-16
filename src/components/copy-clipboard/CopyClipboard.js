@@ -18,7 +18,7 @@ class CopyClipboard extends React.Component {
         return (
             <CopyToClipboard
                 render={({copy}) => (
-                    <div onClick={() => this.copyDeposit(copy)}>
+                    <div onClick={() => this.copyDeposit(copy)} style={{wordWrap: 'break-word'}}>
                         {this.props.display ? this.props.display : this.props.value}
                         {this.state.copied ? (
                             <span className="text-success">

@@ -2,7 +2,7 @@ import { CUSTOM_TOKEN } from "../const";
 import { store } from "../store";
 import moment from 'moment/moment';
 
-export const ergWithoutSuffix = value => (value / 1e9);
+export const ergWithoutSuffix = value => tokenValueWithDecimals(value, 9);
 
 export const erg = value => {
     const valInErg = ergWithoutSuffix(value)
@@ -42,11 +42,20 @@ export const token = (value, tokenId, excludeTokenSuffix=false) => {
         value = 0
     }
     const resultToken = getTokenFromId(tokenId);
-    const res = value / Math.pow(10, resultToken.decimals);
+    const res = tokenValueWithDecimals(value, resultToken.decimals)
     if(resultToken.type === 'custom'){
         return res + " " + tokenId.substr(0, 5) + (excludeTokenSuffix ? "" : " Token");
     }
     return res + " " + tokenName(tokenId, excludeTokenSuffix, resultToken);
+}
+
+export const tokenValueWithDecimals = (value, decimals) => {
+    let valueStr = value.toString()
+    while(valueStr.length <= decimals) valueStr = '0' + valueStr;
+    let res = valueStr.substring(0, valueStr.length - decimals) + "." + valueStr.substring(valueStr.length - decimals)
+    while(res.endsWith('0')) res = res.substring(0, res.length - 1)
+    if(res.endsWith('.')) res = res.substring(0, res.length - 1)
+    return res
 }
 
 export const id = (value, max_printing_str = 5) => {

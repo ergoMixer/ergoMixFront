@@ -21,6 +21,9 @@ import Shutdown from "../pages/shutdown/Shutdown";
 
 import { ThemeProvider } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
+import StealthList from '../pages/stealth/stealth-list/StealthList';
+import NewStealth from '../pages/stealth/new-stealth/NewStealth';
+import StealthPaymentAddress from '../pages/stealth/stealth-payment-address/StealthPaymentAddress';
 
 export const theme = createTheme({
     palette: {
@@ -97,6 +100,10 @@ class App extends React.Component {
                     <Route path="/covert/:covertId/address/" element={<CovertAddress />}/>
                     <Route path="/covert/:covertId/" element={<StatDetail path='covert'/>}/>
                     <Route path="/covert" element={<CovertList />}/>
+                    <Route path="/stealth/new" element={<NewStealth />}/>
+                    <Route path="/stealth/payment" element={<StealthPaymentAddress />}/>
+                    <Route path="/stealth/:stealthId/boxes" element={<StatDetail path='stealth' />}/>
+                    <Route path="/stealth" element={<StealthList />}/>
                     <Route path="/shutdown" element={<Shutdown />}/>
                     <Route element={(<Home/>)} index={true} />
                 </Routes>

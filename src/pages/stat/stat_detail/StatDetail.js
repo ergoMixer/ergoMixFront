@@ -11,8 +11,6 @@ import MainLayout from '../../../layout/main-layout/MainLayout';
 import * as formatter from '../../../formatter/formatters'
 import CheckboxesTags from "../../../components/select/CheckboxesTags";
 import Checkbox from '@mui/material/Checkbox';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import WithdrawList from "../withdraw/WithdrawList";
 import SetAddress from "./SetAddress";
 import Tooltip from "../../../components/tooltip/Tooltip";
@@ -27,6 +25,7 @@ import TransactionStatus from "../../../components/transaction-status/Transactio
 class StatDetail extends React.Component {
     state = {
         mix: [],
+        assets: null,
         group: null,
         transactionShow: false,
         setAddressShow: false,
@@ -46,7 +45,7 @@ class StatDetail extends React.Component {
         {title: 'Empty Addresses'}
     ];
 
-    neededStatus = () => this.props.path === 'covert' ? this.state.status : undefined;
+    neededStatus = () => ['covert', 'stealth'].includes(this.props.path)  ? this.state.status : undefined;
 
     sortMix = (mixes, order, orderDir) => {
         if (order) {
@@ -63,27 +62,52 @@ class StatDetail extends React.Component {
     }
 
     loadData = () => {
-        let selectedMixes = [];
+        let selectedItems = [];
+        const neededStatus = this.neededStatus()
         this.state.mix.forEach(box => {
             if (box.checked && box.withdrawStatus === "nothing") {
-                selectedMixes.push(box.id);
+                selectedItems.push(box.id);
             }
         })
-        const group = (this.props.path === 'covert' ? this.props.match.params.covertId : this.props.match.params.groupId);
-        const neededStatus = this.neededStatus()
-        if (this.state.group !== group || neededStatus !== this.state.loadedStatus) {
-            ApiNetwork.mixRequestList(group, neededStatus).then((response => {
-                const res = response.data.map(item => {
-                    return {...item, checked: (selectedMixes.indexOf(item.id)>=0 && item.withdrawStatus === "nothing")}
-                });
-                this.setState({
-                    mix: this.sortMix(res, this.state.order, this.state.orderDir),
-                    group: group,
-                    loadedStatus: neededStatus
-                });
-            })).catch(error => {
+        if(this.props.path === 'stealth'){
+            const stealthId = this.props.match.params.stealthId;
+            if (this.state.group !== stealthId || neededStatus !== this.state.loadedStatus) {
+                ApiNetwork.stealthBoxes(
+                    this.props.match.params.stealthId,
+                    this.state.status === 'active' ? 'unspent' : 'all'
+                ).then(response => {
+                    const data = response.data.map(item => ({
+                        id: item.boxId,
+                        assets: item.assets,
+                        amount: item.value,
+                        withdraw: item.withdrawAddress ? item.withdrawAddress : '',
+                        withdrawStatus: item.withdrawTxId !== '' ? 'withdrawn' : item.withdrawAddress !== '' ? 'withdrawing' : 'nothing',
+                        withdrawTxId: item.withdrawTxId,
+                        failedReason: item.withdrawFailedReason
+                    }))
+                    this.setState({
+                        mix: data,
+                        group: stealthId,
+                        loadedStatus: neededStatus
+                    })
+                })
+            }
+        }else{
+            const group = (this.props.path === 'covert' ? this.props.match.params.covertId : this.props.match.params.groupId);
+            if (this.state.group !== group || neededStatus !== this.state.loadedStatus) {
+                ApiNetwork.mixRequestList(group, neededStatus).then((response => {
+                    const res = response.data.map(item => {
+                        return {...item, checked: (selectedItems.indexOf(item.id)>=0 && item.withdrawStatus === "nothing")}
+                    });
+                    this.setState({
+                        mix: this.sortMix(res, this.state.order, this.state.orderDir),
+                        group: group,
+                        loadedStatus: neededStatus
+                    });
+                })).catch(error => {
 
-            });
+                });
+            }
         }
     };
 
@@ -103,6 +127,7 @@ class StatDetail extends React.Component {
             setAddressShow: false,
             ageUsdShow: false,
             group: '',
+            assets: null,
         });
     };
 
@@ -123,6 +148,9 @@ class StatDetail extends React.Component {
         if (this.props.path === 'covert' && !this.props.covertLoaded) {
             ApiNetwork.covertList();
         }
+        if (this.props.path === 'stealth' && !this.props.stealthLoaded) {
+            ApiNetwork.stealthList();
+        }
         switch (this.props.path) {
             case 'history':
                 return [
@@ -138,6 +166,11 @@ class StatDetail extends React.Component {
                 return [
                     {url: '/covert', title: "Covert Address"},
                     {title: this.props.covertMap[this.props.match.params.covertId]},
+                ]
+            case 'stealth':
+                return [
+                    {url: '/stealth', title: 'Stealth Address'},
+                    {title: this.props.stealthMap[this.props.match.params.stealthId]}
                 ]
             default:
                 return []
@@ -161,6 +194,10 @@ class StatDetail extends React.Component {
             mix: mixCopy,
         });
     };
+
+    clickAssets = (assets) => {
+        this.setState({assets: assets})
+    }
 
     handleChange = indexOption => {
         let mixCopy = [];
@@ -256,7 +293,7 @@ class StatDetail extends React.Component {
         return (
             <div className="row">
                 <ProjectModal close={this.closeModal} show={this.state.setAddressShow} padding={[0]} scroll={'hidden'}>
-                    <SetAddress mix={this.state.mix} close={this.closeModal}/>
+                    <SetAddress mix={this.state.mix} close={this.closeModal} action={this.props.path} isStealth={this.props.path === 'stealth'}/>
                 </ProjectModal>
                 <ProjectModal
                     close={this.closeModal}
@@ -289,6 +326,32 @@ class StatDetail extends React.Component {
 
                     </div>
                 </ProjectModal>
+                <ProjectModal close={this.closeModal} show={this.state.assets !== null} scroll={'hidden'}>
+                    <table className="table">
+                        <thead className=" text-primary">
+                            <tr style={{textAlign: "center"}}>
+                                <th>Asset ID</th>
+                                <th>Name</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        {this.state.assets === null ? null : (
+                        <tbody>
+                            {this.state.assets.map(asset => (
+                                <tr style={{textAlign: "center"}}>
+                                    <td>
+                                        <Tooltip title={asset.id}>
+                                            <span>{formatter.id(asset.id)}</span>
+                                        </Tooltip>
+                                    </td>
+                                    <td>{asset.name}</td>
+                                    <td>{formatter.tokenValueWithDecimals(asset.amount || 0, asset.decimals)}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                        )}
+                    </table>
+                </ProjectModal>
                 <Breadcrumb path={this.breadcrumbPath()}/>
 
                 <div className="col-12">
@@ -297,31 +360,35 @@ class StatDetail extends React.Component {
                             <ul className="nav nav-tabs" data-tabs="tabs">
                                 <li className="nav-item">
                                     <a style={statusSelected !== "None" ? {cursor: "pointer"} : {cursor: "not-allowed"}}
-                                       className={"nav-link active"}
-                                       onClick={statusSelected !== "None" ? () => this.showSetAddress() : null}>
+                                    className={"nav-link active"}
+                                    onClick={statusSelected !== "None" ? () => this.showSetAddress() : null}>
                                         <i className="material-icons"><Edit /></i> Set Address
                                         <div className="ripple-container"/>
                                     </a>
                                 </li>
-                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                <li className="nav-item">
-                                    <a style={statusSelected !== "None" ? {cursor: "pointer"} : {cursor: "not-allowed"}}
-                                       className={"nav-link active"}
-                                       onClick={statusSelected !== "None" ? () => this.showWithdrawDetail() : null}>
-                                        <i className="material-icons"><Edit /></i> Withdraw Now
-                                        <div className="ripple-container"/>
-                                    </a>
-                                </li>
-                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                <li className="nav-item">
-                                    <a style={statusSelected !== "None" ? {cursor: "pointer"} : {cursor: "not-allowed"}}
-                                       className={"nav-link active"}
-                                       onClick={statusSelected !== "None" ? () => this.showAgeUSDDetail() : null}>
-                                        <i className="material-icons"><Edit /></i> Sig USD
-                                        <div className="ripple-container"/>
-                                    </a>
-                                </li>
-                                {this.props.path === 'covert' ? (
+                                {this.props.path === 'stealth' ? null : (
+                                    <React.Fragment>
+                                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                        <li className="nav-item">
+                                            <a style={statusSelected !== "None" ? {cursor: "pointer"} : {cursor: "not-allowed"}}
+                                            className={"nav-link active"}
+                                            onClick={statusSelected !== "None" ? () => this.showWithdrawDetail() : null}>
+                                                <i className="material-icons"><Edit /></i> Withdraw Now
+                                                <div className="ripple-container"/>
+                                            </a>
+                                        </li>
+                                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                        <li className="nav-item">
+                                            <a style={statusSelected !== "None" ? {cursor: "pointer"} : {cursor: "not-allowed"}}
+                                            className={"nav-link active"}
+                                            onClick={statusSelected !== "None" ? () => this.showAgeUSDDetail() : null}>
+                                                <i className="material-icons"><Edit /></i> Sig USD
+                                                <div className="ripple-container"/>
+                                            </a>
+                                        </li>
+                                        </React.Fragment>
+                                )}
+                                {this.props.path === 'covert' || this.props.path === 'stealth' ? (
                                     <li className="nav-item">
                                         <div className="header-slider">
                                             <FormControlLabel
@@ -338,7 +405,7 @@ class StatDetail extends React.Component {
                         <div className="table-responsive">
                             <Loading loaded={this.state.loadedStatus === this.neededStatus()}
                                      empty={this.state.mix.length === 0}
-                                     emptyMessage={["There are no boxes for this covert address"]}
+                                     emptyMessage={[`There are no boxes for this ${this.props.path} address`]}
                             >
                                 <table className="table">
                                     <thead className=" text-primary">
@@ -354,7 +421,7 @@ class StatDetail extends React.Component {
                                                 onClick={(index) => this.handleChange(index)}
                                             />
                                         </th>
-                                        <OrderTd itemLabel="ID"
+                                        <OrderTd itemLabel={this.props.path === 'stealth' ? "Box ID" : "ID"}
                                                  itemKey={"id"}
                                                  setOrder={this.setOrder}
                                                  order={this.state.order}
@@ -365,31 +432,37 @@ class StatDetail extends React.Component {
                                                  setOrder={this.setOrder}
                                                  order={this.state.order}
                                                  orderDir={this.state.orderDir}/>
-                                        <OrderTd itemLabel="Box Type"
-                                                 itemKey={"boxType"}
-                                                 setOrder={this.setOrder}
-                                                 order={this.state.order}
-                                                 orderDir={this.state.orderDir}/>
-                                        <OrderTd itemLabel="Latest Activity"
-                                                 itemKey={"lastMixTime"}
-                                                 setOrder={this.setOrder}
-                                                 order={this.state.order}
-                                                 orderDir={this.state.orderDir}/>
-                                        <OrderTd itemLabel="Round"
-                                                 itemKey={"rounds"}
-                                                 setOrder={this.setOrder}
-                                                 order={this.state.order}
-                                                 orderDir={this.state.orderDir}/>
+                                        {this.props.path === 'stealth' ? <th>Assets</th> : (
+                                            <React.Fragment>
+                                                <OrderTd itemLabel="Box Type"
+                                                        itemKey={"boxType"}
+                                                        setOrder={this.setOrder}
+                                                        order={this.state.order}
+                                                        orderDir={this.state.orderDir}/>
+                                                <OrderTd itemLabel="Latest Activity"
+                                                        itemKey={"lastMixTime"}
+                                                        setOrder={this.setOrder}
+                                                        order={this.state.order}
+                                                        orderDir={this.state.orderDir}/>
+                                                <OrderTd itemLabel="Round"
+                                                        itemKey={"rounds"}
+                                                        setOrder={this.setOrder}
+                                                        order={this.state.order}
+                                                        orderDir={this.state.orderDir}/>
+                                            </React.Fragment>
+                                        )}
                                         <OrderTd itemLabel="Withdraw Address"
                                                  itemKey={"withdraw"}
                                                  setOrder={this.setOrder}
                                                  order={this.state.order}
                                                  orderDir={this.state.orderDir}/>
-                                        <OrderTd itemLabel="Status"
-                                                 itemKey={"status"}
-                                                 setOrder={this.setOrder}
-                                                 order={this.state.order}
-                                                 orderDir={this.state.orderDir}/>
+                                        {this.props.path === 'stealth' ? null : (
+                                            <OrderTd itemLabel="Status"
+                                                    itemKey={"status"}
+                                                    setOrder={this.setOrder}
+                                                    order={this.state.order}
+                                                    orderDir={this.state.orderDir}/>
+                                        )}
                                         <th/>
                                     </tr>
                                     </thead>
@@ -413,17 +486,27 @@ class StatDetail extends React.Component {
                                                 </Tooltip>
                                             </td>
                                             <td>{formatter.token(mixItem.mixingTokenId ? mixItem.mixingTokenAmount : mixItem.amount, mixItem.mixingTokenId)}</td>
-                                            <td>{mixItem.boxType}</td>
-                                            <td>{formatter.dateTime(mixItem.lastMixTime)}</td>
-                                            <td>{mixItem.rounds}</td>
+                                            {this.props.path === 'stealth' ? (
+                                                <td>
+                                                    <div onClick={() => this.clickAssets(mixItem.assets)} style={{cursor: "pointer"}}>
+                                                        {mixItem.assets.length} Assets
+                                                    </div>
+                                                </td>
+                                            ) : (
+                                                <React.Fragment>
+                                                    <td>{mixItem.boxType}</td>
+                                                    <td>{formatter.dateTime(mixItem.lastMixTime)}</td>
+                                                    <td>{mixItem.rounds}</td>
+                                                </React.Fragment>
+                                            )}
                                             <td>
                                                 <Tooltip title={<span
-                                                    className="tooltip-text">{mixItem.withdraw === "" ? "(MANUAL)" : mixItem.withdraw}</span>}
+                                                    className="tooltip-text">{mixItem.withdraw ? mixItem.withdraw : "(MANUAL)"}</span>}
                                                          arrow>
-                                                    <div>{mixItem.withdraw === "" ? "(MANUAL)" : formatter.address(mixItem.withdraw)}</div>
+                                                    <div>{mixItem.withdraw ? formatter.address(mixItem.withdraw) : "(MANUAL)"}</div>
                                                 </Tooltip>
                                             </td>
-                                            <td>{mixItem.status}</td>
+                                            {this.props.path === 'stealth' ? null : (<td>{mixItem.status}</td>)}
                                             <td>
                                                 <TransactionStatus
                                                     mixItem={mixItem}
@@ -449,9 +532,11 @@ const mapStateToProps = state => ({
     activeMap: state.activeMap,
     activeLoaded: state.activeLoaded,
     covertMap: state.covertMap,
+    stealthMap: state.stealthMap,
     historyMap: state.historyMap,
     historyLoaded: state.historyLoaded,
     covertLoaded: state.covertLoaded,
+    stealthLoaded: state.stealthLoaded,
 });
 
 export default withLayout(MainLayout)(connect(mapStateToProps)(withParams(StatDetail)));

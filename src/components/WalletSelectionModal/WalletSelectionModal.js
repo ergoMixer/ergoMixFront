@@ -1,6 +1,5 @@
 import ProjectModal from "../modal/modal";
 import React, { useState } from "react";
-import { ReactComponent as YoroiIcon } from '../../assets/icons/yoroi-logo-icon.svg';
 import { ReactComponent as NautilusIcon } from '../../assets/icons/nautilus-logo-icon.svg';
 import Button from '@mui/material/Button';
 
@@ -23,10 +22,6 @@ const WalletSelectionModal = (props) => {
                             onClick={() => {
                                 props.walletCallBack("Nautilus")
                             }}>Nautilus Wallet </Button>
-                    <Button style={buttonStyle} endIcon={<YoroiIcon/>}
-                            className="btn bg-transparent btn-outline-primary m-3" onClick={() => {
-                        props.walletCallBack("Yoroi")
-                    }}>Yoroi Wallet </Button>
                 </div>
             </div>
         </ProjectModal>)

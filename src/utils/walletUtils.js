@@ -3,21 +3,7 @@ import { NotificationManager } from "react-notifications";
 
 export async function setupWallet(walletType) {
     let hasAccess = null;
-    if (walletType === "Yoroi") {
-        if (typeof cardano !== "object" || !cardano.yoroi) {   // eslint-disable-line
-            NotificationManager.error(
-                "Yoroi Not Found!",
-                "Extension Error!",
-                5000
-            );
-            return false
-        } else {
-            hasAccess = await ergo_request_read_access();  // eslint-disable-line
-            if (hasAccess) {
-                document.cookie = "wallet_type=Yoroi;path=/";
-            }
-        }
-    } else if (walletType === "Nautilus") {
+    if (walletType === "Nautilus") {
         if (typeof ergoConnector !== "object" || !ergoConnector.nautilus) {  // eslint-disable-line
             NotificationManager.error(
                 "Nautilus Not Found!",
